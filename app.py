@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_restful import Api, Resource, reqparse
 import json
 
@@ -35,14 +35,11 @@ api.add_resource(StudentList, '/students/')
 """
 
 
+#@app.route('/login',methods = ['POST', 'GET'])
+
 class Login(Resource):
     def get(self):
-        # read file
-        with open('json/file.json', 'r') as myfile:
-            data = myfile.read()
-        # parse file
-        obj = json.loads(data)
-        return obj
+        return render_template('login.html')
 
     def post(self):
         parser.add_argument("username")
@@ -70,7 +67,7 @@ api.add_resource(Login, '/login/')
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    return render_template('login.html')
 
 
 if __name__ == '__main__':
