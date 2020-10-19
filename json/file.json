@@ -1,0 +1,5 @@
+{"1":{"username" : "sample",  "password" : "sample123"},
+  "2":{"username" : "dawid",  "password" : "pass111"},
+  "3":{"username" : "admin",  "password" : "adminadmin"},
+  "4":{"username" : "guest",  "password" : "strongpass11"}
+}
