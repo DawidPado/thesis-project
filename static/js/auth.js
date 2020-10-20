@@ -5,7 +5,6 @@ $(document).ready(function() {
 
 		var username = $('#username').val();
 		var password = $('#password').val();
-
 				$.ajax({
 					method: 'POST',
 					url: '/login',
@@ -14,11 +13,22 @@ $(document).ready(function() {
 					dataType: "json",
 					success: function(data) {
 					    if (data.status=="success") {
+					    	if($('#ckb1').is(':checked')){
+					    		document.cookie = "username="+username;
+					    		document.cookie = "password="+password;
+							}
                             window.location.href = "http://127.0.0.1:5000/";
                         }
 					    else{
-					      //  $("#myform").replaceWith(data.form);
-                            window.location.href = "http://127.0.0.1:5000/login/";
+
+					        $("#error-alert").replaceWith(
+					        	" <div id=\"error-alert \" >\n" +
+								"                        <span style=\"color:red\">\n" +
+								"                          Wrong username or password  <em class=\"fa fa-warning\"></em>\n" +
+								"                        </span>\n" +
+								"                    </div>"
+							);
+							alert( $.cookie("username") );
                         }
 					},
 					statusCode: {
