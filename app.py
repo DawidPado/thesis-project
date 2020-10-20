@@ -40,7 +40,6 @@ def login():
        parser.add_argument("username")
        parser.add_argument("password")
        args = parser.parse_args()
-       status = {}
        with open('json/file.json', 'r') as myfile:
            data = myfile.read()
        # parse file
