@@ -1,5 +1,4 @@
 $(document).ready(function() {
-var randomScalingFactor = function(){ return Math.round(Math.random()*1000)};
 xvalues=[]
 yvalues=[]
         $.ajax({
@@ -12,6 +11,7 @@ yvalues=[]
                     xvalues.push(result[i].cur_time);
                     yvalues.push(result[i].energy);
                 }
+                show();
             },
             statusCode: {
                 400: function (response) {
@@ -22,9 +22,9 @@ yvalues=[]
                 console.log(err);
             }
         });
-async function show() {
-    xlabels = await xvalues
-    ydata = await yvalues
+ function show() {
+    xlabels =  xvalues
+    ydata =  yvalues
     const ctx1 = document.getElementById('myChart1');
 
     const myLineChart = new Chart(ctx1, {
@@ -36,6 +36,8 @@ async function show() {
                 {
                     label: "Energy1",
                     fillColor: "rgba(220,220,220,0.2)",
+                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                     borderColor: 'rgba(255, 99, 132, 1)',
                     strokeColor: "rgba(220,220,220,1)",
                     pointColor: "rgb(26,239,12)",
                     pointStrokeColor: "#fff",
@@ -65,7 +67,6 @@ async function show() {
         }
     });
 }
-show();
 const ctx2 = document.getElementById('myChart2');
 const xlabels2=[0,1,2,3,4,5];
 const ydata2=[0,1,-2,-4,6, 7];
