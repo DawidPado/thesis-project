@@ -7,33 +7,6 @@ app.secret_key = 'random string'
 api = Api(app)
 parser = reqparse.RequestParser()
 
-"""
-@app.route('/login/', methods = ['POST', 'GET'])
-def login():
-   if request.method == 'POST':
-       parser.add_argument("username")
-       parser.add_argument("password")
-       args = parser.parse_args()
-       status = {}
-       with open('json/file.json', 'r') as myfile:
-           data = myfile.read()
-       # parse file
-       obj = json.loads(data)
-       for i in obj:
-           if obj[i]['username'] == args["username"]:
-               if obj[i]['password'] == args["password"]:
-                   status = {"status": "success"}
-                   return status
-               else:
-                   status = {"status": "fail"}
-                   return status
-       status = {"status": "fail"}
-       return status
-   else:
-      return render_template('login.html')
-
-"""
-
 @app.route('/login/', methods = ['POST', 'GET'])
 def login():
    if request.method == 'POST':
@@ -59,15 +32,16 @@ def login():
       return render_template('login.html')
 
 
-@app.route('/')
+@app.route('/', methods = ['POST', 'GET'])
 def start():
-    if 'username' in session:
-        username = session['username']
-        return 'Logged in as ' + username + '<br>' + \
-               "<b><a href = '/logout'>click here to log out</a></b>"
-    return "You are not logged in <br><a href = '/login'></b>" + \
-       "click here to log in</b></a>"
-    return redirect(url_for('login'))
+    if request.method == 'POST':
+        with open('json/data1.json', 'r') as myfile:
+            data = myfile.read()
+            obj = json.loads(data)
+            return obj
+    else:
+        return render_template('main.html')
+
 
 
 if __name__ == '__main__':
