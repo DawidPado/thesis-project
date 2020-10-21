@@ -1,15 +1,16 @@
-var randomScalingFactor = function(){ return Math.round(Math.random()*1000)};
-const xlabels=[];
-const ydata=[];
 $(document).ready(function() {
+var randomScalingFactor = function(){ return Math.round(Math.random()*1000)};
+xvalues=[]
+yvalues=[]
         $.ajax({
             method: 'POST',
-            url: '/',
-            contentType: 'application/json;charset=UTF-8',
-            dataType: "json",
+            url: 'http://127.0.0.1:5000/',
             success: function (data) {
-                for (var i = 0; i < data.length; i++){
-
+                var result= data.cur_data;
+                for(var i in result) {
+                    console.log(result[i]);
+                    xvalues.push(result[i].cur_time);
+                    yvalues.push(result[i].energy);
                 }
             },
             statusCode: {
@@ -21,46 +22,50 @@ $(document).ready(function() {
                 console.log(err);
             }
         });
-})(jQuery);
-const ctx1 = document.getElementById('myChart1');
+async function show() {
+    xlabels = await xvalues
+    ydata = await yvalues
+    const ctx1 = document.getElementById('myChart1');
 
-const myLineChart = new Chart(ctx1, {
-    type: 'line',
-    data: {
-        labels : xlabels,
+    const myLineChart = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: xlabels,
 
-		datasets : [
-			{
-				label: "Energy1",
-				fillColor : "rgba(220,220,220,0.2)",
-				strokeColor : "rgba(220,220,220,1)",
-				pointColor : "rgb(26,239,12)",
-				pointStrokeColor : "#fff",
-				pointHighlightFill : "#f10d0d",
-				pointHighlightStroke : "rgba(220,220,220,1)",
-				data: ydata
-			}
-		]},
-		options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    callback: function(value, index, values) {
-                        return value + 'J';
-                    }
+            datasets: [
+                {
+                    label: "Energy1",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgb(26,239,12)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#f10d0d",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: ydata
                 }
-            }],
-			xAxes: [{
-                ticks: {
-                    callback: function(value, index, values) {
-                        return value + 'sec';
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: function (value, index, values) {
+                            return value + 'J';
+                        }
                     }
-                }
-            }]
+                }],
+                xAxes: [{
+                    ticks: {
+                        callback: function (value, index, values) {
+                            return value + 'sec';
+                        }
+                    }
+                }]
+            }
         }
-    }
-});
-
+    });
+}
+show();
 const ctx2 = document.getElementById('myChart2');
 const xlabels2=[0,1,2,3,4,5];
 const ydata2=[0,1,-2,-4,6, 7];
@@ -136,4 +141,5 @@ var myChart = new Chart(ctx3, {
             }]
         }
     }
+});
 });
