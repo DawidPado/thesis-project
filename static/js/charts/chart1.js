@@ -34,7 +34,7 @@ yvalues=[]
 
             datasets: [
                 {
-                    label: "Energy1",
+                    label: "Energy",
                     fillColor: "rgba(220,220,220,0.2)",
                      backgroundColor: 'rgba(255, 99, 132, 0.2)',
                      borderColor: 'rgba(255, 99, 132, 1)',
