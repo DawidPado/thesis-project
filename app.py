@@ -40,8 +40,18 @@ def start():
             obj = json.loads(data)
             return obj
     else:
-        return render_template('main.html')
+        return render_template('charts.html')
 
+
+@app.route('/test/', methods = ['POST', 'GET'])
+def start_r():
+    if request.method == 'POST':
+        with open('json/data1.json', 'r') as myfile:
+            data = myfile.read()
+            obj = json.loads(data)
+            return obj
+    else:
+        return render_template('main.html')
 
 
 if __name__ == '__main__':

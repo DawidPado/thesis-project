@@ -7,7 +7,7 @@ es = Elasticsearch()
 #serach='http://localhost:9200/energy/_search'
 
 
-# data time format 2015-01-01T12:11:30Z
+# data time format yyyy-MM-dd'T'hh:mm:ss'Z' -> 2015-01-01T12:11:30Z
 data = "2020-10-24"
 hh="00"
 mm="00"
