@@ -40,7 +40,7 @@ def start():
             obj = json.loads(data)
             return obj
     else:
-        return render_template('charts.html')
+        return render_template('main.html')
 
 
 @app.route('/test/', methods = ['POST', 'GET'])

@@ -5,6 +5,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Lumino - Charts</title>
 	<link href="../static/dashboard/css/bootstrap.min.css" rel="stylesheet">
+    	<link href="../static/login/vendor/dist/Chart.min.css" >
+
 	<link href="../static/dashboard/css/font-awesome.min.css" rel="stylesheet">
 	<link href="../static/dashboard/css/datepicker3.css" rel="stylesheet">
 	<link href="../static/dashboard/css/styles.css" rel="stylesheet">
@@ -201,7 +203,7 @@
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body">
 						<div class="canvas-wrapper">
-							<canvas class="main-chart" id="line-chart" height="200" width="600"></canvas>
+							<canvas class="main-chart" id="myChart1" height="200" width="600"></canvas>
 						</div>
 					</div>
 				</div>
@@ -239,7 +241,7 @@
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body">
 						<div class="canvas-wrapper">
-							<canvas class="main-chart" id="bar-chart" height="200" width="600"></canvas>
+							<canvas class="main-chart" id="myChart2" height="200" width="600"></canvas>
 						</div>
 					</div>
 				</div>
@@ -277,7 +279,6 @@
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body">
 						<div class="canvas-wrapper">
-							<canvas class="chart" id="pie-chart" ></canvas>
 						</div>
 					</div>
 				</div>
@@ -312,7 +313,6 @@
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body">
 						<div class="canvas-wrapper">
-							<canvas class="chart" id="doughnut-chart" ></canvas>
 						</div>
 					</div>
 				</div>
@@ -350,7 +350,6 @@
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body">
 						<div class="canvas-wrapper">
-							<canvas class="chart" id="radar-chart" ></canvas>
 						</div>
 					</div>
 				</div>
@@ -385,7 +384,6 @@
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body">
 						<div class="canvas-wrapper">
-							<canvas class="chart" id="polar-area-chart" ></canvas>
 						</div>
 					</div>
 				</div>
@@ -399,13 +397,13 @@
 
 	<script src="../static/dashboard/js/jquery-1.11.1.min.js"></script>
 	<script src="../static/dashboard/js/bootstrap.min.js"></script>
-	<script src="../static/dashboard/js/chart.min.js"></script>
-	<script src="../static/dashboard/js/chart-data.js"></script>
+	<script src="../static/login/vendor/dist/Chart.min.js"></script>
+	<script src="../static/dashboard/js/charts/main-charts.js"></script>
 	<script src="../static/dashboard/js/easypiechart.js"></script>
 	<script src="../static/dashboard/js/easypiechart-data.js"></script>
 	<script src="../static/dashboard/js/bootstrap-datepicker.js"></script>
 	<script src="../static/dashboard/js/custom.js"></script>
-	<script>
+	<!--<script>
 	window.onload = function () {
 	var chart1 = document.getElementById("line-chart").getContext("2d");
 	window.myLine = new Chart(chart1).Line(lineChartData, {
@@ -444,6 +442,6 @@
 	segmentShowStroke: false
 	});
 };
-	</script>
+	</script> -->
 </body>
 </html>
