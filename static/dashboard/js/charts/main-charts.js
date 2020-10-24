@@ -1,13 +1,20 @@
 $(document).ready(function() {
-xvalues=[]
-yvalues=[]
-        $.ajax({
+    xvalues=[]
+    yvalues=[]
+    xvalues_energy=[]
+    yvalues_energy=[]
+function sum(obj){
+        return obj.S1+obj.S2+obj.S3+obj.S4+obj.S5+obj.S6+obj.S7+obj.S8+obj.S9+obj.S10+obj.S11+obj.S12+obj.S13+
+            obj.S14+obj.S15+obj.S16+obj.S17+obj.S18+obj.S19+obj.S20+obj.S21+obj.S22;
+    }
+      /*  $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5000/',
             success: function (data) {
                 var result= data.cur_data;
+                console.log(result)
                 for(var i in result) {
-                    console.log(result[i]);
+                 //   console.log(result[i]);
                     xvalues.push(result[i].cur_time);
                     yvalues.push(result[i].energy);
                 }
@@ -21,16 +28,37 @@ yvalues=[]
             error: function (err) {
                 console.log(err);
             }
+        });*/
+
+        $.ajax({
+            method: 'POST',
+            url: 'http://127.0.0.1:5000/',
+            success: function (data) {
+                var result = JSON.parse(data);
+                result=result.energy
+                for(var j in result) {
+                    xvalues_energy.push(result[j].timestamp);
+                    yvalues_energy.push(sum(result[j]));
+                    console.log(result[j]);
+                }
+                show();
+            },
+            statusCode: {
+                400: function (response) {
+                    console.log(response);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
         });
  function show() {
-    xlabels =  xvalues
-    ydata =  yvalues
     const ctx1 = document.getElementById('myChart1');
 
     const myLineChart = new Chart(ctx1, {
         type: 'line',
         data: {
-            labels: xlabels,
+            labels: xvalues_energy,
 
             datasets: [
                 {
@@ -43,7 +71,7 @@ yvalues=[]
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#f10d0d",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: ydata
+                    data: yvalues_energy
                 }
             ]
         },
@@ -59,7 +87,13 @@ yvalues=[]
                 xAxes: [{
                     ticks: {
                         callback: function (value, index, values) {
-                            return value + 'sec';
+                            var d = new Date(value)
+                            if(d.getMinutes()<10){
+                                return d.getHours()-2 +":0" + d.getMinutes();
+                            }
+                            else {
+                                return d.getHours() - 2 + ":" + d.getMinutes();
+                            }
                         }
                     }
                 }]

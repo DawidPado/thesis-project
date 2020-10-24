@@ -1,7 +1,9 @@
 from flask import Flask, render_template, redirect, url_for, request, session
 from flask_restful import Api, Resource, reqparse
 import json
+from elasticsearch import Elasticsearch
 
+es = Elasticsearch()
 app = Flask(__name__)
 app.secret_key = 'random string'
 api = Api(app)
@@ -26,13 +28,15 @@ def login():
                else:
                    status = {"status": "fail"}
                    return status
+
        status = {"status": "fail"}
+
        return status
    else:
       return render_template('login.html')
 
 
-@app.route('/', methods = ['POST', 'GET'])
+"""@app.route('/', methods = ['POST', 'GET'])
 def start():
     if request.method == 'POST':
         with open('json/data1.json', 'r') as myfile:
@@ -41,15 +45,30 @@ def start():
             return obj
     else:
         return render_template('main.html')
+"""
 
-
-@app.route('/test/', methods = ['POST', 'GET'])
+@app.route('/', methods = ['POST', 'GET'])
 def start_r():
     if request.method == 'POST':
-        with open('json/data1.json', 'r') as myfile:
-            data = myfile.read()
-            obj = json.loads(data)
-            return obj
+        status='{ \'energy\':['
+        count=0
+        for i in range(6):
+
+            j = -60 + i*10
+            if j < 0:
+                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+2h" + str(j) + "m\"}}}}"
+            else:
+                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+2h\"}}}}"
+
+            res = es.search(index='energy', body=query)
+            for i in range(10):
+                count=count +1
+                if count < 60 :
+                    status = status + str( res['hits']['hits'][i]['_source']) + ', '
+                else:
+                    status = status + str(res['hits']['hits'][i]['_source']) + ']}'
+
+        return status.replace("'","\"")
     else:
         return render_template('main.html')
 
