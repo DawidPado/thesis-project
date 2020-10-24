@@ -1,47 +1,31 @@
 $(document).ready(function() {
-    xvalues=[]
-    yvalues=[]
-    xvalues_energy=[]
+    xvalues_traffic=[]
+    yvalues_traffic=[]
+    xvalues_energy =[]
     yvalues_energy=[]
 function sum(obj){
         return obj.S1+obj.S2+obj.S3+obj.S4+obj.S5+obj.S6+obj.S7+obj.S8+obj.S9+obj.S10+obj.S11+obj.S12+obj.S13+
             obj.S14+obj.S15+obj.S16+obj.S17+obj.S18+obj.S19+obj.S20+obj.S21+obj.S22;
     }
-      /*  $.ajax({
-            method: 'POST',
-            url: 'http://127.0.0.1:5000/',
-            success: function (data) {
-                var result= data.cur_data;
-                console.log(result)
-                for(var i in result) {
-                 //   console.log(result[i]);
-                    xvalues.push(result[i].cur_time);
-                    yvalues.push(result[i].energy);
-                }
-                show();
-            },
-            statusCode: {
-                400: function (response) {
-                    console.log(response);
-                }
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });*/
-
         $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5000/',
             success: function (data) {
                 var result = JSON.parse(data);
-                result=result.energy
-                for(var j in result) {
-                    xvalues_energy.push(result[j].timestamp);
-                    yvalues_energy.push(sum(result[j]));
-                    console.log(result[j]);
+                console.log(result)
+                for(var j in result.energy) {
+                    xvalues_energy.push(result.energy[j].timestamp);
+                    yvalues_energy.push(sum(result.energy[j]));
+                    console.log(result.energy[j]);
                 }
-                show();
+                for(var k in result.traffic) {
+                    xvalues_traffic.push(result.traffic[k].timestamp);
+                    yvalues_traffic.push(sum(result.traffic[k]));
+                    console.log(result.traffic[k]);
+                }
+                show_energy();
+                show_traffic();
+                console.log(data)
             },
             statusCode: {
                 400: function (response) {
@@ -52,7 +36,7 @@ function sum(obj){
                 console.log(err);
             }
         });
- function show() {
+ function show_energy() {
     const ctx1 = document.getElementById('myChart1');
 
     const myLineChart = new Chart(ctx1, {
@@ -68,7 +52,7 @@ function sum(obj){
                      borderColor: 'rgba(255, 99, 132, 1)',
                     strokeColor: "rgba(220,220,220,1)",
                     pointColor: "rgb(26,239,12)",
-                    pointStrokeColor: "#fff",
+                    pointStrokeColor: "#ffffff",
                     pointHighlightFill: "#f10d0d",
                     pointHighlightStroke: "rgba(220,220,220,1)",
                     data: yvalues_energy
@@ -101,45 +85,55 @@ function sum(obj){
         }
     });
 }
-const ctx2 = document.getElementById('myChart2');
-const xlabels2=[0,1,2,3,4,5];
-const ydata2=[0,1,-2,-4,6, 7];
-const myLineChart2 = new Chart(ctx2, {
-    type: 'line',
-    data: {
-        labels : xlabels2,
+function show_traffic() {
+    const ctx2 = document.getElementById('myChart2');
+    const myLineChart2 = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: xvalues_traffic,
 
-		datasets : [
-			{
-				label: "Data Trafic",
-				fillColor : "rgba(151,187,205,0.5)",
-				strokeColor : "rgba(151,187,205,0.8)",
-				pointColor : "rgba(220,220,220,1)",
-				pointStrokeColor : "#451111",
-				pointHighlightFill : "#451111",
-				pointHighlightStroke : "rgba(220,220,220,1)",
-				data: ydata2
-			}
-		]},
-		options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    callback: function(value, index, values) {
-                        return value + 'kB';
-                    }
+            datasets: [
+                {
+                    label: "Traffic",
+                    fillColor: "rgba(220,220,220,0.2)",
+                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                     borderColor: 'rgba(54, 162, 235, 1)',
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgb(26,239,12)",
+                    pointStrokeColor: "#ffffff",
+                    pointHighlightFill: "#f10d0d",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: yvalues_traffic
                 }
-            }],
-			xAxes: [{
-                ticks: {
-                    callback: function(value, index, values) {
-                        return value + 'sec';
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: function (value, index, values) {
+                            return value + 'kB';
+                        }
                     }
-                }
-            }]
+                }],
+                xAxes: [{
+                    ticks: {
+                        callback: function (value, index, values) {
+                            var d = new Date(value)
+                            if(d.getMinutes()<10){
+                                return d.getHours()-2 +":0" + d.getMinutes();
+                            }
+                            else {
+                                return d.getHours() - 2 + ":" + d.getMinutes();
+                            }
+                        }
+                    }
+                }]
+            }
         }
-    }
-});
+    });
+}
+/*
 var ctx3 = document.getElementById('myChart3').getContext('2d');
 var myChart = new Chart(ctx3, {
     type: 'bar',
@@ -177,4 +171,6 @@ var myChart = new Chart(ctx3, {
         }
     }
 });
+
+ */
 });

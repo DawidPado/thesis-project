@@ -36,17 +36,6 @@ def login():
       return render_template('login.html')
 
 
-"""@app.route('/', methods = ['POST', 'GET'])
-def start():
-    if request.method == 'POST':
-        with open('json/data1.json', 'r') as myfile:
-            data = myfile.read()
-            obj = json.loads(data)
-            return obj
-    else:
-        return render_template('main.html')
-"""
-
 @app.route('/', methods = ['POST', 'GET'])
 def start_r():
     if request.method == 'POST':
@@ -65,6 +54,23 @@ def start_r():
                 count=count +1
                 if count < 60 :
                     status = status + str( res['hits']['hits'][i]['_source']) + ', '
+                else:
+                    status = status + str(res['hits']['hits'][i]['_source']) + '],'
+        status = status + ' \'traffic\':['
+        count = 0
+        for i in range(6):
+
+            j = -60 + i * 10
+            if j < 0:
+                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+2h" + str(j) + "m\"}}}}"
+            else:
+                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+2h\"}}}}"
+
+            res = es.search(index='traffic', body=query)
+            for i in range(10):
+                count = count + 1
+                if count < 60:
+                    status = status + str(res['hits']['hits'][i]['_source']) + ', '
                 else:
                     status = status + str(res['hits']['hits'][i]['_source']) + ']}'
 
