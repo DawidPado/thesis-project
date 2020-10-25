@@ -45,9 +45,9 @@ def start_r():
 
             j = -60 + i*10
             if j < 0:
-                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+2h" + str(j) + "m\"}}}}"
+                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h" + str(j) + "m\"}}}}" #+2 o +1 dipende dal orrario
             else:
-                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+2h\"}}}}"
+                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h\"}}}}"
 
             res = es.search(index='energy', body=query)
             for i in range(10):
@@ -62,9 +62,9 @@ def start_r():
 
             j = -60 + i * 10
             if j < 0:
-                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+2h" + str(j) + "m\"}}}}"
+                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h" + str(j) + "m\"}}}}"
             else:
-                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+2h\"}}}}"
+                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h\"}}}}"
 
             res = es.search(index='traffic', body=query)
             for i in range(10):
@@ -74,7 +74,7 @@ def start_r():
                 else:
                     status = status + str(res['hits']['hits'][i]['_source']) + ']}'
 
-        return status.replace("'","\"")
+        return status.replace("'", "\"")
     else:
         return render_template('main.html')
 

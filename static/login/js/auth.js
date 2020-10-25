@@ -13,10 +13,10 @@ $(document).ready(function() {
 					dataType: "json",
 					success: function(data) {
 					    if (data.status=="success") {
-					    	if($('#ckb1').is(':checked')){
+					    	/*if($('#ckb1').is(':checked')){
 					    		document.cookie = "username="+username;
 					    		document.cookie = "password="+password;
-							}
+							}*/
                             window.location.href = "http://127.0.0.1:5000/";
                         }
 					    else{
@@ -28,7 +28,7 @@ $(document).ready(function() {
 								"                        </span>\n" +
 								"                    </div>"
 							);
-							alert( $.cookie("username") );
+						//	alert( $.cookie("username") );
                         }
 					},
 					statusCode: {
