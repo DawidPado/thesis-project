@@ -62,7 +62,7 @@ function get_sensor_data(input,sensor){
                 show_energy();
                 show_traffic();
                 show_single_energy();
-                show_single_traffic();
+                //  show_single_traffic();
                 console.log(data)
             },
             statusCode: {
@@ -134,30 +134,42 @@ $('#change-energy-chart').on('click', function(e) {
             datasets: [
                 {
                     label: "Energy",
-                    fillColor: "rgba(220,220,220,0.2)",
-                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                     borderColor: 'rgba(255, 99, 132, 1)',
-                    strokeColor: "rgba(220,220,220,1)",
-                    pointColor: "rgb(26,239,12)",
-                    pointStrokeColor: "#ffffff",
-                    pointHighlightFill: "#f10d0d",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
+                 //   fillColor: "rgba(220,220,220,0.2)",
+                //     backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                     borderColor: 'rgb(255,236,69)',
+                 //   strokeColor: "rgba(220,220,220,1)",
+                 //   pointColor: "rgb(26,239,12)",
+                 //   pointStrokeColor: "#ffffff",
+                //    pointHighlightFill: "#f10d0d",
+                //    pointHighlightStroke: "rgba(220,220,220,1)",
                     data: yvalues_energy
                 }
             ]
         },
-        options: {
+       options: {
+            legend: {labels: {boxWidth: 0,}},
             scales: {
-                yAxes: [{
+                yAxes: [
+                    {
+                        gridLines: {color: "#484848", zeroLineColor: '#fff' },
+                        scaleLabel: {
+                                fontColor:'fff',
+                            },
                     ticks: {
-                        callback: function (value, index, values) {
+                        fontColor: "white",
+                        callback: function (value) {
                             return value + 'J';
                         }
                     }
                 }],
                 xAxes: [{
+                    gridLines: { color: "#484848", zeroLineColor: '#fff' },
+                        scaleLabel: {
+                                fontColor:'fff',
+                            },
                     ticks: {
-                        callback: function (value, index, values) {
+                        fontColor: "white",
+                        callback: function (value) {
                             var d = new Date(value)
                             if(d.getMinutes()<10){
                                 return d.getHours()-1 +":0" + d.getMinutes();
@@ -183,7 +195,7 @@ function show_traffic() {
                 {
                     label: "Traffic",
                     fillColor: "rgba(220,220,220,0.2)",
-                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                //     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                      borderColor: 'rgba(54, 162, 235, 1)',
                     strokeColor: "rgba(220,220,220,1)",
                     pointColor: "rgb(26,239,12)",
@@ -195,17 +207,28 @@ function show_traffic() {
             ]
         },
         options: {
+            legend: {labels: {boxWidth: 0,}},
             scales: {
                 yAxes: [{
+                        gridLines: { color: "#484848", zeroLineColor: '#fff' },
+                        scaleLabel: {
+                                fontColor:'fff',
+                            },
                     ticks: {
-                        callback: function (value, index, values) {
-                            return value + 'kB';
+                             fontColor: "white",
+                        callback: function (value) {
+                            return value;
                         }
                     }
                 }],
                 xAxes: [{
+                    gridLines: { color: "#484848", zeroLineColor: '#fff' },
+                        scaleLabel: {
+                                fontColor:'fff',
+                            },
                     ticks: {
-                        callback: function (value, index, values) {
+                         fontColor: "white",
+                        callback: function (value) {
                             var d = new Date(value)
                             if(d.getMinutes()<10){
                                 return d.getHours()-1 +":0" + d.getMinutes();
@@ -280,8 +303,8 @@ function show_single_energy() {
                 {
                     label: "Energy",
                     fillColor: "rgba(220,220,220,0.2)",
-                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                     borderColor: 'rgba(255, 99, 132, 1)',
+                //     backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                     borderColor: 'rgb(255,119,0)',
                     strokeColor: "rgba(220,220,220,1)",
                     pointColor: "rgb(26,239,12)",
                     pointStrokeColor: "#ffffff",
@@ -291,18 +314,24 @@ function show_single_energy() {
                 }
             ]
         },
-        options: {
+           options: {
+            legend: {labels: {boxWidth: 0,}},
             scales: {
-                yAxes: [{
+                yAxes: [
+                    {
+                        gridLines: { color: "#484848", zeroLineColor: '#fff' },
                     ticks: {
-                        callback: function (value, index, values) {
+                        fontColor: "white",
+                        callback: function (value) {
                             return value + 'J';
                         }
                     }
                 }],
                 xAxes: [{
+                    gridLines: { color: "#484848", zeroLineColor: '#fff' },
                     ticks: {
-                        callback: function (value, index, values) {
+                        fontColor: "white",
+                        callback: function (value) {
                             var d = new Date(value)
                             if(d.getMinutes()<10){
                                 return d.getHours()-1 +":0" + d.getMinutes();

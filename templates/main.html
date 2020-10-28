@@ -87,7 +87,7 @@
 				<h1 class="page-header">Dashboard</h1>
 			</div>
 		</div><!--/.row-->
-        <div class="panel panel-container">
+        <div class="panel panel-container" style="background-color: #222">
 			<div class="row">
 				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
 					<div class="panel panel-teal panel-widget border-right">
@@ -124,27 +124,10 @@
 			</div><!--/.row-->
 		</div>
         <div class="row">
-			<div class="col-md-6">
+			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						        <p3 id="single-energy-chart">S1 Energy Chart </p3>
-						<div class="pull-right panel-settings panel-button-tab-right">
-								<em class="fa fa-cogs" id="change-energy-chart"></em>
-                            <span class="dropdown-menu-right" > </span>
-
-						</div>
-						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
-					<div class="panel-body">
-						<div class="canvas-wrapper" id="new-chart4">
-							<canvas class="chart" id="myChart4" ></canvas>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						        <p3 id="single-traffic-chart">S1  </p3>  Traffic Chart
+						Total Traffic Chart
 						<ul class="pull-right panel-settings panel-button-tab-right">
 							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
 								<em class="fa fa-cogs"></em>
@@ -169,15 +152,14 @@
 							</li>
 						</ul>
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
-					<div class="panel-body">
+					<div class="panel-body main-chart">
 						<div class="canvas-wrapper">
-							<canvas class="chart" id="myChart3" ></canvas>
+							<canvas class="" id="myChart2" height="200" width="600"></canvas>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div><!--/.row-->
-
 		<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
@@ -207,20 +189,38 @@
 							</li>
 						</ul>
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
-					<div class="panel-body">
+					<div class="panel-body main-chart">
 						<div class="canvas-wrapper">
-							<canvas class="main-chart" id="myChart1" height="200" width="600"></canvas>
+							<canvas class="" id="myChart1" height="200" width="600"></canvas>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div><!--/.row-->
 
-		<div class="row">
-			<div class="col-lg-12">
+
+        <div class="row">
+			<div class="col-md-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						Total Traffic Chart
+						        <p3 id="single-energy-chart">S1 Energy Chart </p3>
+						<div class="pull-right panel-settings panel-button-tab-right">
+								<em class="fa fa-cogs" id="change-energy-chart"></em>
+                            <span class="dropdown-menu-right" > </span>
+
+						</div>
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body main-chart">
+						<div class="canvas-wrapper " id="new-chart4">
+							<canvas class="chart " id="myChart4" ></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+	<!--		<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						        <p3 id="single-traffic-chart">S1  </p3>  Traffic Chart
 						<ul class="pull-right panel-settings panel-button-tab-right">
 							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
 								<em class="fa fa-cogs"></em>
@@ -245,19 +245,15 @@
 							</li>
 						</ul>
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
-					<div class="panel-body">
-						<div class="canvas-wrapper">
-							<canvas class="main-chart" id="myChart2" height="200" width="600"></canvas>
+					<div class="panel-body main-chart">
+						<div class="canvas-wrapper ">
+							<canvas class="chart"  id="myChart3" ></canvas>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div><!--/.row-->
-
-
-			<div class="col-sm-12">
-				<p class="back-link">Lumino Theme by <a href="https://www.medialoot.com">Medialoot</a></p>
-			</div>
+		</div> -->
+		<!--/.row-->
 		</div><!--/.row-->
 	</div>	<!--/.main-->
 
