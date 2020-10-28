@@ -11,6 +11,7 @@ function sum(obj){
         return obj.S1+obj.S2+obj.S3+obj.S4+obj.S5+obj.S6+obj.S7+obj.S8+obj.S9+obj.S10+obj.S11+obj.S12+obj.S13+
             obj.S14+obj.S15+obj.S16+obj.S17+obj.S18+obj.S19+obj.S20+obj.S21+obj.S22;
     }
+
 function get_sensor_data(input,sensor){
             switch (Number(sensor)){
                     case 1:  return input.S1;
@@ -37,32 +38,51 @@ function get_sensor_data(input,sensor){
                     case 22: return input.S22;
             }
     }
-        $.ajax({
+
+    function getdata(){
+    $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5000/',
             success: function (data) {
                 var result = JSON.parse(data);
-                data_global=result;
-                for(var j in result.energy) {
+                data_global = result;
+                if(ysensor_values_energy.length == 0){                        // if the sensor has not been choose
+                for (var j in result.energy) {
                     xvalues_energy.push(result.energy[j].timestamp);
                     yvalues_energy.push(sum(result.energy[j]));
-
-                    ysensor_values_energy.push(result.energy[j].S1)
-                //    console.log(result.energy[j]);
+                    ysensor_values_energy.push(result.energy[j].S1);
+                    //    console.log(result.energy[j]);
+                }}
+                else {
+                    for (var j in result.energy) {
+                        xvalues_energy.push(result.energy[j].timestamp);
+                        yvalues_energy.push(sum(result.energy[j]));
+                    }
                 }
-                for(var k in result.traffic) {
+                for (var k in result.traffic) {
                     xvalues_traffic.push(result.traffic[k].timestamp);
                     yvalues_traffic.push(sum(result.traffic[k]));
 
-                    ysensor_values_traffic.push(result.traffic[k].S1)
-                //    console.log(result.traffic[k]);
                 }
-                 $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">"+yvalues_energy[59]/1000+"KJ"+"</div>");
-                 $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">"+(yvalues_traffic[59]/1024).toFixed(2)+"MB"+"</div>");
+                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
+                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
+
+                $("#new-chart1").replaceWith("<div class=\"canvas-wrapper\" id=\"new-chart1\">\n" +
+                    "\t\t\t\t\t\t\t<canvas class=\"\" id=\"myChart1\" height=\"200\" width=\"600\"></canvas>\n" +
+                    "\t\t\t\t\t\t</div>"
+							);
+
+                $("#new-chart2").replaceWith("<div class=\"canvas-wrapper\" id=\"new-chart2\">\n" +
+                    "\t\t\t\t\t\t\t<canvas class=\"\" id=\"myChart2\" height=\"200\" width=\"600\"></canvas>\n" +
+                    "\t\t\t\t\t\t</div>"
+							);
                 show_energy();
                 show_traffic();
                 show_single_energy();
-                //  show_single_traffic();
+                 xvalues_traffic=[];
+                 yvalues_traffic=[];
+                xvalues_energy =[];
+                yvalues_energy=[];
                 console.log(data)
             },
             statusCode: {
@@ -74,6 +94,11 @@ function get_sensor_data(input,sensor){
                 console.log(err);
             }
         });
+    }
+    getdata();
+    setInterval(getdata, 30000); // refresh every 30s
+
+
 $('#change-energy-chart').on('click', function(e) {
     e.preventDefault();
     var input = prompt("Please enter the sensor number");
@@ -99,7 +124,7 @@ $('#change-energy-chart').on('click', function(e) {
                 }
                 $("#new-chart4").replaceWith(
 					        	"<div class=\"canvas-wrapper\" id=\"new-chart4\">\n" +
-                    "\t\t\t\t\t\t\t<canvas class=\"chart\" id=\"myChart4\" ></canvas>\n" +
+                    "\t\t\t\t\t\t\t<canvas class=\"chart\" id=\"myChart4\"  ></canvas>\n" +
                     "\t\t\t\t\t\t</div>"
 							);
                 $("#single-energy-chart").replaceWith("<p3 id=\"single-energy-chart\">S"+input+" Energy Chart </p3>");
@@ -114,14 +139,6 @@ $('#change-energy-chart').on('click', function(e) {
                 console.log(err);
             }
         });
-     $("#error-alert").replaceWith(
-					        	" <div id=\"error-alert \" >\n" +
-								"                        <span style=\"color:red\">\n" +
-								"                          Wrong username or password  <em class=\"fa fa-warning\"></em>\n" +
-								"                        </span>\n" +
-								"                    </div>"
-							);
-
 })
  function show_energy() {
     const ctx1 = document.getElementById('myChart1');
@@ -135,8 +152,8 @@ $('#change-energy-chart').on('click', function(e) {
                 {
                     label: "Energy",
                  //   fillColor: "rgba(220,220,220,0.2)",
-                //     backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                     borderColor: 'rgb(255,236,69)',
+                     backgroundColor: 'rgb(255,99,99,0.2)',
+                     borderColor: 'rgb(252,39,39)',
                  //   strokeColor: "rgba(220,220,220,1)",
                  //   pointColor: "rgb(26,239,12)",
                  //   pointStrokeColor: "#ffffff",
@@ -147,28 +164,19 @@ $('#change-energy-chart').on('click', function(e) {
             ]
         },
        options: {
-            legend: {labels: {boxWidth: 0,}},
+            legend: {display:false},
             scales: {
                 yAxes: [
                     {
-                        gridLines: {color: "#484848", zeroLineColor: '#fff' },
-                        scaleLabel: {
-                                fontColor:'fff',
-                            },
                     ticks: {
-                        fontColor: "white",
+                     //   fontColor: "white",
                         callback: function (value) {
                             return value + 'J';
                         }
                     }
                 }],
                 xAxes: [{
-                    gridLines: { color: "#484848", zeroLineColor: '#fff' },
-                        scaleLabel: {
-                                fontColor:'fff',
-                            },
                     ticks: {
-                        fontColor: "white",
                         callback: function (value) {
                             var d = new Date(value)
                             if(d.getMinutes()<10){
@@ -195,7 +203,7 @@ function show_traffic() {
                 {
                     label: "Traffic",
                     fillColor: "rgba(220,220,220,0.2)",
-                //     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                      borderColor: 'rgba(54, 162, 235, 1)',
                     strokeColor: "rgba(220,220,220,1)",
                     pointColor: "rgb(26,239,12)",
@@ -207,27 +215,23 @@ function show_traffic() {
             ]
         },
         options: {
-            legend: {labels: {boxWidth: 0,}},
+            legend: {display:false},
             scales: {
                 yAxes: [{
-                        gridLines: { color: "#484848", zeroLineColor: '#fff' },
-                        scaleLabel: {
-                                fontColor:'fff',
-                            },
                     ticks: {
-                             fontColor: "white",
+                //             fontColor: "white",
                         callback: function (value) {
                             return value;
                         }
                     }
                 }],
                 xAxes: [{
-                    gridLines: { color: "#484848", zeroLineColor: '#fff' },
+               /*     gridLines: { color: "#484848", zeroLineColor: '#fff' },
                         scaleLabel: {
                                 fontColor:'fff',
-                            },
+                            },*/
                     ticks: {
-                         fontColor: "white",
+                //         fontColor: "white",
                         callback: function (value) {
                             var d = new Date(value)
                             if(d.getMinutes()<10){
@@ -243,54 +247,7 @@ function show_traffic() {
         }
     });
 }
-function show_single_traffic() {
-    const ctx3 = document.getElementById('myChart3');
-    const myLineChart3 = new Chart(ctx3, {
-        type: 'line',
-        data: {
-            labels: xvalues_traffic,
 
-            datasets: [
-                {
-                    label: "Traffic",
-                    fillColor: "rgba(220,220,220,0.2)",
-                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                     borderColor: 'rgba(54, 162, 235, 1)',
-                    strokeColor: "rgba(220,220,220,1)",
-                    pointColor: "rgb(26,239,12)",
-                    pointStrokeColor: "#ffffff",
-                    pointHighlightFill: "#f10d0d",
-                    pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: ysensor_values_traffic
-                }
-            ]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        callback: function (value, index, values) {
-                            return value + 'kB';
-                        }
-                    }
-                }],
-                xAxes: [{
-                    ticks: {
-                        callback: function (value, index, values) {
-                            var d = new Date(value)
-                            if(d.getMinutes()<10){
-                                return d.getHours()-1 +":0" + d.getMinutes();
-                            }
-                            else {
-                                return d.getHours() - 1 + ":" + d.getMinutes();
-                            }
-                        }
-                    }
-                }]
-            }
-        }
-    });
-}
 
 function show_single_energy() {
     const ctx4 = document.getElementById('myChart4');
@@ -303,8 +260,8 @@ function show_single_energy() {
                 {
                     label: "Energy",
                     fillColor: "rgba(220,220,220,0.2)",
-                //     backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                     borderColor: 'rgb(255,119,0)',
+                     backgroundColor: 'rgba(43,184,0,0.2)',
+                     borderColor: 'rgb(0,134,9)',
                     strokeColor: "rgba(220,220,220,1)",
                     pointColor: "rgb(26,239,12)",
                     pointStrokeColor: "#ffffff",
@@ -315,22 +272,18 @@ function show_single_energy() {
             ]
         },
            options: {
-            legend: {labels: {boxWidth: 0,}},
+            legend: {display:false},
             scales: {
                 yAxes: [
                     {
-                        gridLines: { color: "#484848", zeroLineColor: '#fff' },
                     ticks: {
-                        fontColor: "white",
                         callback: function (value) {
                             return value + 'J';
                         }
                     }
                 }],
                 xAxes: [{
-                    gridLines: { color: "#484848", zeroLineColor: '#fff' },
                     ticks: {
-                        fontColor: "white",
                         callback: function (value) {
                             var d = new Date(value)
                             if(d.getMinutes()<10){
@@ -344,6 +297,27 @@ function show_single_energy() {
                 }]
             }
         }
+    });
+}
+show_chart()
+function show_chart() {
+    const ctx3 = document.getElementById('myChart3');
+    const myLineChart3 = new Chart(ctx3, {
+        type: 'pie',
+        data: {
+    datasets: [{
+        borderColor: 'rgb(0,134,9)',
+        data: [10, 20, 30]
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: [
+        'Red',
+        'Yellow',
+        'Blue'
+    ]
+}
+
     });
 }
 });

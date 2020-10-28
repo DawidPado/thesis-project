@@ -1,8 +1,8 @@
 //Variables
 $primary-color: #30a5ff;
 $primary-color-hover: #50b3ff;
-$lighter-gray: #f1f4f7;
-$light-gray: #e9ecf2;
+$lighter-gray: #f7f7f7;
+$light-gray: #f0f0f0;
 $medium-gray: #7c7c7c;
 $dark-gray: #444444;
 $base-font-size: 14px;
@@ -101,20 +101,35 @@ input.form-control {
 	box-shadow: inset 0px 0px 0px 1px $primary-color;
 }
 
-.has-success .form-control, .has-success .form-control:focus {
+.has-success .form-control {
 	border: 1px solid #8ad919;
 }
 
-.has-warning .form-control, .has-warning .form-control:focus {
+.has-warning .form-control {
 	border: 1px solid #ffb53e;
 }
 
-.has-error .form-control, .has-error .form-control:focus {
+.has-error .form-control {
 	border: 1px solid #f9243f;
 }
 
+.has-success .form-control:focus {
+	border: 1px solid #8ad919;
+	box-shadow: inset 0px 0px 0px 1px #8ad919;
+}
+
+.has-warning .form-control:focus {
+	border: 1px solid #ffb53e;
+	box-shadow: inset 0px 0px 0px 1px #ffb53e;
+}
+
+.has-error .form-control:focus {
+	border: 1px solid #f9243f;
+	box-shadow: inset 0px 0px 0px 1px #f9243f;
+}
+
 .navbar-custom {
-	background: #222;
+	background: #333;
 	height: 60px;
 }
 
@@ -259,15 +274,9 @@ a.btn:active, button:active {
 	opacity: 1;
 }
 
-.btn-default, .btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default, .btn-default.disabled, .btn-default[disabled], fieldset[disabled] .btn-default, .btn-default.disabled:hover, .btn-default[disabled]:hover, fieldset[disabled] .btn-default:hover, .btn-default.disabled:focus, .btn-default[disabled]:focus, fieldset[disabled] .btn-default:focus, .btn-default.disabled:active, .btn-default[disabled]:active, fieldset[disabled] .btn-default:active, .btn-default.disabled.active, .btn-default[disabled].active, fieldset[disabled] .btn-default.active {
-	background-color: #e9ecf2;
-	border-color: #e9ecf2;
-	color: #1b3548;
-}
-
 .btn-primary, .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary, .btn-primary.disabled, .btn-primary[disabled], fieldset[disabled] .btn-primary, .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled:active, .btn-primary[disabled]:active, fieldset[disabled] .btn-primary:active, .btn-primary.disabled.active, .btn-primary[disabled].active, fieldset[disabled] .btn-primary.active {
-	background-color: $primary-color;
-	border-color: $primary-color;
+	background-color: $primary-color!important;
+	border-color: $primary-color!important;
 }
 
 .btn-success, .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open > .dropdown-toggle.btn-success, .btn-success.disabled, .btn-success[disabled], fieldset[disabled] .btn-success, .btn-success.disabled:hover, .btn-success[disabled]:hover, fieldset[disabled] .btn-success:hover, .btn-success.disabled:focus, .btn-success[disabled]:focus, fieldset[disabled] .btn-success:focus, .btn-success.disabled:active, .btn-success[disabled]:active, fieldset[disabled] .btn-success:active, .btn-success.disabled.active, .btn-success[disabled].active, fieldset[disabled] .btn-success.active {
@@ -291,6 +300,23 @@ a.btn:active, button:active {
 
 .btn-link:focus, .btn-link:hover, .page-link:focus, .page-link:hover, a.text-primary:focus, a.text-primary:hover {
 	color: $primary-color-hover!important;
+}
+
+.btn-circle {
+  width: 40px;
+  height: 40px;
+  line-height: 40px; 
+  padding:0;
+  border-radius: 50%;
+}
+
+.btn-lg {
+	font-size: 15px;
+	height: 44px;
+}
+
+.btn-margins button.btn {
+	margin: 0 4px 6px 0!important;
 }
 
 //Backgrounds
@@ -396,12 +422,12 @@ a.label:hover, a.label:focus {
 }
 
 .label-primary {
-	color: #1b3548;
-	background-color: #e9ecf2;
+	color: #fff;
+	background-color: $primary-color;
 }
 
 .label-primary[href]:hover, .label-primary[href]:focus {
-	background-color: #e9ecf2;
+	background-color: $primary-color;
 }
 
 .label-success {
@@ -413,11 +439,11 @@ a.label:hover, a.label:focus {
 }
 
 .label-info {
-	background-color: $primary-color;
+	background-color: #30a5ff;
 }
 
 .label-info[href]:hover, .label-info[href]:focus {
-	background-color: $primary-color;
+	background-color: #30a5ff;
 }
 
 .label-warning {
@@ -480,7 +506,7 @@ a.label:hover, a.label:focus {
 	color: #fff;
 	border: none;
 }
-
+f
 .panel-primary .panel-settings, .panel-primary .panel-toggle, .panel-success .panel-settings, .panel-success .panel-toggle, .panel-info .panel-settings, .panel-info .panel-toggle, .panel-warning .panel-settings, .panel-warning .panel-toggle, .panel-danger .panel-settings, .panel-danger .panel-toggle {
 	border: none;
 	color: #fff;
@@ -494,7 +520,7 @@ a.label:hover, a.label:focus {
 }
 
 .panel-blue {
-	background: $primary-color;
+	background: #30a5ff;
 	color: #fff;
 }
 
@@ -1021,7 +1047,7 @@ a.label:hover, a.label:focus {
 	color: #fff;
 }
 
-.sidebar ul.nav .active a, .sidebar ul.nav li.parent a.active, .sidebar ul.nav .active > a:hover, .sidebar ul.nav li.parent a.active:hover, .sidebar ul.nav .active > a:focus, .sidebar ul.nav li.parent a.active:focus {
+.sidebar ul.nav .active a, .sidebar ul.nav li.parent a.active, .sidebar ul.nav .active > a:hover, .sidebar ul.nav li.parent a.active:hover, .sidebar ul.nav .active > a:focus, .sidebar ul.nav li.parent a.active:focus, .sidebar ul.nav ul.children li.active a {
 	color: #fff;
 	background-color: $primary-color;
 }
@@ -1076,6 +1102,10 @@ a.label:hover, a.label:focus {
 	border-bottom: 1px solid $light-gray;
 }
 
+#sidebar-collapse {
+  height:auto !important; 
+}
+
 .indicator {
 	width: 10px;
 	height: 10px;
@@ -1128,7 +1158,7 @@ h1.page-header {
 
 //Charts
 
-.main-chart {
+.chart {
 	background: #fff;
 }
 
@@ -1163,7 +1193,7 @@ h1.page-header {
 }
 
 #easypiechart-blue .percent {
-	color: $primary-color;
+	color: #30a5ff;
 }
 
 #easypiechart-teal .percent {
@@ -1318,6 +1348,7 @@ h1.page-header {
 	border-bottom: 1px solid #e6e7e8;
 	vertical-align: middle;
 	height: 50px;
+	padding: 8px;
 }
 
 .fixed-table-pagination .pagination {
@@ -1334,4 +1365,79 @@ p.back-link {
 	margin-bottom: 20px;
 	font-size: 12px;
 	text-transform: uppercase;
+}
+
+.login-panel {
+	.btn {
+		display: block;
+		width: 100%;
+	}
+	.btn-lg {
+		font-size: 15px;
+		height: 44px;
+	}
+}
+
+.error-page {
+	h1 {
+		font-size: 72px;
+	}
+	h3 {
+		color: $medium-gray;
+	}
+	p {
+		margin: 30px 0;
+	}
+	.btn-lg {
+		font-size: 15px;
+		height: 44px;
+	}
+}
+
+.search-result-item {
+	border-bottom: 1px solid $light-gray;
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+	.search-result-title {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+	.search-result-image {
+		margin-bottom: 10px;
+	}
+}
+
+.chart-purple {
+	filter: hue-rotate(60deg) saturate(40%);
+}
+
+/*Font Awesome List*/
+
+ul.font-awesome-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	li {
+		border: 1px solid $lighter-gray;
+		float: left;
+		width: 20%;
+		height: auto;
+		text-align: center;
+		i {
+			display: block;
+			font-size: 32px;
+			margin: 20px auto;
+		}
+		span.icon-name, .glyphicon-class {
+			color: $primary-color;
+			font-size: 13px;
+			font-weight: bold;
+		}
+		span.icon-value {
+			display: block;
+			color: $medium-gray;
+			font-size: 12px;
+			margin-bottom: 15px;
+		}
+	}
 }

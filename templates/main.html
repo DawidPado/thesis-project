@@ -17,6 +17,7 @@
 	<script src="../static/dashboard/js/html5shiv.js"></script>
 	<script src="../static/dashboard/js/respond.min.js"></script>
 	<![endif]-->
+    <link href="../static/dashboard/css/theme-midnight.css" rel="stylesheet">
 </head>
 <body>
 	<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
@@ -48,27 +49,13 @@
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li class="active"><a href="index.html"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
-			<li><a href="widgets.html"><em class="fa fa-calendar">&nbsp;</em> Widgets</a></li>
-			<li ><a href="charts.html"><em class="fa fa-bar-chart">&nbsp;</em> Charts</a></li>
-			<li><a href="elements.html"><em class="fa fa-toggle-off">&nbsp;</em> UI Elements</a></li>
-			<li><a href="panels.html"><em class="fa fa-clone">&nbsp;</em> Alerts &amp; Panels</a></li>
-			<li class="parent "><a data-toggle="collapse" href="#sub-item-1">
-				<em class="fa fa-navicon">&nbsp;</em> Multilevel <span data-toggle="collapse" href="#sub-item-1" class="icon pull-right"><em class="fa fa-plus"></em></span>
-				</a>
-				<ul class="children collapse" id="sub-item-1">
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 1
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 2
-					</a></li>
-					<li><a class="" href="#">
-						<span class="fa fa-arrow-right">&nbsp;</span> Sub Item 3
-					</a></li>
-				</ul>
-			</li>
-			<li><a href="login.html"><em class="fa fa-power-off">&nbsp;</em> Logout</a></li>
+			<li class="active"><a href="index.html"><em class="fa fa-dashboard">&nbsp;</em>Dashboard</a></li>
+			<li><a href="widgets.html"><em class="fa fa-calendar">&nbsp;</em>ML Models</a></li>
+			<li ><a href="charts.html"><em class="fa fa-bar-chart">&nbsp;</em>Analytics</a></li>
+			<li><a href="elements.html"><em class="fa fa-code-fork">&nbsp;</em>Simulation</a></li>
+			<li><a href="panels.html"><em class="fa fa-clone">&nbsp;</em>Adaptation</a></li>
+            <li><a href="elements.html"><em class="fa fa-cogs">&nbsp;</em>Configuration</a></li>
+			<li><a href="login.html"><em class="fa fa-power-off">&nbsp;</em>Logout</a></li>
 		</ul>
 	</div><!--/.sidebar-->
 
@@ -87,16 +74,8 @@
 				<h1 class="page-header">Dashboard</h1>
 			</div>
 		</div><!--/.row-->
-        <div class="panel panel-container" style="background-color: #222">
+        <div class="panel panel-container">
 			<div class="row">
-				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
-					<div class="panel panel-teal panel-widget border-right">
-						<div class="row no-padding"><em class="fa fa-xl fa-bolt color-red"></em>
-							<div class="large" id="total-energy">NaN</div>
-							<div class="text-muted">Total Energy</div>
-						</div>
-					</div>
-				</div>
 				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
 					<div class="panel panel-blue panel-widget border-right">
 						<div class="row no-padding"><em class="fa fa-xl fa-exchange color-blue"></em>
@@ -105,7 +84,15 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
+					<div class="panel panel-teal panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-bolt color-red"></em>
+							<div class="large" id="total-energy">NaN</div>
+							<div class="text-muted">Total Energy</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
 					<div class="panel panel-orange panel-widget border-right">
 						<div class="row no-padding"><em class="fa fa-xl fa-line-chart color-teal"></em>
 							<div class="large">22</div>
@@ -113,11 +100,21 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
+					<div class="panel panel-red panel-widget border-right">
+						<div class="row no-padding">
+                            <em class="fa fa-xl fa-bolt color-red"></em><em class="fa fa-xl fa-unlock color-red"></em>
+							<div class="large">20.341J</div>
+							<div class="text-muted">Energy Violation</div>
+						</div>
+					</div>
+				</div>
+                <div class="col-xs-6 col-md-3 col-lg-3 no-padding">
 					<div class="panel panel-red panel-widget ">
-						<div class="row no-padding"><em class="fa fa-xl fa-search color-red"></em>
-							<div class="large">25.2k</div>
-							<div class="text-muted">Page Views</div>
+						<div class="row no-padding">
+                            <em class="fa fa-xl fa-exchange color-blue"></em><em class="fa fa-xl fa-unlock color-blue"></em>
+							<div class="large">204211msg</div>
+							<div class="text-muted">Traffic Violation</div>
 						</div>
 					</div>
 				</div>
@@ -128,32 +125,9 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						Total Traffic Chart
-						<ul class="pull-right panel-settings panel-button-tab-right">
-							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
-								<em class="fa fa-cogs"></em>
-							</a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li>
-										<ul class="dropdown-settings">
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 1
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 2
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 3
-											</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body main-chart">
-						<div class="canvas-wrapper">
+						<div class="canvas-wrapper" id="new-chart2">
 							<canvas class="" id="myChart2" height="200" width="600"></canvas>
 						</div>
 					</div>
@@ -165,32 +139,9 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						Total Energy Chart
-						<ul class="pull-right panel-settings panel-button-tab-right">
-							<li class="dropdown"><a class="pull-right dropdown-toggle" data-toggle="dropdown" href="#">
-								<em class="fa fa-cogs"></em>
-							</a>
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li>
-										<ul class="dropdown-settings">
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 1
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 2
-											</a></li>
-											<li class="divider"></li>
-											<li><a href="#">
-												<em class="fa fa-cog"></em> Settings 3
-											</a></li>
-										</ul>
-									</li>
-								</ul>
-							</li>
-						</ul>
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body main-chart">
-						<div class="canvas-wrapper">
+						<div class="canvas-wrapper" id="new-chart1">
 							<canvas class="" id="myChart1" height="200" width="600"></canvas>
 						</div>
 					</div>
@@ -217,7 +168,7 @@
 					</div>
 				</div>
 			</div>
-	<!--		<div class="col-md-6">
+			<div class="col-md-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 						        <p3 id="single-traffic-chart">S1  </p3>  Traffic Chart
@@ -252,7 +203,7 @@
 					</div>
 				</div>
 			</div>
-		</div> -->
+		</div>
 		<!--/.row-->
 		</div><!--/.row-->
 	</div>	<!--/.main-->
