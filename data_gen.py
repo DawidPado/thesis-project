@@ -8,7 +8,7 @@ es = Elasticsearch()
 
 
 # data time format yyyy-MM-dd'T'hh:mm:ss'Z' -> 2015-01-01T12:11:30Z
-data = "2020-10-28"
+data = "2020-10-29"
 hh="00"
 mm="00"
 ss="00"
