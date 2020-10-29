@@ -5,8 +5,9 @@ $(document).ready(function() {
     xvalues_energy =[];
     yvalues_energy=[];
     ysensor_values_energy=[];
+    sensor_data=[];
     var sensor_number =1;
-    const components_number=22;
+    var components_number=22;
     function getdata(){
     $.ajax({
             method: 'POST',
@@ -15,13 +16,17 @@ $(document).ready(function() {
                 var result = JSON.parse(data);
                 for (var j in result.energy) {
                     xvalues_energy.push(result.energy[j].timestamp);
-                    yvalues_energy.push(sum(result.energy[j]));
+                    yvalues_energy.push(sum(result.energy[j],components_number));
                     ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number));
-                    //    console.log(result.energy[j]);
+                   if(j>=50){
+                    sensor_data = fill_data(result.energy[j],sensor_data,components_number)
+                    }
+
                 }
+                console.log(sensor_data)
                 for (var k in result.traffic) {
                     xvalues_traffic.push(result.traffic[k].timestamp);
-                    yvalues_traffic.push(sum(result.traffic[k]));
+                    yvalues_traffic.push(sum(result.traffic[k],components_number));
 
                 }
                 $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
@@ -39,6 +44,7 @@ $(document).ready(function() {
                 show_energy();
                 show_traffic();
                 show_single_energy();
+                show_chart();
                  xvalues_traffic=[];
                  yvalues_traffic=[];
                 xvalues_energy =[];
@@ -228,29 +234,20 @@ function show_single_energy() {
         }
     });
 }
-show_chart()
+
 
 
 function show_chart() {
     const ctx3 = document.getElementById('myChart3');
+    var sensors = sensor_iterate(components_number);
+    var data = sensor_data;
     const myLineChart3 = new Chart(ctx3, {
         type: 'bar',
         data: {
     datasets: [{
-        borderColor: [
-           'rgb(0,134,9)','rgb(0,32,255)','rgb(188,74,74)','rgb(131,246,0)'
-            ,'rgb(0,196,255)','rgb(255,0,61)','rgb(255,242,0)','rgb(216,0,255)'
-            ,'rgb(191,248,170)','rgb(29,122,116)','rgb(70,27,72)','rgb(172,97,39)'
-            ,'rgb(208,171,64)','rgb(181,95,180)','rgb(255,242,0)','rgb(216,0,255)','rgb(0,134,9)','rgb(0,32,255)'
-        ],
-        backgroundColor: [
-            'rgb(0,134,9)','rgb(0,32,255)','rgb(188,74,74)','rgb(131,246,0)'
-            ,'rgb(0,196,255)','rgb(255,0,61)','rgb(255,242,0)','rgb(216,0,255)'
-            ,'rgb(191,248,170)','rgb(29,122,116)','rgb(70,27,72)','rgb(172,97,39)'
-            ,'rgb(208,171,64)','rgb(181,95,180)','rgb(255,242,0)','rgb(216,0,255)'
-            ,'rgb(0,134,9)','rgb(0,32,255)'
-        ],
-        data: piechartdata
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgb(54,99,235)',
+        data: data
     }],
 
     labels: sensors
