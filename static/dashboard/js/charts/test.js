@@ -12,12 +12,6 @@ $(document).ready(function() {
     var myLineChart3 = null;
     var myBarChart = null;
     var sensors = sensor_iterate(components_number);
-
-
-    start();
-    setInterval(dataupdate, 30000); // refresh every 30s
-
-
     function start(){
     $.ajax({
             method: 'POST',
@@ -62,7 +56,10 @@ $(document).ready(function() {
             }
         });
     }
-    function dataupdate(){
+    start();
+    setInterval(dataupdate, 3000); // refresh every 30s
+
+function dataupdate(){
     $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5000/',
@@ -106,26 +103,26 @@ $(document).ready(function() {
             }
         });
 }
-    function update_bar(){
+function update_bar(){
     myBarChart.data.datasets[0].data= sensor_data;
     myBarChart.update();
 }
-    function update_energy(){
+function update_energy(){
     myLineChart.data.datasets[0].data= yvalues_energy;
     myLineChart.data.labels= xvalues_energy;
     myLineChart.update();
 }
-    function update_traffic(){
+function update_traffic(){
     myLineChart2.data.datasets[0].data= yvalues_traffic;
     myLineChart2.data.labels= xvalues_traffic;
     myLineChart2.update();
 }
-    function update_single_energy(){
+function update_single_energy(){
     myLineChart3.data.datasets[0].data= ysensor_values_energy;
     myLineChart3.data.labels= xvalues_energy;
     myLineChart3.update();
 }
-    $('#change-energy-chart').on('click', function(e) {
+$('#change-energy-chart').on('click', function(e) {
     e.preventDefault();
     var input = prompt("Please enter the sensor number");
     sensor_number = input;
@@ -148,7 +145,7 @@ $(document).ready(function() {
 							);
                 $("#single-energy-chart").replaceWith("<p3 id=\"single-energy-chart\">S"+input+" Energy Chart </p3>");
                 show_single_energy();
-                ysensor_values_energy=[]
+                 ysensor_values_energy=[]
                 xvalues_energy=[]
             },
             statusCode: {
@@ -161,7 +158,7 @@ $(document).ready(function() {
             }
         });
 })
-    function show_energy() {
+ function show_energy() {
     const ctx1 = document.getElementById('myChart1');
 
      myLineChart = new Chart(ctx1, {
@@ -207,7 +204,7 @@ $(document).ready(function() {
         }
     });
 }
-    function show_traffic() {
+function show_traffic() {
     const ctx2 = document.getElementById('myChart2');
     myLineChart2 = new Chart(ctx2, {
         type: 'line',
@@ -251,7 +248,7 @@ $(document).ready(function() {
         }
     });
 }
-    function show_single_energy() {
+function show_single_energy() {
     const ctx4 = document.getElementById('myChart4');
      myLineChart3 = new Chart(ctx4, {
         type: 'line',
@@ -295,7 +292,7 @@ $(document).ready(function() {
         }
     });
 }
-    function show_chart() {
+function show_chart() {
     const ctx3 = document.getElementById('myChart3');
      myBarChart = new Chart(ctx3, {
         type: 'bar',
