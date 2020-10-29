@@ -1,4 +1,5 @@
 $(document).ready(function() {
+//global variables
     xvalues_traffic=[];
     yvalues_traffic=[];
     xvalues_energy =[];
@@ -13,11 +14,11 @@ $(document).ready(function() {
     var myBarChart = null;
     var sensors = sensor_iterate(components_number);
 
-
+// start and update data
     start();
     setInterval(dataupdate, 30000); // refresh every 30s
 
-
+// start and update function
     function start(){
     $.ajax({
             method: 'POST',
@@ -106,6 +107,7 @@ $(document).ready(function() {
             }
         });
 }
+//single chart update function
     function update_bar(){
     myBarChart.data.datasets[0].data= sensor_data;
     myBarChart.update();
@@ -125,6 +127,7 @@ $(document).ready(function() {
     myLineChart3.data.labels= xvalues_energy;
     myLineChart3.update();
 }
+//update on select
     $('#change-energy-chart').on('click', function(e) {
     e.preventDefault();
     var input = prompt("Please enter the sensor number");
@@ -161,6 +164,7 @@ $(document).ready(function() {
             }
         });
 })
+//chart display
     function show_energy() {
     const ctx1 = document.getElementById('myChart1');
 
