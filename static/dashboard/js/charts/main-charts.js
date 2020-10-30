@@ -1,18 +1,10 @@
 $(document).ready(function() {
 //global variables
-    xvalues_traffic=[];
-    yvalues_traffic=[];
-    xvalues_energy =[];
-    yvalues_energy=[];
-    ysensor_values_energy=[];
-    sensor_data=[];
+    var xvalues_traffic=[], yvalues_traffic =[],xvalues_energy =[],yvalues_energy=[],ysensor_values_energy=[],
+    sensor_data=[], sensors = [];
     var sensor_number =1;       // current single sensor chart number
-    var components_number=22;  //how many sensors in the sistem
-    var myLineChart = null;
-    var myLineChart2 = null;
-    var myLineChart3 = null;
-    var myBarChart = null;
-    var sensors = sensor_iterate(components_number); //function in chart-config.js
+    var components_number=0;  //how many sensors are in the sistem
+    var myLineChart,myLineChart2,myLineChart3,myBarChart = null;
 
 // start and update data
     start();
@@ -23,8 +15,9 @@ $(document).ready(function() {
     $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5000/',
-            success: function (data) {
-                var result = JSON.parse(data);
+            success: function (result) {
+                components_number = count_components(result.energy[0]); // numero componenti primo set == tutti gli altri set
+                sensors = sensor_iterate(components_number);
                 for (var j in result.energy) {
                     xvalues_energy.push(result.energy[j].timestamp);
                     yvalues_energy.push(sum(result.energy[j],components_number));
@@ -34,7 +27,8 @@ $(document).ready(function() {
                     }
 
                 }
-                console.log(sensor_data)
+
+                console.log(components_number)
                 for (var k in result.traffic) {
                     xvalues_traffic.push(result.traffic[k].timestamp);
                     yvalues_traffic.push(sum(result.traffic[k],components_number));
@@ -42,6 +36,7 @@ $(document).ready(function() {
                 }
                 $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
                 $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
+                $("#components-number").replaceWith("<div class=\"large\" id=\"components-number\">"+components_number+"</div>");
 
                 show_chart();
                 show_energy();
@@ -67,8 +62,7 @@ $(document).ready(function() {
     $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5000/',
-            success: function (data) {
-                var result = JSON.parse(data);
+            success: function (result) {
                 for (var j in result.energy) {
                     xvalues_energy.push(result.energy[j].timestamp);
                     yvalues_energy.push(sum(result.energy[j],components_number));

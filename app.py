@@ -74,7 +74,7 @@ def start_r():
                 else:
                     status = status + str(res['hits']['hits'][i]['_source']) + ']}'
 
-        return status.replace("'", "\"")
+        return json.loads(status.replace("'", "\""))
     else:
         return render_template('main.html')
 

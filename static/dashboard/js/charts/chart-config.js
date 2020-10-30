@@ -32,3 +32,14 @@ function fill_data(result,data,components){
     }
     return data;
 }
+function count_components(input){
+    var i=0; // beacuse timestamp
+    while(true){
+        var str='S'+(i+1).toString();
+        if(input[str]==null){
+            break;
+        }
+        i++;
+    }
+    return i;
+}
