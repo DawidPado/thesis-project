@@ -39,37 +39,39 @@ def login():
 @app.route('/', methods = ['POST', 'GET'])
 def start_r():
     if request.method == 'POST':
-        status='{ \'energy\':['
+        time = 60  # how many minuts
+        max = 10  # max record form request
+        status='{ \'energy\':[' # inital status
         count=0
-        for i in range(6):
+        for i in range(int(time/max)): # get record every 10 minuts for energy
 
-            j = -60 + i*10
+            j = -time + i*max   #starts with -60 min and ends with 0min by now
             if j < 0:
                 query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h" + str(j) + "m\"}}}}" #+2 o +1 dipende dal orrario
             else:
                 query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h\"}}}}"
 
             res = es.search(index='energy', body=query)
-            for i in range(10):
+            for i in range(max): # fill status with energy records
                 count=count +1
-                if count < 60 :
+                if count < time : #check number of current record to close energy
                     status = status + str( res['hits']['hits'][i]['_source']) + ', '
                 else:
                     status = status + str(res['hits']['hits'][i]['_source']) + '],'
         status = status + ' \'traffic\':['
         count = 0
-        for i in range(6):
+        for i in range(int(time/max)):  # get record every 10 minuts for energy
 
-            j = -60 + i * 10
+            j = -time + i * max #starts with -60 min and ends with 0min by now
             if j < 0:
                 query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h" + str(j) + "m\"}}}}"
             else:
                 query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h\"}}}}"
 
             res = es.search(index='traffic', body=query)
-            for i in range(10):
+            for i in range(max):    #fill status with energy records
                 count = count + 1
-                if count < 60:
+                if count < time:    #check number of current record to close traffic
                     status = status + str(res['hits']['hits'][i]['_source']) + ', '
                 else:
                     status = status + str(res['hits']['hits'][i]['_source']) + ']}'
