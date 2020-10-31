@@ -47,7 +47,7 @@ $(document).ready(function() {
                 show_energy();
                 show_traffic();
                 show_single_energy();
-                sensor_data=[], xvalues_traffic=[], yvalues_traffic=[], xvalues_energy =[], yvalues_energy=[];
+                ysensor_values_energy=[], xvalues_traffic=[], yvalues_traffic=[], xvalues_energy =[], yvalues_energy=[];
             },
             statusCode: {
                 400: function (response) {
@@ -86,7 +86,7 @@ $(document).ready(function() {
                 update_energy();
                 update_traffic();
                 update_single_energy();
-                sensor_data=[];
+                ysensor_values_energy=[];
                 xvalues_traffic=[];
                 yvalues_traffic=[];
                 xvalues_energy =[];
@@ -124,7 +124,7 @@ $(document).ready(function() {
 }
 //update on select
     $("#sel").change(function(){
-         sensor_number = $("#sel option:selected").val();
+         sensor_number = Number($("#sel option:selected").val());
         console.log(sensor_number);
         $.ajax({
             method: 'POST',
@@ -137,7 +137,8 @@ $(document).ready(function() {
                     //console.log(get_sensor_data(result.energy[j],sensor_number));
                 }
                 update_single_energy()
-                ysensor_values_energy=[],xvalues_energy=[];
+                ysensor_values_energy=[];
+                    xvalues_energy=[];
             },
             statusCode: {
                 400: function (response) {

@@ -37,17 +37,17 @@ def login():
 
 
 @app.route('/', methods = ['POST', 'GET'])
-def start_r():
+def dashboard():
     if request.method == 'POST':
         time = 60  # how many minuts
-        max = 10  # max record form request
+        max = 10  # max records form the request (limit of db)
         status='{ \'energy\':[' # inital status
         count=0
         for i in range(int(time/max)): # get record every 10 minuts for energy
 
             j = -time + i*max   #starts with -60 min and ends with 0min by now
             if j < 0:
-                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h" + str(j) + "m\"}}}}" #+2 o +1 dipende dal orrario
+                query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h" + str(j) + "m\"}}}}" #+2h o +1h depends on time zone
             else:
                 query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h\"}}}}"
 
