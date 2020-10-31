@@ -34,6 +34,11 @@ $(document).ready(function() {
                     yvalues_traffic.push(sum(result.traffic[k],components_number));
 
                 }
+                var section="";
+                for(i=0;i<components_number;i++){
+                    section=section+"                                    <option value=\""+(i+1)+"\">"+sensors[i]+"</option>\n";
+                }
+                $("#option").replaceWith(section);
                 $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
                 $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
                 $("#components-number").replaceWith("<div class=\"large\" id=\"components-number\">"+components_number+"</div>");
@@ -42,11 +47,7 @@ $(document).ready(function() {
                 show_energy();
                 show_traffic();
                 show_single_energy();
-                sensor_data=[];
-                 xvalues_traffic=[];
-                 yvalues_traffic=[];
-                xvalues_energy =[];
-                yvalues_energy=[];
+                sensor_data=[], xvalues_traffic=[], yvalues_traffic=[], xvalues_energy =[], yvalues_energy=[];
             },
             statusCode: {
                 400: function (response) {
@@ -122,25 +123,21 @@ $(document).ready(function() {
     myLineChart3.update();
 }
 //update on select
-    $('#change-energy-chart').on('click', function(e) {
-    e.preventDefault();
-    var input = prompt("Please enter the sensor number");
-    sensor_number = input;
-    $.ajax({
+    $("#sel").change(function(){
+         sensor_number = $("#sel option:selected").val();
+        console.log(sensor_number);
+        $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5000/',
-            success: function (data) {
-                ysensor_values_energy=[]
-                xvalues_energy=[]
-                var result = JSON.parse(data);
+            success: function (result) {
+                ysensor_values_energy=[], xvalues_energy=[];
                 for(var j in result.energy) {
                     xvalues_energy.push(result.energy[j].timestamp);
                     ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number));
-                    console.log(get_sensor_data(result.energy[j],input));
+                    //console.log(get_sensor_data(result.energy[j],sensor_number));
                 }
                 update_single_energy()
-                ysensor_values_energy=[]
-                xvalues_energy=[]
+                ysensor_values_energy=[],xvalues_energy=[];
             },
             statusCode: {
                 400: function (response) {
@@ -151,7 +148,7 @@ $(document).ready(function() {
                 console.log(err);
             }
         });
-})
+    });
 //chart display
     function show_energy() {
     const ctx1 = document.getElementById('myChart1');
