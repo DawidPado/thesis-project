@@ -43,22 +43,6 @@ $(document).ready(function() {
 				});
 	});
 
-	$('#logout').on('click', function(e) {
-		e.preventDefault();
 
-		$.ajax({
-			url: '/logout',
-			dataType: "json",
-			success: function(data) {
-				localStorage.setItem('loggedin', 0);
-				$('#sign').show();
-				$('#logoff').hide();
-				$('#msg').html('<span style="color: green;">You are logged off</span>');
-			},
-			error: function(err) {
-				console.log(err);
-			}
-		});
-	});
 });
 

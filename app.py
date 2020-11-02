@@ -23,6 +23,7 @@ def login():
            if obj[i]['username'] == args["username"]:
                if obj[i]['password'] == args["password"]:
                    session['username'] = args["username"]
+                   session['logged_in'] = True
                    status = {"status": "success"}
                    return status
                else:
@@ -40,7 +41,7 @@ def login():
 def dashboard():
     if request.method == 'POST':
         if len(session) > 0:
-            if session['username'] != None:
+            if session['logged_in'] != False:
                 time = 60  # how many minuts
                 max = 10  # max records form the request (limit of db)
                 status='{ \'energy\':[' # inital status
@@ -87,13 +88,26 @@ def dashboard():
             return status, 401
     else:                   #GET METHOD
         if len(session) > 0:
-            return render_template('main.html')
+            if session['logged_in']==True:
+                return render_template('main.html')
+            else:
+                return render_template('login.html')
         else:
-            return render_template('login.html')
+            render_template('login.html')
+
 
 @app.route('/configuration', methods = ['POST', 'GET'])
 def configuration():
     return render_template('configuration.html')
+
+
+@app.route('/logout', methods = ['POST', 'GET'])
+def logout():
+    if request.method == 'POST':
+        session['logged_in'] = False
+        status = {"status": "success"}
+        return status
+
 
 if __name__ == '__main__':
     app.run()
