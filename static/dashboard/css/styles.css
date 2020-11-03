@@ -1153,3 +1153,17 @@ ul.font-awesome-list {
 @media (max-width: 768px) {
   .theme-switcher {
     display: none; } }
+
+.swal-footer {
+  background-color: rgb(245, 248, 250);
+  margin-top: 32px;
+  border-top: 1px solid #E9EEF1;
+  overflow: hidden;
+}
+
+p.text-config{
+  padding-top: 11px;
+  font-size: 18px;
+  vertical-align: middle;
+  text-align: left;
+}

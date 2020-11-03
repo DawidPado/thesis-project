@@ -6,7 +6,7 @@
 	<title>ArchLearner</title>
 	<link href="../static/dashboard/css/bootstrap.min.css" rel="stylesheet">
     <link href="../static/login/vendor/dist/Chart.min.css" >
-    <link rel="icon" type="image/png" href="../static/login/images/icons/favicon.ico"/>
+    <link rel="icon" type="image/png" href="../static/dashboard/images/icon.ico"/>
 	<link href="../static/dashboard/css/font-awesome.min.css" rel="stylesheet">
 	<link href="../static/dashboard/css/datepicker3.css" rel="stylesheet">
 	<link href="../static/dashboard/css/styles.css" rel="stylesheet">
@@ -27,7 +27,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span></button>
-				<a class="navbar-brand" href="#"><span>ArchLearner</span> Dashboard</a>
+				<a class="navbar-brand" href="/"><span>ArchLearner</span> Dashboard</a>
 			</div>
 		</div><!-- /.container-fluid -->
 	</nav>
@@ -37,7 +37,7 @@
 				<img src="../static/dashboard/images/admin.jpg" class="img-responsive" alt="">
 			</div>
 			<div class="profile-usertitle">
-				<div class="profile-usertitle-name">Username</div>
+				<div class="profile-usertitle-name">{{ session['username'] }}</div>
 				<div class="profile-usertitle-status"><span class="indicator label-success"></span>Online</div>
 			</div>
 			<div class="clear"></div>
@@ -49,26 +49,32 @@
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li class="active"><a href="/"><em class="fa fa-dashboard">&nbsp;</em>Dashboard</a></li>
-			<li><a href="/ml-model"><em class="fa fa-calendar">&nbsp;</em>ML Models</a></li>
-			<li ><a href="/analytics"><em class="fa fa-bar-chart">&nbsp;</em>Analytics</a></li>
-			<li><a href="/simulation"><em class="fa fa-code-fork">&nbsp;</em>Simulation</a></li>
-			<li><a href="/adaptation"><em class="fa fa-clone">&nbsp;</em>Adaptation</a></li>
-            <li><a href="/configuration"><em class="fa fa-cogs">&nbsp;</em>Configuration</a></li>
+			<li {% if  url_for(request.endpoint)  == "/" %} class="active" {% endif %}><a href="/"><em class="fa fa-dashboard">&nbsp;</em>Dashboard</a></li>
+			<li {% if  url_for(request.endpoint)  == "/ml-model" %} class="active" {% endif %}><a href="/ml-model"><em class="fa fa-calendar">&nbsp;</em>ML Models</a></li>
+			<li {% if  url_for(request.endpoint)  == "/analytics" %} class="active" {% endif %} ><a href="/analytics"><em class="fa fa-bar-chart">&nbsp;</em>Analytics</a></li>
+			<li {% if  url_for(request.endpoint)  == "/simulation" %} class="active" {% endif %}><a href="/simulation"><em class="fa fa-code-fork">&nbsp;</em>Simulation</a></li>
+			<li {% if  url_for(request.endpoint)  == "/adaptation" %} class="active" {% endif %}><a href="/adaptation"><em class="fa fa-clone">&nbsp;</em>Adaptation</a></li>
+            <li {% if  url_for(request.endpoint)  == "/configuration" %} class="active" {% endif %}><a href="/configuration"><em class="fa fa-cogs">&nbsp;</em>Configuration</a></li>
 			<li > <a href="" id="logout"><em class="fa fa-power-off">&nbsp;</em>Logout </a></li>
 		</ul>
 	</div><!--/.sidebar-->
 
+    <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
     {% block content %} {% endblock %}
+    <div class="row">
+				<div class="col-sm-12">
+					<p class="back-link">Thesis project of <a href="https://github.com/Xardas7/thesis-project">Dawid Pado</a></p>
+				</div>
+			</div><!--/.row-->
+    </div>
 
 	<script src="../static/dashboard/js/jquery-1.11.1.min.js"></script>
 	<script src="../static/dashboard/js/bootstrap.min.js"></script>
-	<script src="../static/login/vendor/dist/Chart.min.js"></script>
-    <script src="../static/dashboard/js/charts/chart-config.js"></script>
-	<script src="../static/dashboard/js/charts/main-charts.js"></script>
+{% block scripts %} {% endblock %}
 	<script src="../static/dashboard/js/easypiechart.js"></script>
 	<script src="../static/dashboard/js/easypiechart-data.js"></script>
 	<script src="../static/dashboard/js/bootstrap-datepicker.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="../static/dashboard/js/custom.js"></script>
 	<script src="../static/dashboard/js/main.js"></script>
 

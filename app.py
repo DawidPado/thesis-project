@@ -93,7 +93,7 @@ def dashboard():
             else:
                 return render_template('login.html')
         else:
-            render_template('login.html')
+            return render_template('login.html')
 
 
 @app.route('/configuration', methods = ['POST', 'GET'])

@@ -47,7 +47,7 @@ $(document).ready(function() {
                 show_energy();
                 show_traffic();
                 show_single_energy();
-                ysensor_values_energy=[], xvalues_traffic=[], yvalues_traffic=[], xvalues_energy =[], yvalues_energy=[];
+                ysensor_values_energy=[], xvalues_traffic=[], yvalues_traffic=[], xvalues_energy =[], yvalues_energy=[], sensor_data=[];
             },
             statusCode: {
                 400: function (response) {
@@ -92,6 +92,7 @@ $(document).ready(function() {
                 yvalues_traffic=[];
                 xvalues_energy =[];
                 yvalues_energy=[];
+                sensor_data=[];
             },
             statusCode: {
                 400: function (response) {
@@ -162,9 +163,11 @@ $(document).ready(function() {
 
             datasets: [
                 {
-                    label: "Energy",
+                    label: "Energy",/*
                      backgroundColor: 'rgb(109,99,255,0.2)',
-                     borderColor: 'rgb(58,62,255)',
+                     borderColor: 'rgb(58,62,255)', */
+                    backgroundColor :'rgb(58, 117, 251,0.2)',
+                        borderColor:'rgb(58, 117, 251)',
                     data: yvalues_energy
                 }
             ]
@@ -207,9 +210,11 @@ $(document).ready(function() {
 
             datasets: [
                 {
-                    label: "Traffic",
+                    label: "Traffic",/*
                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                     borderColor: 'rgba(54, 162, 235, 1)',
+                     borderColor: 'rgba(54, 162, 235, 1)',*/
+                     backgroundColor :'rgb(58, 117, 251,0.2)',
+                        borderColor:'rgb(58, 117, 251)',
                     data: yvalues_traffic
                 }
             ]
@@ -251,9 +256,11 @@ $(document).ready(function() {
 
             datasets: [
                 {
-                    label: "Energy",
+                    label: "Energy",/*
                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                     borderColor: 'rgba(54, 162, 235, 1)',
+                     borderColor: 'rgba(54, 162, 235, 1)',*/
+                     backgroundColor :'rgb(58, 117, 251,0.2)',
+                        borderColor:'rgb(58, 117, 251)',
                     data: ysensor_values_energy
                 }
             ]
@@ -291,9 +298,11 @@ $(document).ready(function() {
      myBarChart = new Chart(ctx3, {
         type: 'bar',
         data: {
-    datasets: [{
+    datasets: [{/*
         backgroundColor: 'rgb(54,126,235)',
-        borderColor: 'rgb(54,99,235)',
+        borderColor: 'rgb(54,99,235)',*/
+         backgroundColor :'rgb(58, 117, 251)',
+        borderColor:'rgb(58, 117, 251)',
         data: sensor_data
     }],
 

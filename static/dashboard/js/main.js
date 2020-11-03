@@ -1,7 +1,16 @@
 //logout
-	$('#logout').on('click', function(e) {
+$('#logout').on('click', function(e) {
 		e.preventDefault();
-		if(confirm("Do you really want to logout?")) {
+	var x =	 swal("Do you really want to logout?", {
+		icon: "warning",
+		dangerMode: true,
+  		buttons: true,
+		confirmButtonText: 'Logout',
+		timer: 10000,
+		});
+
+	console.log(x.value)
+	/*	if(confirm("Do you really want to logout?")) {
 
 
 			$.ajax({
@@ -14,5 +23,5 @@
 					console.log(err);
 				}
 			});
-		}
+		}*/
 	});

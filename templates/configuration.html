@@ -1,6 +1,5 @@
 {% extends "template.html" %}
 {% block content %}
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="#">
@@ -10,9 +9,176 @@
 			</ol>
 		</div>
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Configuration</h1>
-        </div>
+			<div class="col-md-6">
+				<div class="panel panel-default">
+                    <div class="panel-heading ">
+                        <label style="text-align: left">Energy Forecaster Configurations</label>
+                            <button class="btn btn-default margin pull-right" type="button"><span class="fa fa-check"></span> &nbsp;Submit</button>
+                    </div>
+                        <div class="panel-body main-chart">
+                        <form class="form-horizontal row-border" action="#">
+								<div class="form-group" >
+									<p class="col-md-4 control-label" >Dataset Path</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Number of Neurons</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Cross Validation Ratio</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Model Save Path</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Number of Iteration</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                        </form>
+                        </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+				<div class="panel panel-default">
+                    <div class="panel-heading">
+                        <label>Data Traffic Forecaster Configurations</label>
+                        <button class="btn btn-default margin pull-right" type="button"><span class="fa fa-check"></span> &nbsp;Submit</button>
+                    </div>
+                        <div class="panel-body main-chart">
+                         <form class="form-horizontal row-border" action="#">
+								<div class="form-group" >
+									<p class="col-md-4 control-label" >Dataset Path</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Number of Neurons</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Cross Validation Ratio</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Model Save Path</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Number of Iteration</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                        </form>
+                        </div>
+                </div>
+            </div>
     </div>
-</div>
+    <div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+                    <div class="panel-heading">
+                        <label>Decision Maker Configuration</label>
+                        <button class="btn btn-default margin pull-right" type="button"><span class="fa fa-check"></span> &nbsp;Submit</button>
+                    </div>
+                        <div class="panel-body main-chart">
+                         <form class="form-horizontal row-border" action="#">
+								<div class="form-group">
+									<p class="col-md-4 control-label">Energy Higher Limit (J)</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Energy Lower Limit (J)</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Traffic Higher Limit (#)</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Traffic Lower Limit (#)</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Reward List</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                        </form>
+                        </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+				<div class="panel panel-default">
+                    <div class="panel-heading">
+                        <label>Data Pipeline Configurations</label>
+                        <button class="btn btn-default margin pull-right" type="button"><span class="fa fa-check"></span> &nbsp;Submit</button>
+                    </div>
+                        <div class="panel-body main-chart">
+                         <form class="form-horizontal row-border" action="#">
+								<div class="form-group">
+									<p class="col-md-4 control-label">Kafka Host</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Zookeeper Host</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Spark Host</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Elasticsearch Host</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                            <div class="form-group">
+									<p class="col-md-4 control-label">Kibana Host</p>
+									<div class="col-md-8">
+										<input type="text" name="regular" class="form-control">
+									</div>
+								</div>
+                        </form>
+                        </div>
+                </div>
+            </div>
+    </div>
+
 {% endblock %}
