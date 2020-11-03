@@ -98,7 +98,26 @@ def dashboard():
 
 @app.route('/configuration', methods = ['POST', 'GET'])
 def configuration():
-    return render_template('configuration.html')
+    if request.method == 'POST':
+        if len(session) > 0:
+            if session['logged_in'] != False:
+                res = es.search(index='configuration')
+                status = str(res['hits']['hits'][0]['_source'])
+                return json.loads(status.replace("'", "\""))
+            else:
+                status = {"status": "unauthorized"}
+                return status, 401
+        else:
+            status = {"status": "unauthorized"}
+            return status, 401
+    else:  # GET METHOD
+        if len(session) > 0:
+            if session['logged_in'] == True:
+                return render_template('configuration.html')
+            else:
+                return render_template('login.html')
+        else:
+            return render_template('login.html')
 
 
 @app.route('/logout', methods = ['POST', 'GET'])
@@ -108,6 +127,10 @@ def logout():
         status = {"status": "success"}
         return status
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html')
 
 if __name__ == '__main__':
     app.run()
