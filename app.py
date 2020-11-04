@@ -50,9 +50,9 @@ def dashboard():
 
                     j = -time + i*max   #starts with -60 min and ends with 0min by now
                     if j < 0:
-                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h" + str(j) + "m\"}}}}" #+2h o +1h depends on time zone
+                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now" + str(j) + "m\"}}}}" #+2h o +1h depends on time zone
                     else:
-                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h\"}}}}"
+                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now\"}}}}"
 
                     res = es.search(index='energy', body=query)
                     for i in range(max): # fill status with energy records
@@ -67,9 +67,9 @@ def dashboard():
 
                     j = -time + i * max #starts with -60 min and ends with 0min by now
                     if j < 0:
-                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h" + str(j) + "m\"}}}}"
+                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now" + str(j) + "m\"}}}}"
                     else:
-                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now+1h\"}}}}"
+                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now\"}}}}"
 
                     res = es.search(index='traffic', body=query)
                     for i in range(max):    #fill status with energy records
@@ -98,12 +98,44 @@ def dashboard():
 
 @app.route('/configuration', methods = ['POST', 'GET'])
 def configuration():
+    search=json.loads("{\
+  \"query\": {\
+    \"ids\" : {\
+      \"values\" : \"1\"\
+    }\
+  }\
+}")
     if request.method == 'POST':
         if len(session) > 0:
             if session['logged_in'] != False:
-                res = es.search(index='configuration')
-                status = str(res['hits']['hits'][0]['_source'])
-                return json.loads(status.replace("'", "\""))
+                data = request.get_json()
+                if data != None:
+                    if data["type"] == "Energy Forecaster":
+                        res = es.search(index='configuration',body=search)
+                        status = str(res['hits']['hits'][0]['_source'])
+                        status=json.loads(status.replace("'", "\""))
+                        message="{\"energy_forecaster\": {\"dataset_path\":"+"\""+str(data["dataset_path"])+"\""\
+                                +",\"number_of_neurons\":"+"\""+str(data["number_of_neurons"])+"\""\
+                                +",\"cross_validation_ratio\":"+"\""+str(data["cross_validation_ratio"])+"\""\
+                                +",\"model_save_path\":"+"\""+str(data["model_save_path"])+"\""\
+                                +",\"number_of_iteration\":"+"\""+str(data["number_of_iteration"])+"\"},"\
+                                +"\"data_traffic_forecaster\":"+str(status["data_traffic_forecaster"])+","\
+                                +"\"decision_maker\":"+str(status["decision_maker"])+","\
+                                +"\"data_pipeline\":"+str(status["data_pipeline"])+"}"
+                        es.index(index='configuration',id=1, body=json.loads(message.replace("'", "\"")))
+                        return {"status": "success"}
+                    elif data["type"] == "Data Traffic Forecaster":
+                        return {"status": "success"}
+                    elif data["type"] == "Decision Maker":
+                        return {"status": "success"}
+                    elif data["type"] == "Data Pipeline":
+                        return {"status": "success"}
+                    else:
+                        return {"status": "fail"}
+                else:
+                    res = es.search(index='configuration', body=search)
+                    status = str(res['hits']['hits'][0]['_source'])
+                    return json.loads(status.replace("'", "\""))
             else:
                 status = {"status": "unauthorized"}
                 return status, 401
@@ -131,6 +163,7 @@ def logout():
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('error.html')
+
 
 if __name__ == '__main__':
     app.run()

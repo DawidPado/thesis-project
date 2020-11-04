@@ -1,7 +1,7 @@
 $(document).ready(function() {
 //global variables
 
-// start and update data
+// start
     start();
 
 // start and update function
@@ -43,9 +43,71 @@ $(document).ready(function() {
 
             },
             error: function (err) {
-                window.location.href = "http://127.0.0.1:5000/login/";
+                console.log(err);
             }
         });
     }
+
+    $('#1-submit').on('click', function(e) {
+        e.preventDefault();
+        var dataset_path = $('#1-dataset_path').val();
+		var number_of_neurons = $('#1-number_of_neurons').val();
+		var cross_validation_ratio = $('#1-cross_validation_ratio').val();
+		var model_save_path = $('#1-model_save_path').val();
+		var number_of_iteration = $('#1-number_of_iteration').val();
+				$.ajax({
+					method: 'POST',
+					url: '/configuration',
+					contentType: 'application/json;charset=UTF-8',
+					data: JSON.stringify(
+					    {'type':"Energy Forecaster",'dataset_path': dataset_path, 'number_of_neurons': number_of_neurons,
+                            'cross_validation_ratio': cross_validation_ratio,'model_save_path': model_save_path,
+                        'number_of_iteration':number_of_iteration}),
+					dataType: "json",
+					success: function(data) {
+					    console.log(data)
+                        if (data.status == "success") {
+                            swal("success", {
+                                icon: "success",
+                                dangerMode: true,
+                                buttons: true,
+                                confirmButtonText: 'Logout',
+                                timer: 10000,
+                            })
+                        } else {
+                            /*
+                            $("#error-alert").replaceWith(
+                                " <div id=\"error-alert \" >\n" +
+                                "                        <span style=\"color:red\">\n" +
+                                "                          Wrong username or password  <em class=\"fa fa-warning\"></em>\n" +
+                                "                        </span>\n" +
+                                "                    </div>"
+                            );
+                       */
+                            alert("worng!")
+                        }
+                    },
+					statusCode: {
+						400: function(response) {
+                            console.log(response);
+						}
+					},
+					error: function(err) {
+						console.log(err);
+					}
+				});
+    })
+    $('#2-submit').on('click', function(e) {
+        e.preventDefault();
+
+    })
+    $('#3-submit').on('click', function(e) {
+        e.preventDefault();
+
+    })
+    $('#4-submit').on('click', function(e) {
+        e.preventDefault();
+
+    })
 
 })

@@ -11,12 +11,13 @@
     <div class="row">
 			<div class="col-md-6">
 				<div class="panel panel-default">
+                    <form class="form-horizontal row-border" action="#">
                     <div class="panel-heading ">
                         <label style="text-align: left">Energy Forecaster Configurations</label>
-                            <button class="btn btn-default margin pull-right" type="button"><span class="fa fa-check"></span> &nbsp;Submit</button>
+                            <button class="btn btn-default margin pull-right" type="button" id="1-submit"><span class="fa fa-check"></span> &nbsp;Submit</button>
                     </div>
                         <div class="panel-body main-chart">
-                        <form class="form-horizontal row-border" action="#">
+
 								<div class="form-group" >
 									<p class="col-md-4 control-label" >Dataset Path</p>
 									<div class="col-md-8">
@@ -47,18 +48,19 @@
 										<input type="text" name="regular" class="form-control" id="1-number_of_iteration">
 									</div>
 								</div>
-                        </form>
+
                         </div>
+                        </form>
                 </div>
             </div>
             <div class="col-md-6">
 				<div class="panel panel-default">
+                    <form class="form-horizontal row-border" action="#">
                     <div class="panel-heading">
                         <label>Data Traffic Forecaster Configurations</label>
-                        <button class="btn btn-default margin pull-right" type="button"><span class="fa fa-check"></span> &nbsp;Submit</button>
+                        <button class="btn btn-default margin pull-right" type="button" id="2-submit"><span class="fa fa-check"></span> &nbsp;Submit</button>
                     </div>
                         <div class="panel-body main-chart">
-                         <form class="form-horizontal row-border" action="#">
 								<div class="form-group" >
 									<p class="col-md-4 control-label" >Dataset Path</p>
 									<div class="col-md-8">
@@ -89,20 +91,21 @@
 										<input type="text" name="regular" class="form-control" id="2-number_of_iteration">
 									</div>
 								</div>
-                        </form>
                         </div>
+                    </form>
                 </div>
             </div>
     </div>
     <div class="row">
 			<div class="col-md-6">
 				<div class="panel panel-default">
+                    <form class="form-horizontal row-border" action="#">
                     <div class="panel-heading">
                         <label>Decision Maker Configuration</label>
-                        <button class="btn btn-default margin pull-right" type="button"><span class="fa fa-check"></span> &nbsp;Submit</button>
+                        <button class="btn btn-default margin pull-right" type="button" id="3-submit"><span class="fa fa-check"></span> &nbsp;Submit</button>
                     </div>
                         <div class="panel-body main-chart">
-                         <form class="form-horizontal row-border" action="#">
+
 								<div class="form-group">
 									<p class="col-md-4 control-label">Energy Higher Limit (J)</p>
 									<div class="col-md-8">
@@ -133,18 +136,19 @@
 										<input type="text" name="regular" class="form-control" id="rl">
 									</div>
 								</div>
-                        </form>
+
                         </div>
+                        </form>
                 </div>
             </div>
             <div class="col-md-6">
 				<div class="panel panel-default">
+                    <form class="form-horizontal row-border" action="#">
                     <div class="panel-heading">
                         <label>Data Pipeline Configurations</label>
-                        <button class="btn btn-default margin pull-right" type="button"><span class="fa fa-check"></span> &nbsp;Submit</button>
+                        <button class="btn btn-default margin pull-right" type="button" id="4-submit"><span class="fa fa-check"></span> &nbsp;Submit</button>
                     </div>
                         <div class="panel-body main-chart">
-                         <form class="form-horizontal row-border" action="#">
 								<div class="form-group">
 									<p class="col-md-4 control-label">Kafka Host</p>
 									<div class="col-md-8">
@@ -175,8 +179,8 @@
 										<input type="text" name="regular" class="form-control" id="kih">
 									</div>
 								</div>
-                        </form>
                         </div>
+                        </form>
                 </div>
             </div>
     </div>

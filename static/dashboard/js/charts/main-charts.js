@@ -189,10 +189,10 @@ $(document).ready(function() {
                         callback: function (value) {
                             var d = new Date(value)
                             if(d.getMinutes()<10){
-                                return d.getHours()-1 +":0" + d.getMinutes();
+                                return d.getHours() +":0" + d.getMinutes();
                             }
                             else {
-                                return d.getHours() - 1 + ":" + d.getMinutes();
+                                return d.getHours()  + ":" + d.getMinutes();
                             }
                         }
                     }
@@ -235,10 +235,10 @@ $(document).ready(function() {
                         callback: function (value) {
                             var d = new Date(value)
                             if(d.getMinutes()<10){
-                                return d.getHours()-1 +":0" + d.getMinutes();
+                                return d.getHours() +":0" + d.getMinutes();
                             }
                             else {
-                                return d.getHours() - 1 + ":" + d.getMinutes();
+                                return d.getHours()  + ":" + d.getMinutes();
                             }
                         }
                     }
@@ -281,10 +281,10 @@ $(document).ready(function() {
                         callback: function (value) {
                             var d = new Date(value)
                             if(d.getMinutes()<10){
-                                return d.getHours()-1 +":0" + d.getMinutes();
+                                return d.getHours() +":0" + d.getMinutes();
                             }
                             else {
-                                return d.getHours() - 1 + ":" + d.getMinutes();
+                                return d.getHours() + ":" + d.getMinutes();
                             }
                         }
                     }
