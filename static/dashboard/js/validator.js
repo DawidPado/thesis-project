@@ -11,13 +11,13 @@ function number_validation(number){
      return false
 }
 function path_validation(path){
-     if(path.match( /^(((\/([1-9]*[a-z]*[A-Z]*))+)|\/)$/)!=null){
+     if(path.match( /^((\/\w+)+|\/)$/)!=null){
          return true;
      }
      return false
 }
 function float_validation(path){
-     if(path.match( /^((([1-9])+)|0)\.((([0-9])+)|0)$/)!=null){
+     if(path.match(/^(([1-9]+[0-9]*)|0)(\.((([0-9])+)|0))?$/)!=null){
          return true;
      }
      return false
@@ -30,7 +30,7 @@ function url_validation(path){
      return false
 }
 function reward_validation(path){
-     if(path.match( /^(([0-9]+)|(-[0-9]+))((,([0-9]+)|(-[0-9]+))+)$/)!=null){
+     if(path.match( /^(([0-9]+)|(-[0-9]+))((,(([0-9]+)|(-[0-9]+)))+)$/)!=null){
          return true;
      }
      return false

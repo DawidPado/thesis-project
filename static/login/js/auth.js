@@ -1,5 +1,4 @@
 $(document).ready(function() {
-var input = $('.validate-input .input100');
 
 $('.validate-form .input100').each(function(){
         $(this).focus(function(){
@@ -53,10 +52,6 @@ $('.validate-form .input100').each(function(){
 				dataType: "json",
 				success: function (data) {
 					if (data.status == "success") {
-						/*if($('#ckb1').is(':checked')){
-                            document.cookie = "username="+username;
-                            document.cookie = "password="+password;
-                        }*/
 						window.location.href = "http://127.0.0.1:5000/";
 					} else {
 
@@ -67,7 +62,6 @@ $('.validate-form .input100').each(function(){
 							"                        </span>\n" +
 							"                    </div>"
 						);
-						//	alert( $.cookie("username") );
 					}
 				},
 				statusCode: {
