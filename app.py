@@ -115,20 +115,56 @@ def configuration():
                         status = str(res['hits']['hits'][0]['_source'])
                         status=json.loads(status.replace("'", "\""))
                         message="{\"energy_forecaster\": {\"dataset_path\":"+"\""+str(data["dataset_path"])+"\""\
-                                +",\"number_of_neurons\":"+"\""+str(data["number_of_neurons"])+"\""\
+                                +",\"number_of_neurons\":"+str(data["number_of_neurons"])\
                                 +",\"cross_validation_ratio\":"+"\""+str(data["cross_validation_ratio"])+"\""\
                                 +",\"model_save_path\":"+"\""+str(data["model_save_path"])+"\""\
-                                +",\"number_of_iteration\":"+"\""+str(data["number_of_iteration"])+"\"},"\
+                                +",\"number_of_iteration\":"+str(data["number_of_iteration"])+"},"\
                                 +"\"data_traffic_forecaster\":"+str(status["data_traffic_forecaster"])+","\
                                 +"\"decision_maker\":"+str(status["decision_maker"])+","\
                                 +"\"data_pipeline\":"+str(status["data_pipeline"])+"}"
                         es.index(index='configuration',id=1, body=json.loads(message.replace("'", "\"")))
                         return {"status": "success"}
                     elif data["type"] == "Data Traffic Forecaster":
+                        res = es.search(index='configuration', body=search)
+                        status = str(res['hits']['hits'][0]['_source'])
+                        status = json.loads(status.replace("'", "\""))
+                        message = "{\"data_traffic_forecaster\": {\"dataset_path\":" + "\"" + str(data["dataset_path"]) + "\"" \
+                                  + ",\"number_of_neurons\":" + str(data["number_of_neurons"]) \
+                                  + ",\"cross_validation_ratio\":" + "\"" + str(data["cross_validation_ratio"]) + "\"" \
+                                  + ",\"model_save_path\":" + "\"" + str(data["model_save_path"]) + "\"" \
+                                  + ",\"number_of_iteration\":" + str(data["number_of_iteration"]) + "}," \
+                                  + "\"energy_forecaster\":" + str(status["energy_forecaster"]) + "," \
+                                  + "\"decision_maker\":" + str(status["decision_maker"]) + "," \
+                                  + "\"data_pipeline\":" + str(status["data_pipeline"]) + "}"
+                        es.index(index='configuration', id=1, body=json.loads(message.replace("'", "\"")))
                         return {"status": "success"}
                     elif data["type"] == "Decision Maker":
+                        res = es.search(index='configuration', body=search)
+                        status = str(res['hits']['hits'][0]['_source'])
+                        status = json.loads(status.replace("'", "\""))
+                        message = "{\"decision_maker\": {\"energy_higher_limit\":" + str(data["energy_higher_limit"]) \
+                                  + ",\"energy_lower_limit\":" + str(data["energy_lower_limit"]) \
+                                  + ",\"traffic_higher_limit\":" + str(data["traffic_higher_limit"]) \
+                                  + ",\"traffic_lower_limit\":" + str(data["traffic_lower_limit"]) \
+                                  + ",\"reward_list\":" + "\"" + str(data["reward_list"]) + "\"}," \
+                                  + "\"data_traffic_forecaster\":" + str(status["data_traffic_forecaster"]) + "," \
+                                  + "\"energy_forecaster\":" + str(status["energy_forecaster"]) + "," \
+                                  + "\"data_pipeline\":" + str(status["data_pipeline"]) + "}"
+                        es.index(index='configuration', id=1, body=json.loads(message.replace("'", "\"")))
                         return {"status": "success"}
                     elif data["type"] == "Data Pipeline":
+                        res = es.search(index='configuration', body=search)
+                        status = str(res['hits']['hits'][0]['_source'])
+                        status = json.loads(status.replace("'", "\""))
+                        message = "{\"data_pipeline\": {\"kafka_host\":" + "\"" + str(data["kafka_host"]) + "\"" \
+                                  + ",\"zookeeper_host\":" + "\"" + str(data["zookeeper_host"]) + "\"" \
+                                  + ",\"spark_host\":" + "\"" + str(data["spark_host"]) + "\"" \
+                                  + ",\"elasticsearch_host\":" + "\"" + str(data["elasticsearch_host"]) + "\"" \
+                                  + ",\"kibana_host\":" + "\"" + str(data["kibana_host"]) + "\"}," \
+                                  + "\"data_traffic_forecaster\":" + str(status["data_traffic_forecaster"]) + "," \
+                                  + "\"decision_maker\":" + str(status["decision_maker"]) + "," \
+                                  + "\"energy_forecaster\":" + str(status["energy_forecaster"]) + "}"
+                        es.index(index='configuration', id=1, body=json.loads(message.replace("'", "\"")))
                         return {"status": "success"}
                     else:
                         return {"status": "fail"}
