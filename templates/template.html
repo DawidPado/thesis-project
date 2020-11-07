@@ -50,7 +50,7 @@
 		</form>
 		<ul class="nav menu">
 			<li {% if  url_for(request.endpoint)  == "/" %} class="active" {% endif %}><a href="/"><em class="fa fa-dashboard">&nbsp;</em>Dashboard</a></li>
-			<li {% if  url_for(request.endpoint)  == "/ml-model" %} class="active" {% endif %}><a href="/ml-model"><em class="fa fa-calendar">&nbsp;</em>ML Models</a></li>
+			<li {% if  url_for(request.endpoint)  == "/ml-models" %} class="active" {% endif %}><a href="/ml-models"><em class="fa fa-calendar">&nbsp;</em>ML Models</a></li>
 			<li {% if  url_for(request.endpoint)  == "/analytics" %} class="active" {% endif %} ><a href="/analytics"><em class="fa fa-bar-chart">&nbsp;</em>Analytics</a></li>
 			<li {% if  url_for(request.endpoint)  == "/simulation" %} class="active" {% endif %}><a href="/simulation"><em class="fa fa-code-fork">&nbsp;</em>Simulation</a></li>
 			<li {% if  url_for(request.endpoint)  == "/adaptation" %} class="active" {% endif %}><a href="/adaptation"><em class="fa fa-clone">&nbsp;</em>Adaptation</a></li>
@@ -70,11 +70,11 @@
 
 	<script src="../static/dashboard/js/jquery-1.11.1.min.js"></script>
 	<script src="../static/dashboard/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 {% block scripts %} {% endblock %}
 	<script src="../static/dashboard/js/easypiechart.js"></script>
 	<script src="../static/dashboard/js/easypiechart-data.js"></script>
 	<script src="../static/dashboard/js/bootstrap-datepicker.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 	<script src="../static/dashboard/js/custom.js"></script>
 	<script src="../static/dashboard/js/main.js"></script>
 

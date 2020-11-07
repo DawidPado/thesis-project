@@ -188,6 +188,17 @@ def configuration():
             return render_template('login.html')
 
 
+@app.route('/ml-models', methods = ['POST', 'GET'])
+def ml_models():
+    if len(session) > 0:
+        if session['logged_in'] == True:
+            return render_template('ml_models.html')
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+
+
 @app.route('/logout', methods = ['POST', 'GET'])
 def logout():
     if request.method == 'POST':

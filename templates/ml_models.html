@@ -1,0 +1,86 @@
+{% extends "template.html" %}
+{% block content %}
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="/">
+                <em class="fa fa-home"></em>
+            </a></li>
+            <li class="active">Dashboard</li>
+        </ol>
+    </div>
+    <div class="panel panel-container">
+			<div class="row">
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-blue panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-exchange color-blue"></em>
+							<div class="large" id="text1">0</div>
+							<div class="text-muted">text1</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
+					<div class="panel panel-teal panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-bolt" style="color: rgb(54,99,235)"></em>
+							<div class="large" id="text2">0</div>
+							<div class="text-muted">text2</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
+					<div class="panel panel-orange panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-line-chart color-blue"></em>
+							<div class="large" id="text3">0</div>
+							<div class="text-muted">text3</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
+					<div class="panel panel-red panel-widget border-right">
+						<div class="row no-padding">
+                            <em class="fa fa-xl fa-bolt" style="color: rgb(54,99,235)"></em><em class="fa fa-xl fa-unlock" style="color: rgb(54,99,235)"></em>
+							<div class="large" id="text4">0</div>
+							<div class="text-muted">text4</div>
+						</div>
+					</div>
+				</div>
+                <div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-red panel-widget ">
+						<div class="row no-padding">
+                            <em class="fa fa-xl fa-exchange color-blue"></em><em class="fa fa-xl fa-unlock color-blue"></em>
+							<div class="large" id="text5">0</div>
+							<div class="text-muted">text5</div>
+						</div>
+					</div>
+				</div>
+			</div><!--/.row-->
+		</div>
+        <div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+                        Total Energy Consumption Forecast Model
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body main-chart">
+						<div class="canvas-wrapper " id="new-energy-chart">
+							<canvas class="chart " id="energy-chart" height="150" width="600" ></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Total Traffic Forecast Mode
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body main-chart">
+						<div class="canvas-wrapper" id="new-traffic-chart">
+							<canvas class="chart"  id="traffic-chart" height="150" width="600" ></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+{% endblock %}
+{% block scripts %}
+<script src="/static/dashboard/js/charts/ml-model-charts.js"></script>
+{% endblock %}
