@@ -5,7 +5,7 @@ from elasticsearch import Elasticsearch
 
 es = Elasticsearch()
 app = Flask(__name__)
-app.secret_key = 'random string'
+app.secret_key = 'B;}}S5Cx@->^^"hQT{T,GJ@YI*><17'
 api = Api(app)
 parser = reqparse.RequestParser()
 
