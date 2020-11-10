@@ -5,50 +5,54 @@
             <li><a href="/">
                 <em class="fa fa-home"></em>
             </a></li>
-            <li class="active">Dashboard</li>
+            <li class="active">Machine Learning Models</li>
         </ol>
     </div>
     <div class="panel panel-container">
 			<div class="row">
-				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
 					<div class="panel panel-blue panel-widget border-right">
-						<div class="row no-padding"><em class="fa fa-xl fa-exchange color-blue"></em>
-							<div class="large" id="text1">0</div>
-							<div class="text-muted">text1</div>
+						<div class="row no-padding">
+                            <em class="fa fa-xl fa-exchange" style="color: #ED6A5A"></em><em class="fa fa-xl fa-search" style="color: #ED6A5A"></em>
+							<div class="large" id="traffic-forecast">0</div>
+							<div class="text-muted">Traffic Forecast (msg)</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
 					<div class="panel panel-teal panel-widget border-right">
-						<div class="row no-padding"><em class="fa fa-xl fa-bolt" style="color: rgb(54,99,235)"></em>
-							<div class="large" id="text2">0</div>
-							<div class="text-muted">text2</div>
+						<div class="row no-padding"><em class="fa fa-xl fa-clipboard" style="color: #5386E4"></em>
+							<div class="large" id="text2">10</div>
+							<div class="text-muted">Models In Use</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
+				<div class="col-xs-6 col-md-3 col-lg-4 no-padding">
 					<div class="panel panel-orange panel-widget border-right">
-						<div class="row no-padding"><em class="fa fa-xl fa-line-chart color-blue"></em>
-							<div class="large" id="text3">0</div>
-							<div class="text-muted">text3</div>
+						<div class="row no-padding"><em class="fa fa-xl fa-calendar"style="color: #ED6A5A"></em>
+
+							<div class="large" id="text3">
+                                10/02/2020 13:40
+                            </div>
+							<div class="text-muted">Last Model Build (Energy)</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
 					<div class="panel panel-red panel-widget border-right">
 						<div class="row no-padding">
-                            <em class="fa fa-xl fa-bolt" style="color: rgb(54,99,235)"></em><em class="fa fa-xl fa-unlock" style="color: rgb(54,99,235)"></em>
-							<div class="large" id="text4">0</div>
-							<div class="text-muted">text4</div>
+                            <em class="fa fa-xl fa-exclamation" style="color: #5386E4"></em>
+							<div class="large" id="text4">0.3</div>
+							<div class="text-muted">Over Error Rate</div>
 						</div>
 					</div>
 				</div>
-                <div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+                <div class="col-xs-6 col-md-3 col-lg-2 no-padding">
 					<div class="panel panel-red panel-widget ">
 						<div class="row no-padding">
-                            <em class="fa fa-xl fa-exchange color-blue"></em><em class="fa fa-xl fa-unlock color-blue"></em>
-							<div class="large" id="text5">0</div>
-							<div class="text-muted">text5</div>
+                            <em class="fa fa-xl fa-bolt" style="color: #ED6A5A"></em><em class="fa fa-xl fa-search" style="color: #ED6A5A"></em>
+							<div class="large" id="energy-forecast">0</div>
+							<div class="text-muted">Energy Forecast (KJ)</div>
 						</div>
 					</div>
 				</div>
@@ -98,31 +102,30 @@
 				</div>
 			</div>
         <div class="col-lg-6">
-					<div class="panel panel-default">
-						<div class="panel-heading">Bordered Table</div>
-						<div class="panel-body btn-margins">
-							<div class="col-md-6">
-								<table class="table table-bordered">
+            <table class="table table-bordered">
 									<thead>
 										<tr>
-											<th>Model Train</th>
+											<th>Model Type</th>
 											<th>Model Name</th>
                                             <th>Last Build</th>
                                             <th>RMSE</th>
                                             <th>SMAPE</th>
                                             <th>MASE</th>
+                                            <th>Horizon</th>
                                             <th>Build</th>
 										</tr>
 									</thead>
-									<tbody>
-										<tr>
+									<tbody >
+										<tr >
 											<td>Energy</td>
-											<td><input type="text"></td>
-											<td><input type="text"></td>
-                                            <td><input type="text"></td>
-											<td><input type="text"></td>
-											<td><input type="text"></td>
-                                            <td><input type="text"></td>
+                                            <!-- style="word-break: break-all;" -->
+                                            <td ><input type="text" value="energy_v1" size="8"></td></td>
+											<td>10/02/2020 13:40:30</td>
+                                            <td>0.57</td>
+											<td>1.57</td>
+											<td>0.17</td>
+                                            <td> 10min</td>
+                                            <td><button class="btn btn-sm btn-primary" type="button">Train</button></td>
 										</tr>
 										<tr>
 											<td>Traffic</td>
@@ -132,6 +135,7 @@
 											<td></td>
 											<td></td>
                                             <td></td>
+                                            <td><button class="btn btn-sm btn-primary" type="button">Train</button></td>
 										</tr>
                                     <tr>
 											<td>S1</td>
@@ -141,14 +145,13 @@
 											<td></td>
 											<td></td>
                                             <td></td>
+                                            <td><button class="btn btn-sm btn-primary" type="button">Train</button></td>
 										</tr>
 									</tbody>
 								</table>
-							</div>
-						</div>
-					</div><!-- /.panel-->
         </div>
         </div>
+
 
 {% endblock %}
 {% block scripts %}

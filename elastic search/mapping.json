@@ -1,0 +1,417 @@
+//energy
+{
+  "properties": {
+    "S1": {
+      "type": "long"
+    },
+    "S10": {
+      "type": "long"
+    },
+    "S11": {
+      "type": "long"
+    },
+    "S12": {
+      "type": "long"
+    },
+    "S13": {
+      "type": "long"
+    },
+    "S14": {
+      "type": "long"
+    },
+    "S15": {
+      "type": "long"
+    },
+    "S16": {
+      "type": "long"
+    },
+    "S17": {
+      "type": "long"
+    },
+    "S18": {
+      "type": "long"
+    },
+    "S19": {
+      "type": "long"
+    },
+    "S2": {
+      "type": "long"
+    },
+    "S20": {
+      "type": "long"
+    },
+    "S21": {
+      "type": "long"
+    },
+    "S22": {
+      "type": "long"
+    },
+    "S3": {
+      "type": "long"
+    },
+    "S4": {
+      "type": "long"
+    },
+    "S5": {
+      "type": "long"
+    },
+    "S6": {
+      "type": "long"
+    },
+    "S7": {
+      "type": "long"
+    },
+    "S8": {
+      "type": "long"
+    },
+    "S9": {
+      "type": "long"
+    },
+    "timestamp": {
+      "type": "date"
+    }
+  }
+}
+,//traffic
+{
+  "properties": {
+    "S1": {
+      "type": "long"
+    },
+    "S10": {
+      "type": "long"
+    },
+    "S11": {
+      "type": "long"
+    },
+    "S12": {
+      "type": "long"
+    },
+    "S13": {
+      "type": "long"
+    },
+    "S14": {
+      "type": "long"
+    },
+    "S15": {
+      "type": "long"
+    },
+    "S16": {
+      "type": "long"
+    },
+    "S17": {
+      "type": "long"
+    },
+    "S18": {
+      "type": "long"
+    },
+    "S19": {
+      "type": "long"
+    },
+    "S2": {
+      "type": "long"
+    },
+    "S20": {
+      "type": "long"
+    },
+    "S21": {
+      "type": "long"
+    },
+    "S22": {
+      "type": "long"
+    },
+    "S3": {
+      "type": "long"
+    },
+    "S4": {
+      "type": "long"
+    },
+    "S5": {
+      "type": "long"
+    },
+    "S6": {
+      "type": "long"
+    },
+    "S7": {
+      "type": "long"
+    },
+    "S8": {
+      "type": "long"
+    },
+    "S9": {
+      "type": "long"
+    },
+    "timestamp": {
+      "type": "date"
+    }
+  }
+}
+//energy-forecast
+{
+  "properties": {
+                "actual": {
+                    "type": "long"
+                },
+                "forecast": {
+                    "type": "long"
+                },
+                "timestamp": {
+                    "type": "date"
+                }
+            }
+}
+//traffic-forecast
+{
+  "properties": {
+    "actual": {
+      "type": "long"
+    },
+    "forecast": {
+      "type": "long"
+    },
+    "timestamp": {
+      "type": "date"
+    }
+  }
+}
+//sensor-data
+{
+"properties": {
+                "S1": {
+                    "type": "long"
+                },
+                "S10": {
+                    "type": "long"
+                },
+                "S11": {
+                    "type": "long"
+                },
+                "S12": {
+                    "type": "long"
+                },
+                "S13": {
+                    "type": "long"
+                },
+                "S14": {
+                    "type": "long"
+                },
+                "S15": {
+                    "type": "long"
+                },
+                "S16": {
+                    "type": "long"
+                },
+                "S17": {
+                    "type": "long"
+                },
+                "S18": {
+                    "type": "long"
+                },
+                "S19": {
+                    "type": "long"
+                },
+                "S2": {
+                    "type": "long"
+                },
+                "S20": {
+                    "type": "long"
+                },
+                "S21": {
+                    "type": "long"
+                },
+                "S22": {
+                    "type": "long"
+                },
+                "S3": {
+                    "type": "long"
+                },
+                "S4": {
+                    "type": "long"
+                },
+                "S5": {
+                    "type": "long"
+                },
+                "S6": {
+                    "type": "long"
+                },
+                "S7": {
+                    "type": "long"
+                },
+                "S8": {
+                    "type": "long"
+                },
+                "S9": {
+                    "type": "long"
+                },
+                "timestamp": {
+                    "type": "date"
+                }
+            }
+}
+//forecast-sensor-data
+{
+"properties": {
+                "S1": {
+                    "type": "long"
+                },
+                "S10": {
+                    "type": "long"
+                },
+                "S11": {
+                    "type": "long"
+                },
+                "S12": {
+                    "type": "long"
+                },
+                "S13": {
+                    "type": "long"
+                },
+                "S14": {
+                    "type": "long"
+                },
+                "S15": {
+                    "type": "long"
+                },
+                "S16": {
+                    "type": "long"
+                },
+                "S17": {
+                    "type": "long"
+                },
+                "S18": {
+                    "type": "long"
+                },
+                "S19": {
+                    "type": "long"
+                },
+                "S2": {
+                    "type": "long"
+                },
+                "S20": {
+                    "type": "long"
+                },
+                "S21": {
+                    "type": "long"
+                },
+                "S22": {
+                    "type": "long"
+                },
+                "S3": {
+                    "type": "long"
+                },
+                "S4": {
+                    "type": "long"
+                },
+                "S5": {
+                    "type": "long"
+                },
+                "S6": {
+                    "type": "long"
+                },
+                "S7": {
+                    "type": "long"
+                },
+                "S8": {
+                    "type": "long"
+                },
+                "S9": {
+                    "type": "long"
+                },
+                "timestamp": {
+                    "type": "date"
+                }
+            }
+}
+//configuration
+{
+            "properties": {
+                "data_pipeline": {
+                    "properties": {
+                        "elasticsearch_host": {
+                            "type": "text"
+                        },
+                        "kafka_host": {
+                            "type": "text"
+                        },
+                        "kibana_host": {
+                            "type": "text"
+                        },
+                        "spark_host": {
+                            "type": "text"
+                        },
+                        "zookeeper_host": {
+                            "type": "text"
+                        }
+                    }
+                },
+                "data_traffic_forecaster": {
+                    "properties": {
+                        "cross_validation_ratio": {
+                            "type": "text"
+                        },
+                        "dataset_path": {
+                            "type": "text"
+                        },
+                        "model_save_path": {
+                            "type": "text"
+                        },
+                        "number_of_iteration": {
+                            "type": "integer"
+                        },
+                        "number_of_neurons": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "decision_maker": {
+                    "properties": {
+                        "energy_higher_limit": {
+                            "type": "text"
+                        },
+                        "energy_lower_limit": {
+                            "type": "float"
+                        },
+                        "reward_list": {
+                            "type": "text"
+                        },
+                        "traffic_higher_limit": {
+                            "type": "float"
+                        },
+                        "traffic_lower_limit": {
+                            "type": "float"
+                        }
+                    }
+                },
+                "energy_forecaster": {
+                    "properties": {
+                        "cross_validation_ratio": {
+                            "type": "text"
+                        },
+                        "dataset_path": {
+                            "type": "text"
+                        },
+                        "model_save_path": {
+                            "type": "text"
+                        },
+                        "number_of_iteration": {
+                            "type": "integer"
+                        },
+                        "number_of_neurons": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+}
+//train-info
+{
+            "properties": {
+                "model_type": {"type": "text"},
+                "model_name": {"type": "text"},
+                "last_build": {"type": "date"},
+                "rmse": {"type": "float"},
+                "smape": {"type": "float"},
+                "mase": {"type": "float"},
+                "horizon": {"type": "float"}
+            }
+}
