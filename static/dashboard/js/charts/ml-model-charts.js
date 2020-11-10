@@ -19,6 +19,7 @@ $(document).ready(function() {
             success: function (result) {
                 components_number = count_components(result["sensor-data"][0]); // numero componenti primo set == tutti gli altri set
                 sensors = sensor_iterate(components_number);
+                $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-success\"></span>Online</div> </div>");
                 for (var j in result["energy"]) {
                     xvalues_energy.push(result["energy"][j]["timestamp"]);
                     yvalues_energy.push(result["energy"][j]["actual"]);
@@ -46,6 +47,8 @@ $(document).ready(function() {
                 show_energy();
                 show_traffic();
                 show_single_data()
+                $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy[59] / 1000 + "</div>");
+                $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + (yvalues_traffic[59]) + "</div>");
                 xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
                 yvalues_traffic_forecast=[], yvalues_energy_forecast=[];
                 xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
@@ -57,6 +60,19 @@ $(document).ready(function() {
 
             },
             error: function (err) {
+                console.log(err)
+                 $(".main").replaceWith("<div class=\"col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main\">\n" +
+                    "<div class=\"col-sm-12 text-center\">"+
+                    "<h1>Something went wrong</h1> <p>please try to reload page or contact server admin</p> " +
+                    "</div>"+
+                    "    <div class=\"row\">\n" +
+                    "\t\t\t\t<div class=\"col-sm-12 text-center\">\n" +
+                    "\t\t\t\t\t<p class=\"back-link\">Thesis project of <a href=\"https://github.com/Xardas7/thesis-project\">Dawid Pado</a></p>\n" +
+                    "\t\t\t\t</div>\n" +
+                    "\t\t\t</div><!--/.row-->\n" +
+                    "    </div>");
+                $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-danger\"></span>Offline</div> </div>");
+
             }
         });
     }
@@ -87,6 +103,8 @@ $(document).ready(function() {
                 update_energy();
                 update_traffic();
                 update_single_data()
+                $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy[59] / 1000 + "</div>");
+                $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + (yvalues_traffic[59]) + "</div>");
                 xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
                 yvalues_traffic_forecast=[], yvalues_energy_forecast=[];
                 xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
@@ -97,7 +115,19 @@ $(document).ready(function() {
                 }
             },
             error: function (err) {
-                console.log(err);
+                 console.log(err)
+                $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-danger\"></span>Offline</div> </div>");
+
+                $(".main").replaceWith("<div class=\"col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main\">\n" +
+                    "<div class=\"col-sm-12 text-center\">"+
+                    "<h1>Something went wrong</h1> <p>please try to reload page or contact server admin</p> " +
+                    "</div>"+
+                    "    <div class=\"row\">\n" +
+                    "\t\t\t\t<div class=\"col-sm-12 text-center\">\n" +
+                    "\t\t\t\t\t<p class=\"back-link\">Thesis project of <a href=\"https://github.com/Xardas7/thesis-project\">Dawid Pado</a></p>\n" +
+                    "\t\t\t\t</div>\n" +
+                    "\t\t\t</div><!--/.row-->\n" +
+                    "    </div>");
             }
         });
 

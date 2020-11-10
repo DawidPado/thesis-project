@@ -1,16 +1,15 @@
 $(document).ready(function() {
 //global variables
-
 // start
     start();
-
+    setInterval(checkonline, 30000);
 // start and update function
     function start() {
         $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5000/configuration',
             success: function (result) {
-                console.log(result.data_traffic_forecaster.dataset_path)
+                $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-success\"></span>Online</div> </div>");
                 //Energy Forecaster Configurations
                 $("#1-dataset_path").replaceWith("<input type=\"text\" name=\"regular\" class=\"form-control\" id=\"1-dataset_path\" value=\"" + result.energy_forecaster.dataset_path + "\">");
                 $("#1-number_of_neurons").replaceWith("<input type=\"text\" name=\"regular\" class=\"form-control\" id=\"1-number_of_neurons\" value=\"" + result.energy_forecaster.number_of_neurons + "\">")
@@ -43,7 +42,18 @@ $(document).ready(function() {
 
             },
             error: function (err) {
-                console.log(err);
+                $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-danger\"></span>Offline</div> </div>");
+                $(".main").replaceWith("<div class=\"col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main\">\n" +
+                    "<div class=\"col-sm-12 text-center\">"+
+                    "<h1>Something went wrong</h1> <p>please try to reload page or contact server admin</p> " +
+                    "</div>"+
+                    "    <div class=\"row\">\n" +
+                    "\t\t\t\t<div class=\"col-sm-12 text-center\">\n" +
+                    "\t\t\t\t\t<p class=\"back-link\">Thesis project of <a href=\"https://github.com/Xardas7/thesis-project\">Dawid Pado</a></p>\n" +
+                    "\t\t\t\t</div>\n" +
+                    "\t\t\t</div><!--/.row-->\n" +
+                    "    </div>");
+                console.log(err)
             }
         });
     }
@@ -468,6 +478,28 @@ $(document).ready(function() {
         }
     })
 })
+function checkonline(){
+    $.ajax({
+        method: 'POST',
+        url: 'http://127.0.0.1:5000/configuration',
+        success: function (result) {
+        },
+        error: function (err) {
+            $(".main").replaceWith("<div class=\"col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main\">\n" +
+                    "<div class=\"col-sm-12 text-center\">"+
+                    "<h1>Something went wrong</h1> <p>please try to reload page or contact server admin</p> " +
+                    "</div>"+
+                    "    <div class=\"row\">\n" +
+                    "\t\t\t\t<div class=\"col-sm-12 text-center\">\n" +
+                    "\t\t\t\t\t<p class=\"back-link\">Thesis project of <a href=\"https://github.com/Xardas7/thesis-project\">Dawid Pado</a></p>\n" +
+                    "\t\t\t\t</div>\n" +
+                    "\t\t\t</div><!--/.row-->\n" +
+                    "    </div>");
+                $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-danger\"></span>Offline</div> </div>");
+                console.log(err)
+        }
+    })
+}
 //other function
     function validation_success(val) {
         $(val).removeClass('has-error');
