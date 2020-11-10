@@ -1,11 +1,12 @@
 $(document).ready(function() {
 //global variables
-    var xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [],
-        ysensor_values_energy = [],
-        sensor_data = [], sensors = [];
-    var components_number = 0;  //how many sensors are in the sistem
-    var myLineChart, myLineChart2 = null;
-
+    var xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
+    var yvalues_traffic_forecast=[], yvalues_energy_forecast=[];
+    var xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
+    var myLineChart, myLineChart2, myLineChart3 = null;
+    var sensors = []
+    var components_number=0;
+    var sensor_number =1;
 // start and update data
     start();
     setInterval(dataupdate, 30000); // refresh every 30s
@@ -14,40 +15,40 @@ $(document).ready(function() {
     function start() {
         $.ajax({
             method: 'POST',
-            url: 'http://127.0.0.1:5000/',
+            url: 'http://127.0.0.1:5001/',
             success: function (result) {
-                components_number = count_components(result.energy[0]); // numero componenti primo set == tutti gli altri set
+                components_number = count_components(result["sensor-data"][0]); // numero componenti primo set == tutti gli altri set
                 sensors = sensor_iterate(components_number);
-                for (var j in result.energy) {
-                    xvalues_energy.push(result.energy[j].timestamp);
-                    yvalues_energy.push(sum(result.energy[j], components_number));
-                    ysensor_values_energy.push(get_sensor_data(result.energy[j], sensor_number));
-                    if (j >= 50) {
-                        sensor_data = fill_data(result.energy[j], sensor_data, components_number)
-                    }
+                for (var j in result["energy"]) {
+                    xvalues_energy.push(result["energy"][j]["timestamp"]);
+                    yvalues_energy.push(result["energy"][j]["actual"]);
+                    yvalues_energy_forecast.push(result["energy"][j]["forecast"]);
+                }
+                for (var k in result["traffic"]) {
+                    xvalues_traffic.push(result["traffic"][k]["timestamp"]);
+                    yvalues_traffic.push(result["traffic"][k]["actual"]);
+                    yvalues_traffic_forecast.push(result["traffic"][k]["forecast"]);
 
                 }
+                 for (var l in result["sensor-data"]) {
+                    xvalues_data.push(result["sensor-data"][l]["timestamp"]);
+                    yvalues_data.push(get_sensor_data(result["sensor-data"][l],sensor_number));
 
-                console.log(components_number)
-                for (var k in result.traffic) {
-                    xvalues_traffic.push(result.traffic[k].timestamp);
-                    yvalues_traffic.push(sum(result.traffic[k], components_number));
+                } for (var m in result["forecast-sensor-data"]) {
+                    yvalues_data_forecast.push(get_sensor_data(result["forecast-sensor-data"][m],sensor_number));
 
                 }
-                var section = "";
-                for (i = 0; i < components_number; i++) {
-                    section = section + "                                    <option value=\"" + (i + 1) + "\">" + sensors[i] + "</option>\n";
+                var section="";
+                for(i=0;i<components_number;i++){
+                    section=section+"                                    <option value=\""+(i+1)+"\">"+sensors[i]+"</option>\n";
                 }
                 $("#option").replaceWith(section);
-                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
-                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
-                $("#components-number").replaceWith("<div class=\"large\" id=\"components-number\">" + components_number + "</div>");
-
-                show_chart();
                 show_energy();
                 show_traffic();
-                show_single_energy();
-                ysensor_values_energy = [], xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [], sensor_data = [];
+                show_single_data()
+                xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
+                yvalues_traffic_forecast=[], yvalues_energy_forecast=[];
+                xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
             },
             statusCode: {
                 400: function (response) {
@@ -56,43 +57,39 @@ $(document).ready(function() {
 
             },
             error: function (err) {
-                window.location.href = "http://127.0.0.1:5000/login/";
             }
         });
     }
     function dataupdate() {
         $.ajax({
             method: 'POST',
-            url: 'http://127.0.0.1:5000/',
+            url: 'http://127.0.0.1:5001/',
             success: function (result) {
-                for (var j in result.energy) {
-                    xvalues_energy.push(result.energy[j].timestamp);
-                    yvalues_energy.push(sum(result.energy[j], components_number));
-                    ysensor_values_energy.push(get_sensor_data(result.energy[j], sensor_number));
-                    if (j >= 50) {
-                        sensor_data = fill_data(result.energy[j], sensor_data, components_number)
-                    }
+                for (var j in result["energy"]) {
+                    xvalues_energy.push(result["energy"][j]["timestamp"]);
+                    yvalues_energy.push(result["energy"][j]["actual"]);
+                    yvalues_energy_forecast.push(result["energy"][j]["forecast"]);
+                }
+                for (var k in result["traffic"]) {
+                    xvalues_traffic.push(result["traffic"][k]["timestamp"]);
+                    yvalues_traffic.push(result["traffic"][k]["actual"]);
+                    yvalues_traffic_forecast.push(result["traffic"][k]["forecast"]);
 
                 }
-                console.log(sensor_data)
-                for (var k in result.traffic) {
-                    xvalues_traffic.push(result.traffic[k].timestamp);
-                    yvalues_traffic.push(sum(result.traffic[k], components_number));
+                 for (var l in result["sensor-data"]) {
+                    xvalues_data.push(result["sensor-data"][l]["timestamp"]);
+                    yvalues_data.push(get_sensor_data(result["sensor-data"][l],sensor_number));
+
+                } for (var m in result["forecast-sensor-data"]) {
+                    yvalues_data_forecast.push(get_sensor_data(result["forecast-sensor-data"][m],sensor_number));
 
                 }
-                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
-                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
-
-                update_bar();
                 update_energy();
                 update_traffic();
-                update_single_energy();
-                ysensor_values_energy = [];
-                xvalues_traffic = [];
-                yvalues_traffic = [];
-                xvalues_energy = [];
-                yvalues_energy = [];
-                sensor_data = [];
+                update_single_data()
+                xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
+                yvalues_traffic_forecast=[], yvalues_energy_forecast=[];
+                xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
             },
             statusCode: {
                 400: function (response) {
@@ -103,23 +100,61 @@ $(document).ready(function() {
                 console.log(err);
             }
         });
+
     }
 
 // udapte graph
     function update_energy(){
     myLineChart.data.datasets[0].data= yvalues_energy;
+    myLineChart.data.datasets[1].data= yvalues_energy_forecast;
     myLineChart.data.labels= xvalues_energy;
     myLineChart.update();
 }
     function update_traffic(){
     myLineChart2.data.datasets[0].data= yvalues_traffic;
+    myLineChart2.data.datasets[1].data= yvalues_traffic_forecast;
     myLineChart2.data.labels= xvalues_traffic;
     myLineChart2.update();
 }
+    function update_single_data(){
+    myLineChart3.data.datasets[0].data= yvalues_data;
+    myLineChart3.data.datasets[1].data= yvalues_data_forecast;
+    myLineChart3.data.labels= xvalues_data;
+    myLineChart3.update();
+}
+//update on select
+    $("#sel").change(function(){
+         sensor_number = Number($("#sel option:selected").val());
+        $.ajax({
+            method: 'POST',
+            url: 'http://127.0.0.1:5001/',
+            success: function (result) {
+                xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
+
+                 for (var l in result["sensor-data"]) {
+                    xvalues_data.push(result["sensor-data"][l]["timestamp"]);
+                    yvalues_data.push(get_sensor_data(result["sensor-data"][l],sensor_number));
+
+                } for (var m in result["forecast-sensor-data"]) {
+                    yvalues_data_forecast.push(get_sensor_data(result["forecast-sensor-data"][m],sensor_number));
+
+                }
+                update_single_data()
+                xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
+            },
+            statusCode: {
+                400: function (response) {
+                    console.log(response);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    });
 //create graph
     function show_energy() {
-    const ctx1 = document.getElementById('myChart1');
-
+    const ctx1 = document.getElementById('energy-chart');
      myLineChart = new Chart(ctx1, {
         type: 'line',
         data: {
@@ -130,14 +165,26 @@ $(document).ready(function() {
                     label: "Energy",/*
                      backgroundColor: 'rgb(109,99,255,0.2)',
                      borderColor: 'rgb(58,62,255)', */
-                    backgroundColor :'rgb(58, 117, 251,0.2)',
-                        borderColor:'rgb(58, 117, 251)',
+                    backgroundColor :'rgba(255,255,255,0.1)',
+                        borderColor:'#5386E4',
                     data: yvalues_energy
+                }, {
+                    label: "Energy Forecast",/*
+                     backgroundColor: 'rgb(109,99,255,0.2)',
+                     borderColor: 'rgb(58,62,255)', */
+                    backgroundColor :'rgba(255,255,255,0.1)',
+                        borderColor:'#ED6A5A',
+                    data: yvalues_energy_forecast
                 }
             ]
         },
        options: {
-            legend: {display:false},
+            legend: {
+    labels: {
+      usePointStyle: true,
+
+    },
+  },
             scales: {
                 yAxes: [
                     {
@@ -166,7 +213,7 @@ $(document).ready(function() {
     });
 }
     function show_traffic() {
-    const ctx2 = document.getElementById('myChart2');
+    const ctx2 = document.getElementById('traffic-chart');
     myLineChart2 = new Chart(ctx2, {
         type: 'line',
         data: {
@@ -177,14 +224,27 @@ $(document).ready(function() {
                     label: "Traffic",/*
                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
                      borderColor: 'rgba(54, 162, 235, 1)',*/
-                     backgroundColor :'rgb(58, 117, 251,0.2)',
-                        borderColor:'rgb(58, 117, 251)',
+                    backgroundColor :'rgba(255,255,255,0.1)',
+                        borderColor:'#5386E4',
                     data: yvalues_traffic
+                },
+                {
+                    label: "Traffic Forecast",/*
+                     backgroundColor: 'rgb(109,99,255,0.2)',
+                     borderColor: 'rgb(58,62,255)', */
+                    backgroundColor :'rgba(255,255,255,0.1)',
+                        borderColor:'#ed6a5a',
+                    data: yvalues_traffic_forecast
                 }
             ]
         },
         options: {
-            legend: {display:false},
+            legend: {
+    labels: {
+      usePointStyle: true,
+
+    },
+  },
             scales: {
                 yAxes: [{
                     ticks: {
@@ -209,6 +269,61 @@ $(document).ready(function() {
                 }]
             }
         }
+    });
+}
+    function show_single_data() {
+    const ctx4 = document.getElementById('myChart4');
+     myLineChart3 = new Chart(ctx4, {
+        type: 'line',
+        data: {
+            labels: xvalues_data,
+            datasets: [
+                {
+                    label: "data",/*
+                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                     borderColor: 'rgba(54, 162, 235, 1)',*/
+                    backgroundColor :'rgba(255,255,255,0.1)',
+                    borderColor:'#5386E4',
+                    data: yvalues_data
+                },
+                {
+                    label: "data forecast",/*
+                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                     borderColor: 'rgba(54, 162, 235, 1)',*/
+                    backgroundColor :'rgba(255,255,255,0.1)',
+                    borderColor:'#ed6a5a',
+                    data: yvalues_data_forecast
+                }
+            ]
+        },
+           options: {
+               legend: {
+                    labels: {
+                        usePointStyle: true,
+                    }},
+               scales: {
+                   yAxes: [
+                       {
+                           ticks: {
+                               callback: function (value) {
+                                   return value;
+                               }
+                           }
+                       }],
+                   xAxes: [{
+                       ticks: {
+                           callback: function (value) {
+                               var d = new Date(value)
+                               if (d.getMinutes() < 10) {
+                                   return d.getHours() + ":0" + d.getMinutes();
+                               } else {
+                                   return d.getHours() + ":" + d.getMinutes();
+                               }
+                           }
+                       }
+                   }]
+               }
+           }
     });
 }
 })

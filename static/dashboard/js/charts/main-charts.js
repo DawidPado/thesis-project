@@ -59,8 +59,23 @@ $(document).ready(function() {
                 console.log(err);
 
             }
-        });
-    }
+        });/*
+    $.ajax({
+            method: 'POST',
+            url: 'http://127.0.0.1:5001/',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(
+                    {
+                        'type': "now",
+                    }),
+                dataType: "json",
+            success: function (result) {
+                console.log(result)
+                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + result[""] + "KJ" + "</div>");
+                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
+            }
+    }) */}
+
     function dataupdate(){
     $.ajax({
             method: 'POST',
