@@ -47,11 +47,12 @@ $(document).ready(function() {
                 show_energy();
                 show_traffic();
                 show_single_data()
-                $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy[59] / 1000 + "</div>");
-                $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + (yvalues_traffic[59]) + "</div>");
+                $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy_forecast[59] / 1000 + "</div>");
+                $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + (yvalues_traffic_forecast[59]) + "</div>");
                 xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
                 yvalues_traffic_forecast=[], yvalues_energy_forecast=[];
                 xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
+                fill_table()
             },
             statusCode: {
                 400: function (response) {
@@ -60,21 +61,66 @@ $(document).ready(function() {
 
             },
             error: function (err) {
-                console.log(err)
-                 $(".main").replaceWith("<div class=\"col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main\">\n" +
-                    "<div class=\"col-sm-12 text-center\">"+
-                    "<h1>Something went wrong</h1> <p>please try to reload page or contact server admin</p> " +
-                    "</div>"+
-                    "    <div class=\"row\">\n" +
-                    "\t\t\t\t<div class=\"col-sm-12 text-center\">\n" +
-                    "\t\t\t\t\t<p class=\"back-link\">Thesis project of <a href=\"https://github.com/Xardas7/thesis-project\">Dawid Pado</a></p>\n" +
-                    "\t\t\t\t</div>\n" +
-                    "\t\t\t</div><!--/.row-->\n" +
-                    "    </div>");
-                $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-danger\"></span>Offline</div> </div>");
-
+               offline(err)
             }
         });
+    }
+    function fill_table(){
+        $.ajax({
+            method: 'POST',
+            url: 'http://127.0.0.1:5001/train-info',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(
+                {
+                    'type': "get",
+                    'sensor': components_number,
+                }),
+            dataType: "json",
+            success: function (result) {
+                console.log(result)
+                var table=define_table()
+                $(".table").replaceWith(table);
+                $("#text3").replaceWith("<div class=\"large\" id=\"text3\">"+ date_formatter(result["Energy"]["last_build"]) +"</div>");
+
+                $("#energy-2").replaceWith("<td id=\"energy-2\">"+result["Energy"]["model_name"]+"</td>");
+                $("#energy-3").replaceWith("<td id=\"energy-3\">"+date_formatter(result["Energy"]["last_build"])+"</td>");
+                $("#energy-4").replaceWith("<td id=\"energy-4\">"+result["Energy"]["rmse"]+"</td>");
+                $("#energy-5").replaceWith("<td id=\"energy-5\">"+result["Energy"]["smape"]+"</td>");
+                $("#energy-6").replaceWith("<td id=\"energy-6\">"+result["Energy"]["mase"]+"</td>");
+                $("#energy-7").replaceWith("<td id=\"energy-7\">"+result["Energy"]["horizon"]+"min</td>");
+
+                $("#traffic-2").replaceWith("<td id=\"traffic-2\">"+result["Traffic"]["model_name"]+"</td>");
+                $("#traffic-3").replaceWith("<td id=\"traffic-3\">"+date_formatter(result["Traffic"]["last_build"])+"</td>");
+                $("#traffic-4").replaceWith("<td id=\"traffic-4\">"+result["Traffic"]["rmse"]+"</td>");
+                $("#traffic-5").replaceWith("<td id=\"traffic-5\">"+result["Traffic"]["smape"]+"</td>");
+                $("#traffic-6").replaceWith("<td id=\"traffic-6\">"+result["Traffic"]["mase"]+"</td>");
+                $("#traffic-7").replaceWith("<td id=\"traffic-7\">"+result["Traffic"]["horizon"]+"min</td>");
+
+
+
+
+                for(i=1;i<=components_number;i++){
+                    $("#sensor-"+i.toString()+"-1").replaceWith("<td id=\"sensor-"+i.toString()+"-1\">"+result["S"+i.toString()]["model_type"]+"</td>");
+                    $("#sensor-"+i.toString()+"-2").replaceWith("<td id=\"sensor-"+i.toString()+"-2\">"+result["S"+i.toString()]["model_name"]+"</td>");
+                    $("#sensor-"+i.toString()+"-3").replaceWith("<td id=\"sensor-"+i.toString()+"-3\">"+date_formatter(result["S"+i.toString()]["last_build"])+"</td>");
+                    $("#sensor-"+i.toString()+"-4").replaceWith("<td id=\"sensor-"+i.toString()+"-4\">"+result["S"+i.toString()]["rmse"]+"</td>");
+                    $("#sensor-"+i.toString()+"-5").replaceWith("<td id=\"sensor-"+i.toString()+"-5\">"+result["S"+i.toString()]["smape"]+"</td>");
+                    $("#sensor-"+i.toString()+"-6").replaceWith("<td id=\"sensor-"+i.toString()+"-6\">"+result["S"+i.toString()]["mase"]+"</td>");
+                    $("#sensor-"+i.toString()+"-7").replaceWith("<td id=\"sensor-"+i.toString()+"-7\">"+result["S"+i.toString()]["horizon"]+"min</td>");
+                }
+
+
+            },
+            statusCode: {
+                400: function (response) {
+                    console.log(response);
+                }
+
+            },
+            error: function (err) {
+                offline(err)
+            }
+        })
     }
     function dataupdate() {
         $.ajax({
@@ -115,19 +161,7 @@ $(document).ready(function() {
                 }
             },
             error: function (err) {
-                 console.log(err)
-                $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-danger\"></span>Offline</div> </div>");
-
-                $(".main").replaceWith("<div class=\"col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main\">\n" +
-                    "<div class=\"col-sm-12 text-center\">"+
-                    "<h1>Something went wrong</h1> <p>please try to reload page or contact server admin</p> " +
-                    "</div>"+
-                    "    <div class=\"row\">\n" +
-                    "\t\t\t\t<div class=\"col-sm-12 text-center\">\n" +
-                    "\t\t\t\t\t<p class=\"back-link\">Thesis project of <a href=\"https://github.com/Xardas7/thesis-project\">Dawid Pado</a></p>\n" +
-                    "\t\t\t\t</div>\n" +
-                    "\t\t\t</div><!--/.row-->\n" +
-                    "    </div>");
+                offline(err)
             }
         });
 
@@ -182,6 +216,11 @@ $(document).ready(function() {
             }
         });
     });
+    $('#train-button').on('click', function(e) {
+        e.preventDefault();
+
+
+    })
 //create graph
     function show_energy() {
     const ctx1 = document.getElementById('energy-chart');
@@ -356,4 +395,76 @@ $(document).ready(function() {
            }
     });
 }
+    function date_formatter(date){
+        var formatter="";
+        var d = new Date(date)
+
+        if(d.getDay()<10) {
+           formatter += "0" + d.getDay();
+        }
+        else {
+            formatter += d.getDay();
+        }
+        if(d.getMonth()<10) {
+            formatter += "/0" + d.getMonth()+"/"+d.getFullYear()+" ";
+        }
+        else{
+            formatter += "/" + d.getMonth()+"/"+d.getFullYear()+" ";
+        }
+        if(d.getMinutes()<10) {
+            formatter += d.getHours() + ":0" + d.getMinutes();
+        }
+        else
+            formatter += d.getHours()  + ":" + d.getMinutes();
+
+        return formatter;
+    }
+    function define_table(){
+        var table="<table class=\"table table-bordered\">\n" +
+            "\t\t\t\t\t\t\t\t\t<thead>\n" +
+            "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<th>Model Type</th>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<th>Model Name</th>\n" +
+            "                                            <th>Last Build</th>\n" +
+            "                                            <th>RMSE</th>\n" +
+            "                                            <th>SMAPE</th>\n" +
+            "                                            <th>MASE</th>\n" +
+            "                                            <th>Horizon</th>\n" +
+            "                                            <th>Build</th>\n" +
+            "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+            "\t\t\t\t\t\t\t\t\t</thead>\n" +
+            "\t\t\t\t\t\t\t\t\t<tbody style=\"word-break: break-all;\">\n" +
+            "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"energy-1\">Energy</td>\n" +
+            "                                            <!-- style=\"word-break: break-all;\" -->\n" +
+            "                                            <td id=\"energy-2\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"energy-3\"></td>\n" +
+            "                                            <td id=\"energy-4\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"energy-5\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"energy-6\"></td>\n" +
+            "                                            <td id=\"energy-7\"></td>\n" +
+            "                                            <td><button id=\"train-button\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
+            "\t\t\t\t\t\t\t\t\t\t<tr >\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"traffic-1\">Traffic</td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"traffic-2\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"traffic-3\"></td>\n" +
+            "                                            <td id=\"traffic-4\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"traffic-5\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"traffic-6\"></td>\n" +
+            "                                            <td id=\"traffic-7\"></td>\n" +
+            "                                            <td id=\"traffic-1\"><button id=\"train-button\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t</tr>"
+        for (i=1;i<=components_number;i++){
+            table+="<tr>\n";
+                for(j=1;j<=7;j++){
+                table+="<td id=\"sensor-"+i.toString()+"-"+j.toString()+"\"></td>\n"
+                }
+            table+="<td><button id=\"train-button\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n"+
+            "</tr>\n";
+        }
+        table+="</tbody>\n" +
+            "\t\t\t\t\t\t\t\t</table>"
+        return table;
+    }
 })
