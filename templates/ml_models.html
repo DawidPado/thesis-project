@@ -31,10 +31,10 @@
 					<div class="panel panel-orange panel-widget border-right">
 						<div class="row no-padding"><em class="fa fa-xl fa-calendar"style="color: #ED6A5A"></em>
 
-							<div class="large" id="text3">
+							<div class="large" id="last_build_value">
                                 NaN
                             </div>
-							<div class="text-muted">Last Model Build (Energy)</div>
+							<div class="text-muted" id="last_build_name">Last Model Build (Energy)</div>
 						</div>
 					</div>
 				</div>
@@ -66,7 +66,7 @@
                         Total Energy Consumption Forecast Model
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body main-chart">
-						<div class="canvas-wrapper ">
+						<div class="canvas-wrapper">
 							<canvas class="chart " id="energy-chart" height="300" width="600" ></canvas>
 						</div>
 					</div>
@@ -78,7 +78,7 @@
 						Total Traffic Forecast Model
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body main-chart">
-						<div class="canvas-wrapper">
+						<div class="canvas-wrapper" >
 							<canvas class="chart"  id="traffic-chart" height="300" width="600" ></canvas>
 						</div>
 					</div>
@@ -103,14 +103,56 @@
 			</div>
         <div class="col-lg-6" style="height: 350px; overflow: auto;">
             <table class="table table-bordered">
-            </table>
-        </div>
-        </div>
 
+          <thead>
+            <tr>
+           <th>Model Type</th>
+           <th>Model Name</th>
+           <th>Last Build</th>
+            <th>RMSE</th>
+            <th>SMAPE</th>
+            <th>MASE</th>
+            <th>Horizon</th>
+            <th>Build</th>
+            </tr>
+            </thead>
+            <tbody id = "tbody" style="word-break: break-all;">
+            <tr>
+           <td id="energy-1">Energy</td>
+
+           <td id="energy-2"></td>
+            <td id="energy-3"></td>
+            <td id="energy-4"></td>
+            <td id="energy-5"></td>
+            <td id="energy-6"></td>
+           <td id="energy-7"></td>
+            <td><button id="train-button-energy" class="btn btn-sm btn-primary" >Train</button></td>
+            </tr>
+            <tr >
+            <td id="traffic-1">Traffic</td>
+            <td id="traffic-2"></td>
+            <td id="traffic-3"></td>
+            <td id="traffic-4"></td>
+            <td id="traffic-5"></td>
+            <td id="traffic-6"></td>
+            <td id="traffic-7"></td>
+            <td id="traffic-1"><button id="train-button-traffic" class="btn btn-sm btn-primary" type="button">Train</button></td>
+            </tr>
+
+            </tbody>
+
+            </table>
+
+
+        </div>
+        </div>
 
 {% endblock %}
 {% block scripts %}
-    <script src="../static/login/vendor/dist/Chart.min.js"></script>
     <script src="/static/dashboard/js/charts/chart-config.js"></script>
+     <script>
+
+            </script>
+    <script src="../static/login/vendor/dist/Chart.min.js"></script>
     <script src="/static/dashboard/js/charts/ml-model-charts.js"></script>
 {% endblock %}

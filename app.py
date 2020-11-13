@@ -199,6 +199,39 @@ def ml_models():
         return render_template('login.html')
 
 
+@app.route('/analytics', methods = ['POST', 'GET'])
+def analytics():
+    if len(session) > 0:
+        if session['logged_in'] == True:
+            return render_template('analytics.html')
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+
+
+@app.route('/simulation', methods = ['POST', 'GET'])
+def simulation():
+    if len(session) > 0:
+        if session['logged_in'] == True:
+            return render_template('simulation.html')
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+
+
+@app.route('/adaptation', methods = ['POST', 'GET'])
+def adaptation():
+    if len(session) > 0:
+        if session['logged_in'] == True:
+            return render_template('adaptation.html')
+        else:
+            return render_template('login.html')
+    else:
+        return render_template('login.html')
+
+
 @app.route('/logout', methods = ['POST', 'GET'])
 def logout():
     if request.method == 'POST':

@@ -52,7 +52,9 @@ $(document).ready(function() {
                 xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
                 yvalues_traffic_forecast=[], yvalues_energy_forecast=[];
                 xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
-                fill_table()
+                var table=define_table()
+                $("#tbody").replaceWith(table);
+                fill_table(components_number)
             },
             statusCode: {
                 400: function (response) {
@@ -65,63 +67,7 @@ $(document).ready(function() {
             }
         });
     }
-    function fill_table(){
-        $.ajax({
-            method: 'POST',
-            url: 'http://127.0.0.1:5001/train-info',
-            contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify(
-                {
-                    'type': "get",
-                    'sensor': components_number,
-                }),
-            dataType: "json",
-            success: function (result) {
-                console.log(result)
-                var table=define_table()
-                $(".table").replaceWith(table);
-                $("#text3").replaceWith("<div class=\"large\" id=\"text3\">"+ date_formatter(result["Energy"]["last_build"]) +"</div>");
 
-                $("#energy-2").replaceWith("<td id=\"energy-2\">"+result["Energy"]["model_name"]+"</td>");
-                $("#energy-3").replaceWith("<td id=\"energy-3\">"+date_formatter(result["Energy"]["last_build"])+"</td>");
-                $("#energy-4").replaceWith("<td id=\"energy-4\">"+result["Energy"]["rmse"]+"</td>");
-                $("#energy-5").replaceWith("<td id=\"energy-5\">"+result["Energy"]["smape"]+"</td>");
-                $("#energy-6").replaceWith("<td id=\"energy-6\">"+result["Energy"]["mase"]+"</td>");
-                $("#energy-7").replaceWith("<td id=\"energy-7\">"+result["Energy"]["horizon"]+"min</td>");
-
-                $("#traffic-2").replaceWith("<td id=\"traffic-2\">"+result["Traffic"]["model_name"]+"</td>");
-                $("#traffic-3").replaceWith("<td id=\"traffic-3\">"+date_formatter(result["Traffic"]["last_build"])+"</td>");
-                $("#traffic-4").replaceWith("<td id=\"traffic-4\">"+result["Traffic"]["rmse"]+"</td>");
-                $("#traffic-5").replaceWith("<td id=\"traffic-5\">"+result["Traffic"]["smape"]+"</td>");
-                $("#traffic-6").replaceWith("<td id=\"traffic-6\">"+result["Traffic"]["mase"]+"</td>");
-                $("#traffic-7").replaceWith("<td id=\"traffic-7\">"+result["Traffic"]["horizon"]+"min</td>");
-
-
-
-
-                for(i=1;i<=components_number;i++){
-                    $("#sensor-"+i.toString()+"-1").replaceWith("<td id=\"sensor-"+i.toString()+"-1\">"+result["S"+i.toString()]["model_type"]+"</td>");
-                    $("#sensor-"+i.toString()+"-2").replaceWith("<td id=\"sensor-"+i.toString()+"-2\">"+result["S"+i.toString()]["model_name"]+"</td>");
-                    $("#sensor-"+i.toString()+"-3").replaceWith("<td id=\"sensor-"+i.toString()+"-3\">"+date_formatter(result["S"+i.toString()]["last_build"])+"</td>");
-                    $("#sensor-"+i.toString()+"-4").replaceWith("<td id=\"sensor-"+i.toString()+"-4\">"+result["S"+i.toString()]["rmse"]+"</td>");
-                    $("#sensor-"+i.toString()+"-5").replaceWith("<td id=\"sensor-"+i.toString()+"-5\">"+result["S"+i.toString()]["smape"]+"</td>");
-                    $("#sensor-"+i.toString()+"-6").replaceWith("<td id=\"sensor-"+i.toString()+"-6\">"+result["S"+i.toString()]["mase"]+"</td>");
-                    $("#sensor-"+i.toString()+"-7").replaceWith("<td id=\"sensor-"+i.toString()+"-7\">"+result["S"+i.toString()]["horizon"]+"min</td>");
-                }
-
-
-            },
-            statusCode: {
-                400: function (response) {
-                    console.log(response);
-                }
-
-            },
-            error: function (err) {
-                offline(err)
-            }
-        })
-    }
     function dataupdate() {
         $.ajax({
             method: 'POST',
@@ -149,8 +95,8 @@ $(document).ready(function() {
                 update_energy();
                 update_traffic();
                 update_single_data()
-                $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy[59] / 1000 + "</div>");
-                $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + (yvalues_traffic[59]) + "</div>");
+                $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy_forecast[59] / 1000 + "</div>");
+                $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + (yvalues_traffic_forecast[59]) + "</div>");
                 xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
                 yvalues_traffic_forecast=[], yvalues_energy_forecast=[];
                 xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
@@ -189,6 +135,8 @@ $(document).ready(function() {
 //update on select
     $("#sel").change(function(){
          sensor_number = Number($("#sel option:selected").val());
+         highlight("S"+sensor_number.toString(),components_number)
+
         $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5001/',
@@ -216,10 +164,17 @@ $(document).ready(function() {
             }
         });
     });
-    $('#train-button').on('click', function(e) {
+    $('#traffic-chart').on('click', function(e) {
         e.preventDefault();
-
-
+        highlight('Traffic',components_number)
+    })
+     $('#energy-chart').on('click', function(e) {
+         highlight('Energy',components_number)
+        e.preventDefault();
+    })
+    $('#myChart4').on('click', function(e) {
+         highlight('S'+sensor_number,components_number)
+        e.preventDefault();
     })
 //create graph
     function show_energy() {
@@ -395,76 +350,66 @@ $(document).ready(function() {
            }
     });
 }
-    function date_formatter(date){
-        var formatter="";
-        var d = new Date(date)
-
-        if(d.getDay()<10) {
-           formatter += "0" + d.getDay();
-        }
-        else {
-            formatter += d.getDay();
-        }
-        if(d.getMonth()<10) {
-            formatter += "/0" + d.getMonth()+"/"+d.getFullYear()+" ";
-        }
-        else{
-            formatter += "/" + d.getMonth()+"/"+d.getFullYear()+" ";
-        }
-        if(d.getMinutes()<10) {
-            formatter += d.getHours() + ":0" + d.getMinutes();
-        }
-        else
-            formatter += d.getHours()  + ":" + d.getMinutes();
-
-        return formatter;
-    }
+//create table
     function define_table(){
-        var table="<table class=\"table table-bordered\">\n" +
-            "\t\t\t\t\t\t\t\t\t<thead>\n" +
-            "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<th>Model Type</th>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<th>Model Name</th>\n" +
-            "                                            <th>Last Build</th>\n" +
-            "                                            <th>RMSE</th>\n" +
-            "                                            <th>SMAPE</th>\n" +
-            "                                            <th>MASE</th>\n" +
-            "                                            <th>Horizon</th>\n" +
-            "                                            <th>Build</th>\n" +
-            "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
-            "\t\t\t\t\t\t\t\t\t</thead>\n" +
+        var table=
             "\t\t\t\t\t\t\t\t\t<tbody style=\"word-break: break-all;\">\n" +
-            "\t\t\t\t\t\t\t\t\t\t<tr>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"energy-1\">Energy</td>\n" +
-            "                                            <!-- style=\"word-break: break-all;\" -->\n" +
-            "                                            <td id=\"energy-2\"></td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"energy-3\"></td>\n" +
-            "                                            <td id=\"energy-4\"></td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"energy-5\"></td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"energy-6\"></td>\n" +
-            "                                            <td id=\"energy-7\"></td>\n" +
-            "                                            <td><button id=\"train-button\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t<tr id='Energy'>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Energy-1\">Energy</td>\n" +
+            "<td id=\"Energy-2\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Energy-3\"></td>\n" +
+            "<td id=\"Energy-4\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Energy-5\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Energy-6\"></td>\n" +
+            "<td id=\"Energy-7\"></td>\n" +
+            "<td><button id='Energy-button' onclick=\"train('Energy')\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n" +
             "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
-            "\t\t\t\t\t\t\t\t\t\t<tr >\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"traffic-1\">Traffic</td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"traffic-2\"></td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"traffic-3\"></td>\n" +
-            "                                            <td id=\"traffic-4\"></td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"traffic-5\"></td>\n" +
-            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"traffic-6\"></td>\n" +
-            "                                            <td id=\"traffic-7\"></td>\n" +
-            "                                            <td id=\"traffic-1\"><button id=\"train-button\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t<tr id='Traffic'>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Traffic-1\">Traffic</td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Traffic-2\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Traffic-3\"></td>\n" +
+            "<td id=\"Traffic-4\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Traffic-5\"></td>\n" +
+            "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Traffic-6\"></td>\n" +
+            "<td id=\"Traffic-7\"></td>\n" +
+            "<td ><button  id='Traffic-button' onclick=\"train('Traffic')\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n" +
             "\t\t\t\t\t\t\t\t\t\t</tr>"
         for (i=1;i<=components_number;i++){
-            table+="<tr>\n";
+            table+="<tr id='S"+i+"'>\n";
                 for(j=1;j<=7;j++){
-                table+="<td id=\"sensor-"+i.toString()+"-"+j.toString()+"\"></td>\n"
+                table+="<td id=\"S"+i.toString()+"-"+j.toString()+"\"></td>\n"
                 }
-            table+="<td><button id=\"train-button\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n"+
+            table+="<td><button id='S"+i.toString()+"-button' onclick=\"train('S"+i.toString()+"')\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n"+
             "</tr>\n";
         }
-        table+="</tbody>\n" +
-            "\t\t\t\t\t\t\t\t</table>"
-        return table;
+        table+="</tbody>\n"
+       /* var script=  "<script>" +
+            "function train(x){" +
+            "alert('start training');" +
+            " $.ajax({\n" +
+            " method: 'POST',\n" +
+            "            url: 'http://127.0.0.1:5001/train-info',\n" +
+            "contentType: 'application/json;charset=UTF-8',\n" +
+            "            data: JSON.stringify(\n" +
+            "                {\n" +
+            "                    'type': \"update\",\n" +
+            "                    'value': x,\n" +
+            "                }),\n" +
+            "            dataType: \"json\",\n" +
+            "success: function (result) {\n" +
+            "update_row(result); " +
+            "           },\n" +
+            "            statusCode: {\n" +
+            "                400: function (response) {\n" +
+            "                    console.log(response);\n" +
+            "                }\n" +
+            "            },\n" +
+            "            error: function (err) {\n" +
+            "                console.log(err);\n" +
+            "            }\n" +
+            "        });" +
+            "}" +
+            "</script>"*/
+        return table
     }
 })
