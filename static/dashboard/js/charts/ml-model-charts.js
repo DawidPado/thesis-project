@@ -7,12 +7,39 @@ $(document).ready(function() {
     var sensors = []
     var components_number=0;
     var sensor_number =1;
+    var disabled="", element=""
 // start and update data
     start();
     setInterval(dataupdate, 30000); // refresh every 30s
 
 // start and update function
     function start() {
+         $.ajax({
+            method: 'POST',
+            url: 'http://127.0.0.1:5001/train-info',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(
+                {
+                    "type": "check",
+                }),
+            dataType: "json",
+            success: function (result) {
+                if (result["status"] !== "free") {
+                    console.log(result)
+                    disabled = "disabled"
+                    element=result["model_name"]
+                }
+            },
+            statusCode: {
+                400: function (response) {
+                    console.log(response);
+                }
+
+            },
+            error: function (err) {
+               offline(err)
+            }
+        });
         $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5001/',
@@ -54,6 +81,10 @@ $(document).ready(function() {
                 xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
                 var table=define_table()
                 $("#tbody").replaceWith(table);
+                if(disabled!=""){
+                    console.log(element)
+                    $("#"+element+"-button").replaceWith("<button id='"+element+"-button' onclick=\"train("+element+")\" class=\"btnbtn - smbtn - primary\" type=\"button\" disabled>Runs</button");
+                }
                 fill_table(components_number)
             },
             statusCode: {
@@ -362,7 +393,7 @@ $(document).ready(function() {
             "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Energy-5\"></td>\n" +
             "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Energy-6\"></td>\n" +
             "<td id=\"Energy-7\"></td>\n" +
-            "<td><button id='Energy-button' onclick=\"train('Energy')\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n" +
+            "<td><button id='Energy-button' onclick=\"train('Energy')\" class=\"btn btn-sm btn-primary\" type=\"button\" "+disabled+">Train</button></td>\n" +
             "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
             "\t\t\t\t\t\t\t\t\t\t<tr id='Traffic'>\n" +
             "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Traffic-1\">Traffic</td>\n" +
@@ -372,14 +403,14 @@ $(document).ready(function() {
             "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Traffic-5\"></td>\n" +
             "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Traffic-6\"></td>\n" +
             "<td id=\"Traffic-7\"></td>\n" +
-            "<td ><button  id='Traffic-button' onclick=\"train('Traffic')\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n" +
+            "<td ><button  id='Traffic-button' onclick=\"train('Traffic')\" class=\"btn btn-sm btn-primary\" type=\"button\" "+disabled+">Train</button></td>\n" +
             "\t\t\t\t\t\t\t\t\t\t</tr>"
         for (i=1;i<=components_number;i++){
             table+="<tr id='S"+i+"'>\n";
                 for(j=1;j<=7;j++){
                 table+="<td id=\"S"+i.toString()+"-"+j.toString()+"\"></td>\n"
                 }
-            table+="<td><button id='S"+i.toString()+"-button' onclick=\"train('S"+i.toString()+"')\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n"+
+            table+="<td><button id='S"+i.toString()+"-button' onclick=\"train('S"+i.toString()+"')\" class=\"btn btn-sm btn-primary\" type=\"button\" "+disabled+">Train</button></td>\n"+
             "</tr>\n";
         }
         table+="</tbody>\n"

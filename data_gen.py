@@ -1,3 +1,4 @@
+import datetime
 import random
 from elasticsearch import Elasticsearch
 
@@ -9,7 +10,7 @@ es1 = Elasticsearch()
 
 
 # data time format yyyy-MM-dd'T'hh:mm:ss'Z' -> 2015-01-01T12:11:30Z
-data = "2020-11-13"
+data = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
 hh="00"
 mm="00"
 ss="00"
