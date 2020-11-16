@@ -44,20 +44,24 @@ function count_components(input){
     }
     return i;
 }
-function date_formatter(date){
+function date_formatter(date,check){
         var formatter="";
         var d = new Date(date)
 
        formatter+=d.toLocaleDateString()+" ";
-
-        if(d.getMinutes()<10) {
+        if(check!==true ){
+            if(d.getMinutes()<10) {
             formatter += d.getHours() + ":0" + d.getMinutes();
+            }
+            else{
+                formatter += d.getHours()  + ":" + d.getMinutes();
+            }
         }
-        else
-            formatter += d.getHours()  + ":" + d.getMinutes();
-
+        else {
+            formatter += d.getHours() + ":00";
+        }
         return formatter;
-    }
+}
 function update_row(result){
     $("#"+result["model_type"]+"-2").replaceWith("<td id=\""+result["model_type"]+"-2\">"+result["model_name"]+"</td>");
     $("#"+result["model_type"]+"-3").replaceWith("<td id=\""+result["model_type"]+"-3\">"+date_formatter(result["last_build"])+"</td>");
@@ -144,7 +148,7 @@ function train(x){
                 position: 'top-end',
                 showConfirmButton: false,
                 timer: 4000,
-                type: 'success',
+                icon: 'success',
                 title: x+' trainig has started'
             });
                  $("#"+x+"-button").replaceWith("<button id='"+x+"-button' onclick=\"train('S"+i.toString()+"')\" class=\"btn btn-sm btn-primary\" type=\"button\"  disabled><em style='text-align: center' class='fa fa-retweet'></em>  </em></button>");
@@ -163,7 +167,7 @@ success: function (result) {
          position: 'top-end',
          showConfirmButton: false,
          timer: 4000,
-         type: 'success',
+         icon: 'success',
          title: result["model_type"] +' training completed!'
             });
     update_row(result);

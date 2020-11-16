@@ -1,7 +1,9 @@
-from flask import Flask, render_template, redirect, url_for, request, session
-from flask_restful import Api, Resource, reqparse
 import json
+from datetime import datetime
+
 from elasticsearch import Elasticsearch
+from flask import Flask, render_template, request, session
+from flask_restful import Api, reqparse
 
 es = Elasticsearch()
 app = Flask(__name__)
@@ -42,17 +44,40 @@ def dashboard():
     if request.method == 'POST':
         if len(session) > 0:
             if session['logged_in'] != False:
+                start_time="now"
+                data = request.get_json()
+
+                if data != None:  # Setting start time of getting data
+                    if data["start_time"]:
+                        x=datetime.strptime(data["start_time"],"%Y-%m-%dT%H:%M:%S.000Z")
+                        start_time = x.replace(x.year,x.month,x.day,x.hour,0,0)
+                        message1 = str(start_time.year) + "-" + checkdate(start_time.month) + "-" + checkdate(
+                            start_time.day) + "T" + checkdate(start_time.hour) + ":" + checkdate(0) + ":00Z"
+                        message2=str(start_time.year) + "-" + checkdate(start_time.month) + "-" + checkdate(
+                            start_time.day) + "T" + checkdate(start_time.hour) + ":" + checkdate(59) + ":00Z"
+                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"" + message1 + "\", \"lte\":\"" + message2 + "\"}}}}"
+                        res = es.search(index='energy', body=query)
+                        if res['hits']['hits'] == []:
+                            return {"status": "no data available"}
                 time = 60  # how many minuts
-                max = 10  # max records form the request (limit of db)
+                max = 10  # max records form the request (limit of records from db)
                 status='{ \'energy\':[' # inital status
                 count=0
-                for i in range(int(time/max)): # get record every 10 minuts for energy
 
-                    j = -time + i*max   #starts with -60 min and ends with 0min by now
-                    if j < 0:
-                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now" + str(j) + "m\"}}}}" #+2h o +1h depends on time zone
+                for i in range(int(time/max)): # get record every 10 minuts for energy
+                    j = -time + i * max  # starts with -60 min and ends with 0min by now
+                    k=i*max
+                    if (start_time != "now"):
+                        message = str(start_time.year) + "-" + checkdate(start_time.month) + "-" + checkdate(
+                            start_time.day) + "T" + checkdate(start_time.hour) + ":" + checkdate(k) + ":00Z"
+
+                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\""+message+"\"}}}}"
+
                     else:
-                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now\"}}}}"
+                        if j < 0:
+                            query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\""+start_time + str(j) + "m\"}}}}"
+                        else:
+                            query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\""+start_time+"\"}}}}"
 
                     res = es.search(index='energy', body=query)
                     for i in range(max): # fill status with energy records
@@ -64,12 +89,18 @@ def dashboard():
                 status = status + ' \'traffic\':['
                 count = 0
                 for i in range(int(time/max)):  # get record every 10 minuts for energy
-
                     j = -time + i * max #starts with -60 min and ends with 0min by now
-                    if j < 0:
-                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now" + str(j) + "m\"}}}}"
+                    k=i*max
+                    if (start_time != "now"):
+                        message = str(start_time.year) + "-" + checkdate(start_time.month) + "-" + checkdate(
+                            start_time.day) + "T" + checkdate(start_time.hour) + ":" + checkdate(k) + ":00Z"
+                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\""+message +"\"}}}}"
                     else:
-                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"now\"}}}}"
+                        if j < 0:
+                            query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"" + start_time + str(
+                                j) + "m\"}}}}"  # +2h o +1h depends on time zone
+                        else:
+                            query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"" + start_time + "\"}}}}"
 
                     res = es.search(index='traffic', body=query)
                     for i in range(max):    #fill status with energy records
@@ -247,3 +278,9 @@ def page_not_found(e):
 
 if __name__ == '__main__':
     app.run()
+
+def checkdate(x):
+    if x<10:
+        return "0"+str(x)
+    else:
+        return str(x)

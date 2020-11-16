@@ -5,9 +5,14 @@ $(document).ready(function() {
     var sensor_number =1;       // current single sensor chart number
     var components_number=0;  //how many sensors are in the sistem
     var myLineChart,myLineChart2,myLineChart3,myBarChart = null;
+    var block=false
 // start and update data
     start();
-    setInterval(dataupdate, 30000); // refresh every 30s
+    setInterval(function (){
+        if(!block){
+            dataupdate()
+        }
+    }, 30000); // refresh every 30s
 
 // start and update function
     function start(){
@@ -42,7 +47,8 @@ $(document).ready(function() {
                 $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
                 $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
                 $("#components-number").replaceWith("<div class=\"large\" id=\"components-number\">"+components_number+"</div>");
-
+                var d = new Date();
+                $("#time").replaceWith("<p id=\"time\">"+date_formatter(d)+"</p>");
                 show_chart();
                 show_energy();
                 show_traffic();
@@ -82,7 +88,8 @@ $(document).ready(function() {
                 }
                 $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
                 $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
-
+                var d = new Date();
+                $("#time").replaceWith("<p id=\"time\">"+date_formatter(d)+"</p>");
                 update_bar();
                 update_energy();
                 update_traffic();
@@ -323,4 +330,90 @@ $(document).ready(function() {
         }
     });
 }
+
+    $( "#date_ex" ).datetimepicker({
+	    oneLine: true,
+        dateFormat: 'dd/mm/yy',
+	    timeFormat: 'HH:mm',
+        showMinute: false,
+        minuteMin: 0,
+	    minuteMax: 0,
+        onClose: function() {
+	        var start_time=$('#date_ex').datetimepicker('getDate');
+            var d = new Date();
+	        d=date_formatter(d,true)
+            var n=date_formatter(start_time,true)
+
+	        if(d===n){
+	            block=false;
+	            dataupdate()
+	            return false
+            }
+            start_time=start_time.toISOString()
+            $.ajax({
+            method: 'POST',
+            url: 'http://127.0.0.1:5000/',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(
+                {
+                    "start_time": start_time,
+                }),
+            dataType: "json",
+            success: function (result) {
+                if(result["status"]==="no data available"){
+                    swal({
+         position: 'top-end',
+         showConfirmButton: false,
+         timer: 4000,
+         icon: 'error',
+         title: result["status"]
+            });
+                    return false;
+                }
+                block=true;
+                for (var j in result.energy) {
+                    xvalues_energy.push(result.energy[j].timestamp);
+                    yvalues_energy.push(sum(result.energy[j],components_number));
+                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number));
+                   if(j>=50){
+                    sensor_data = fill_data(result.energy[j],sensor_data,components_number)
+                    }
+
+                }
+                console.log(sensor_data)
+                for (var k in result.traffic) {
+                    xvalues_traffic.push(result.traffic[k].timestamp);
+                    yvalues_traffic.push(sum(result.traffic[k],components_number));
+
+                }
+                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
+                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
+                $("#time").replaceWith("<p id=\"time\">"+n+"</p>");
+                update_bar();
+                update_energy();
+                update_traffic();
+                update_single_energy();
+                ysensor_values_energy=[];
+                xvalues_traffic=[];
+                yvalues_traffic=[];
+                xvalues_energy =[];
+                yvalues_energy=[];
+                sensor_data=[];
+            },
+            statusCode: {
+                404: function (response) {
+                    console.log(response);
+                }
+            },
+            error: function (err) {
+                offline(err)
+            }
+        });
+        }
+});
+    $('#refresh-content').on('click', function(e) {
+		e.preventDefault();
+		block=false
+		dataupdate()
+	});
 });

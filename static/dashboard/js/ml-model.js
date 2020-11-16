@@ -76,6 +76,8 @@ $(document).ready(function() {
                 show_single_data()
                 $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy_forecast[59] / 1000 + "</div>");
                 $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + (yvalues_traffic_forecast[59]) + "</div>");
+                var d = new Date();
+                $("#time").replaceWith("<p id=\"time\">"+date_formatter(d)+"</p>");
                 xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
                 yvalues_traffic_forecast=[], yvalues_energy_forecast=[];
                 xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
@@ -123,6 +125,8 @@ $(document).ready(function() {
                     yvalues_data_forecast.push(get_sensor_data(result["forecast-sensor-data"][m],sensor_number));
 
                 }
+                 var d = new Date();
+                $("#time").replaceWith("<p id=\"time\">"+date_formatter(d)+"</p>");
                 update_energy();
                 update_traffic();
                 update_single_data()
@@ -414,33 +418,11 @@ $(document).ready(function() {
             "</tr>\n";
         }
         table+="</tbody>\n"
-       /* var script=  "<script>" +
-            "function train(x){" +
-            "alert('start training');" +
-            " $.ajax({\n" +
-            " method: 'POST',\n" +
-            "            url: 'http://127.0.0.1:5001/train-info',\n" +
-            "contentType: 'application/json;charset=UTF-8',\n" +
-            "            data: JSON.stringify(\n" +
-            "                {\n" +
-            "                    'type': \"update\",\n" +
-            "                    'value': x,\n" +
-            "                }),\n" +
-            "            dataType: \"json\",\n" +
-            "success: function (result) {\n" +
-            "update_row(result); " +
-            "           },\n" +
-            "            statusCode: {\n" +
-            "                400: function (response) {\n" +
-            "                    console.log(response);\n" +
-            "                }\n" +
-            "            },\n" +
-            "            error: function (err) {\n" +
-            "                console.log(err);\n" +
-            "            }\n" +
-            "        });" +
-            "}" +
-            "</script>"*/
+
         return table
     }
+    $('#refresh-content').on('click', function(e) {
+		e.preventDefault();
+		dataupdate()
+	});
 })

@@ -1,6 +1,7 @@
 {% extends "template.html" %}
 {% block content %}
 
+
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="/">
@@ -66,8 +67,12 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						Total Energy Chart
-						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+                        <p3>Total Energy Chart</p3>
+                        <!--
+                        <input class="date form-control panel-toggle panel-button-tab-left" style="width: 10%;" type="text" >
+						<input class=" form-control panel-toggle panel-button-tab-left" style="width: 5%;" type="text" min="0" max="23" >
+                      -->
+                        <span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body main-chart">
 						<div class="canvas-wrapper" id="new-chart1">
 							<canvas class="" id="myChart1" height="150" width="600"></canvas>
@@ -96,7 +101,7 @@
 			<div class="col-md-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						Energy Distribution 10min
+						Energy Distribution Last 10min
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body main-chart">
 						<div class="canvas-wrapper" id="new-chart3">
@@ -124,7 +129,10 @@
 
 {% endblock %}
 {% block scripts %}
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+ <script src="https://trentrichardson.com/examples/timepicker/jquery-ui-timepicker-addon.js"></script>
 	<script src="../static/login/vendor/dist/Chart.min.js"></script>
-    <script src="../static/dashboard/js/charts/chart-config.js"></script>
-	<script src="../static/dashboard/js/charts/main-charts.js"></script>
+    <script src="../static/dashboard/js/utilities.js"></script>
+	<script src="../static/dashboard/js/dashboard.js"></script>
+
 {% endblock %}
