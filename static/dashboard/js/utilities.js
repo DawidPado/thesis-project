@@ -1,15 +1,24 @@
 
-function sum(obj,components_number){
+function sum(obj,components_number,custom){
     var sum=0;
     for(i=1;i<=components_number;i++){
         var name="S"+i.toString();
-        sum=sum+obj[name]
+        if(custom){ //if get data with different timestamp that now
+            sum=sum+Number(obj[name]["value"].toFixed(2))
+        }
+        else{
+            sum=sum+obj[name]
+        }
+
     }
     return sum;
     }
 
-function get_sensor_data(input,sensor){
+function get_sensor_data(input,sensor,custom){
        var name="S"+sensor.toString();
+       if(custom){
+           return (input[name]["value"].toFixed(2))
+       }
        return input[name]
     }
 
@@ -21,16 +30,25 @@ function sensor_iterate(components_number){
     return sensors;
 }
 
-function fill_data(result,data,components){
+function fill_data(result,data,components,custom){
     if (data.length==0){
         for (i=0;i<components;i++){
             data[i]=0;
         }
     }
-    for(i=1;i<=components;i++){
+    if(custom){
+        for(i=1;i<=components;i++){
+        var name='S'+i.toString();
+        data[i-1]=data[i-1]+Number(result[name]["value"].toFixed(2));
+    }
+    }
+    else{
+       for(i=1;i<=components;i++){
         var name='S'+i.toString();
         data[i-1]=data[i-1]+result[name];
     }
+    }
+
     return data;
 }
 function count_components(input){

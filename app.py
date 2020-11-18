@@ -46,71 +46,101 @@ def dashboard():
             if session['logged_in'] != False:
                 start_time="now"
                 data = request.get_json()
-
-                if data != None:  # Setting start time of getting data
-                    if data["start_time"]:
-                        x=datetime.strptime(data["start_time"],"%Y-%m-%dT%H:%M:%S.000Z")
-                        start_time = x.replace(x.year,x.month,x.day,x.hour,0,0)
+                query=""
+                res=""
+                sensor_num=1
+                interval=0 # in minutes
+                if data != None:  # Setting start time and end time of getting data
+      ####################################################################################################################
+                    if data["start_time"] and data["end_time"]:
+                        start_time=datetime.strptime(data["start_time"],"%Y-%m-%dT%H:%M:%S.000Z")
+                        end_time=datetime.strptime(data["end_time"],"%Y-%m-%dT%H:%M:%S.000Z")
+                        if (((end_time-start_time).seconds/86400)+((end_time-start_time).days)) < 1 :
+                            interval=10
+                        elif(((end_time-start_time).seconds/86400)+((end_time-start_time).days)) < 5:
+                            interval=720
+                        else:
+                            interval=1440
                         message1 = str(start_time.year) + "-" + checkdate(start_time.month) + "-" + checkdate(
-                            start_time.day) + "T" + checkdate(start_time.hour) + ":" + checkdate(0) + ":00Z"
-                        message2=str(start_time.year) + "-" + checkdate(start_time.month) + "-" + checkdate(
-                            start_time.day) + "T" + checkdate(start_time.hour) + ":" + checkdate(59) + ":00Z"
+                            start_time.day) + "T" + checkdate(start_time.hour) + ":" + checkdate(start_time.minute) + ":00Z"
+                        message2=str(end_time.year) + "-" + checkdate(end_time.month) + "-" + checkdate(
+                            end_time.day) + "T" + checkdate(end_time.hour) + ":" + checkdate(end_time.minute) + ":00Z"
+
                         query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"" + message1 + "\", \"lte\":\"" + message2 + "\"}}}}"
-                        res = es.search(index='energy', body=query)
+                        res = es.search(index='energy', body=query, size=10000)
                         if res['hits']['hits'] == []:
                             return {"status": "no data available"}
+                        i=1
+                        while True:
+                            if(not ("S"+str(i) in res['hits']['hits'][0]['_source'])):
+                                sensor_num=i-1
+                                break
+                            i=i+1
+                        agg="\"aggs\": {\
+                                \"records\": {\
+                                    \"date_histogram\": {\
+                                        \"field\": \"timestamp\",\
+                                        \"interval\": \""+str(interval)+"m\"},\
+                                    \"aggs\": {"
+                        for j in range(i):
+                            if j==0:
+                                continue
+                            agg=agg+"\"S"+str(j)+"\": {\
+                                    \"avg\": {\
+                                        \"field\": \"S"+str(j)+"\"\
+                                    }}"
+                            if j==(i-1):
+                                agg = agg+"}}},"
+                            else:
+                                agg=agg+","
+                        query = "{ "+ agg+" \"query\":{\"range\":{\"timestamp\":{\"gte\":\"" + message1 + "\", \"lte\":\"" + message2 + "\"}}}}"
+    #######################################################################################################################
                 time = 60  # how many minuts
-                max = 10  # max records form the request (limit of records from db)
                 status='{ \'energy\':[' # inital status
                 count=0
-
-                for i in range(int(time/max)): # get record every 10 minuts for energy
-                    j = -time + i * max  # starts with -60 min and ends with 0min by now
-                    k=i*max
-                    if (start_time != "now"):
-                        message = str(start_time.year) + "-" + checkdate(start_time.month) + "-" + checkdate(
-                            start_time.day) + "T" + checkdate(start_time.hour) + ":" + checkdate(k) + ":00Z"
-
-                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\""+message+"\"}}}}"
-
-                    else:
-                        if j < 0:
-                            query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\""+start_time + str(j) + "m\"}}}}"
-                        else:
-                            query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\""+start_time+"\"}}}}"
-
-                    res = es.search(index='energy', body=query)
+                if (start_time == "now"):
+                    query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\""+start_time + str(-time) + "m\"}}}}"
+                    res = es.search(index='energy', body=query,size=time)
+                    max=len(res['hits']['hits'])  #lenght of records
                     for i in range(max): # fill status with energy records
                         count=count +1
-                        if count < time : #check number of current record to close energy
+                        if count < max : #check number of current record to close energy
                             status = status + str( res['hits']['hits'][i]['_source']) + ', '
                         else:
                             status = status + str(res['hits']['hits'][i]['_source']) + '],'
-                status = status + ' \'traffic\':['
-                count = 0
-                for i in range(int(time/max)):  # get record every 10 minuts for energy
-                    j = -time + i * max #starts with -60 min and ends with 0min by now
-                    k=i*max
-                    if (start_time != "now"):
-                        message = str(start_time.year) + "-" + checkdate(start_time.month) + "-" + checkdate(
-                            start_time.day) + "T" + checkdate(start_time.hour) + ":" + checkdate(k) + ":00Z"
-                        query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\""+message +"\"}}}}"
-                    else:
-                        if j < 0:
-                            query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"" + start_time + str(
-                                j) + "m\"}}}}"  # +2h o +1h depends on time zone
+                    status = status + ' \'traffic\':['
+                    count = 0
+                else:
+                    res = es.search(index='energy', body=query, size=1000)
+                    max = len(res['aggregations']['records']['buckets'])
+                    for i in range(max): # fill status with energy records
+                        count=count +1
+                        if count < max : #check number of current record to close energy
+                            status = status + str( res['aggregations']['records']['buckets'][i]) + ', '
                         else:
-                            query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"" + start_time + "\"}}}}"
+                            status = status + str(res['aggregations']['records']['buckets'][i]) + '],'
+                    status = status + ' \'traffic\':['
+                    count = 0
 
-                    res = es.search(index='traffic', body=query)
+                if (start_time == "now"):
+                    res = es.search(index='traffic', body=query,size=time)
                     for i in range(max):    #fill status with energy records
                         count = count + 1
-                        if count < time:    #check number of current record to close traffic
+                        if count < max:    #check number of current record to close traffic
                             status = status + str(res['hits']['hits'][i]['_source']) + ', '
                         else:
                             status = status + str(res['hits']['hits'][i]['_source']) + ']}'
 
-                return json.loads(status.replace("'", "\""))
+                    return json.loads(status.replace("'", "\""))
+                else:
+                    res = es.search(index='traffic', body=query, size=1000)
+                    for i in range(max): # fill status with energy records
+                        count=count +1
+                        if count < max : #check number of current record to close energy
+                            status = status + str( res['aggregations']['records']['buckets'][i]) + ', '
+                        else:
+                            status = status + str(res['aggregations']['records']['buckets'][i]) + ']}'
+                    return json.loads(status.replace("'", "\""))
             else:
                 status = {"status": "unauthorized"}
                 return status,401

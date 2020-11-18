@@ -6,6 +6,7 @@ $(document).ready(function() {
     var components_number=0;  //how many sensors are in the sistem
     var myLineChart,myLineChart2,myLineChart3,myBarChart = null;
     var block=false
+    var start_time="",end_time="";
 // start and update data
     start();
     setInterval(function (){
@@ -135,19 +136,26 @@ $(document).ready(function() {
     $("#sel").change(function(){
          sensor_number = Number($("#sel option:selected").val());
         console.log(sensor_number);
-        $.ajax({
+        if(block){
+            $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5000/',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(
+                {
+                    "start_time": start_time,
+                    "end_time":end_time
+                }),
+            dataType: "json",
             success: function (result) {
-                ysensor_values_energy=[], xvalues_energy=[];
+                console.log(result)
+                ysensor_values_energy=[], xvalues_energy = [];
                 for(var j in result.energy) {
-                    xvalues_energy.push(result.energy[j].timestamp);
-                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number));
-                    //console.log(get_sensor_data(result.energy[j],sensor_number));
+                    xvalues_energy.push(result.energy[j]["key_as_string"]);
+                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number,true));                    //console.log(get_sensor_data(result.energy[j],sensor_number));
                 }
                 update_single_energy()
-                ysensor_values_energy=[];
-                    xvalues_energy=[];
+                ysensor_values_energy=[], xvalues_energy=[];
             },
             statusCode: {
                 400: function (response) {
@@ -158,6 +166,32 @@ $(document).ready(function() {
                 offline(err)
             }
         });
+        }
+        else {
+            $.ajax({
+                method: 'POST',
+                url: 'http://127.0.0.1:5000/',
+                success: function (result) {
+                    ysensor_values_energy = [], xvalues_energy = [];
+                    for (var j in result.energy) {
+                        xvalues_energy.push(result.energy[j].timestamp);
+                        ysensor_values_energy.push(get_sensor_data(result.energy[j], sensor_number));
+                        //console.log(get_sensor_data(result.energy[j],sensor_number));
+                    }
+                    update_single_energy()
+                    ysensor_values_energy = [];
+                    xvalues_energy = [];
+                },
+                statusCode: {
+                    400: function (response) {
+                        console.log(response);
+                    }
+                },
+                error: function (err) {
+                    offline(err)
+                }
+            });
+        }
     });
 //chart display
     function show_energy() {
@@ -330,26 +364,64 @@ $(document).ready(function() {
         }
     });
 }
+var startDateTextBox = $('#range_example_1_start');
+var endDateTextBox = $('#range_example_1_end');
 
-    $( "#date_ex" ).datetimepicker({
-	    oneLine: true,
+startDateTextBox.datetimepicker({
+	oneLine: true,
         dateFormat: 'dd/mm/yy',
 	    timeFormat: 'HH:mm',
-        showMinute: false,
-        minuteMin: 0,
-	    minuteMax: 0,
-        onClose: function() {
-	        var start_time=$('#date_ex').datetimepicker('getDate');
+        timezone: '+0100',
+	onClose: function(dateText, inst) {
+		if (endDateTextBox.val() != '') {
+			var testStartDate = startDateTextBox.datetimepicker('getDate');
+			var testEndDate = endDateTextBox.datetimepicker('getDate');
+			if (testStartDate > testEndDate)
+				endDateTextBox.datetimepicker('setDate', testStartDate);
+		}
+		else {
+			endDateTextBox.val(dateText);
+		}
+	},
+	onSelect: function (selectedDateTime){
+		endDateTextBox.datetimepicker('option', 'minDate', startDateTextBox.datetimepicker('getDate') );
+	}
+});
+endDateTextBox.datetimepicker({
+	oneLine: true,
+        dateFormat: 'dd/mm/yy',
+	    timeFormat: 'HH:mm',
+        timezone: '+0100',
+	onClose: function(dateText, inst) {
+		if (startDateTextBox.val() != '') {
+			var testStartDate = startDateTextBox.datetimepicker('getDate');
+			var testEndDate = endDateTextBox.datetimepicker('getDate');
+			if (testStartDate > testEndDate)
+				startDateTextBox.datetimepicker('setDate', testEndDate);
+		}
+		else {
+			startDateTextBox.val(dateText);
+		}
+	},
+	onSelect: function (selectedDateTime){
+		startDateTextBox.datetimepicker('option', 'maxDate', endDateTextBox.datetimepicker('getDate') );
+	},
+	onClose: function (){
+         start_time=$('#range_example_1_start').datetimepicker('getDate');
+	     end_time=$('#range_example_1_end').datetimepicker('getDate')
             var d = new Date();
-	        d=date_formatter(d,true)
-            var n=date_formatter(start_time,true)
-
-	        if(d===n){
+            if(start_time>end_time){
+                console.log("start time can't be after end time")
+                return false
+            }
+	        if( d<end_time || d<start_time){
+	            alert("ciao")
 	            block=false;
 	            dataupdate()
 	            return false
             }
-            start_time=start_time.toISOString()
+	        start_time=start_time.toISOString()
+            end_time=end_time.toISOString()
             $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5000/',
@@ -357,12 +429,12 @@ $(document).ready(function() {
             data: JSON.stringify(
                 {
                     "start_time": start_time,
+                    "end_time":end_time
                 }),
             dataType: "json",
             success: function (result) {
                 if(result["status"]==="no data available"){
                     swal({
-         position: 'top-end',
          showConfirmButton: false,
          timer: 4000,
          icon: 'error',
@@ -370,25 +442,36 @@ $(document).ready(function() {
             });
                     return false;
                 }
+                update_bar();
+                update_energy();
+                update_traffic();
+                update_single_energy();
                 block=true;
+                components_number = count_components(result.energy[0]); // numero componenti primo set == tutti gli altri set
+                sensors = sensor_iterate(components_number);
+                $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-success\"></span>Online</div> </div>");
                 for (var j in result.energy) {
-                    xvalues_energy.push(result.energy[j].timestamp);
-                    yvalues_energy.push(sum(result.energy[j],components_number));
-                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number));
-                   if(j>=50){
-                    sensor_data = fill_data(result.energy[j],sensor_data,components_number)
-                    }
+                    xvalues_energy.push(result.energy[j]["key_as_string"]);
+                    yvalues_energy.push(sum(result.energy[j],components_number,true));
+                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number,true));
+                    sensor_data = fill_data(result.energy[j],sensor_data,components_number,true)
 
                 }
-                console.log(sensor_data)
                 for (var k in result.traffic) {
-                    xvalues_traffic.push(result.traffic[k].timestamp);
-                    yvalues_traffic.push(sum(result.traffic[k],components_number));
+                    xvalues_traffic.push(result.traffic[k]["key_as_string"]);
+                    yvalues_traffic.push(sum(result.traffic[k],components_number,true));
 
                 }
-                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
-                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
-                $("#time").replaceWith("<p id=\"time\">"+n+"</p>");
+                var section="";
+                for(i=0;i<components_number;i++){
+                    section=section+"                                    <option value=\""+(i+1)+"\">"+sensors[i]+"</option>\n";
+                }
+                $("#option").replaceWith(section);
+                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + (yvalues_energy[yvalues_energy.length-1]/ 1000 ).toFixed(2)+ "KJ" + "</div>");
+                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[yvalues_traffic.length-1]).toFixed(2) + "msg" + "</div>");
+                $("#components-number").replaceWith("<div class=\"large\" id=\"components-number\">"+components_number+"</div>");
+                var d = new Date();
+                $("#time").replaceWith("<p id=\"time\">"+date_formatter(d)+"</p>");
                 update_bar();
                 update_energy();
                 update_traffic();
@@ -399,7 +482,7 @@ $(document).ready(function() {
                 xvalues_energy =[];
                 yvalues_energy=[];
                 sensor_data=[];
-            },
+                },
             statusCode: {
                 404: function (response) {
                     console.log(response);
@@ -410,10 +493,18 @@ $(document).ready(function() {
             }
         });
         }
+
 });
+
     $('#refresh-content').on('click', function(e) {
 		e.preventDefault();
 		block=false
+        ysensor_values_energy=[];
+                xvalues_traffic=[];
+                yvalues_traffic=[];
+                xvalues_energy =[];
+                yvalues_energy=[];
+                sensor_data=[];
 		dataupdate()
 	});
 });
