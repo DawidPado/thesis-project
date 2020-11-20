@@ -34,8 +34,12 @@
 						</a>
 						</li>
 					</ul>
+
                 <div class="nav navbar-brand navbar-right">
-						<p id="time"></p>
+                    <p id="time"></p>
+                </div>
+                <div class="nav navbar-brand navbar-right">
+                    <p id="time2"></p>
                 </div>
 
 
@@ -69,12 +73,9 @@
 			<div class="clear"></div>
 		</div>
 		<div class="divider"></div>
-		<form role="search">
-			<div class="form-group">
-               <input type="text" class="form-control" id="range_example_1_start" placeholder="start date">
-                <input type="text" class="form-control" id="range_example_1_end" placeholder="end date">
-			</div>
-		</form>
+
+    {% block date_picker %} {% endblock %}
+
 		<ul class="nav menu">
 			<li {% if  url_for(request.endpoint)  == "/" %} class="active" {% endif %}><a href="/"><em class="fa fa-dashboard">&nbsp;</em>Dashboard</a></li>
 			<li {% if  url_for(request.endpoint)  == "/ml-models" %} class="active" {% endif %}><a href="/ml-models"><em class="fa fa-calendar">&nbsp;</em>ML Models</a></li>

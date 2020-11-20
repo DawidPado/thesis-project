@@ -53,18 +53,20 @@ def dashboard():
                 if data != None:  # Setting start time and end time of getting data
       ####################################################################################################################
                     if data["start_time"] and data["end_time"]:
-                        start_time=datetime.strptime(data["start_time"],"%Y-%m-%dT%H:%M:%S.000Z")
-                        end_time=datetime.strptime(data["end_time"],"%Y-%m-%dT%H:%M:%S.000Z")
-                        if (((end_time-start_time).seconds/86400)+((end_time-start_time).days)) < 1 :
+                        start_time=datetime.strptime(data["start_time"], "%Y-%m-%dT%H:%M:%S.000Z")
+                        end_time=datetime.strptime(data["end_time"], "%Y-%m-%dT%H:%M:%S.000Z")
+                        if (((end_time-start_time).seconds/3600)+((end_time-start_time).days)*24) < 3 :    #3hour
+                            interval=1
+                        elif (((end_time-start_time).seconds/86400)+((end_time-start_time).days)) < 1 :     #1day
                             interval=10
-                        elif(((end_time-start_time).seconds/86400)+((end_time-start_time).days)) < 5:
+                        elif(((end_time-start_time).seconds/86400)+((end_time-start_time).days)) < 5:       #5days
                             interval=720
                         else:
-                            interval=1440
-                        message1 = str(start_time.year) + "-" + checkdate(start_time.month) + "-" + checkdate(
-                            start_time.day) + "T" + checkdate(start_time.hour) + ":" + checkdate(start_time.minute) + ":00Z"
-                        message2=str(end_time.year) + "-" + checkdate(end_time.month) + "-" + checkdate(
-                            end_time.day) + "T" + checkdate(end_time.hour) + ":" + checkdate(end_time.minute) + ":00Z"
+                            interval=1440                                                                   #more than 5days
+                        message1 = str(start_time.year) + "-" + checkdate(start_time.month) + "-" \
+                            + checkdate(start_time.day) + "T" + checkdate(start_time.hour) + ":" + checkdate(start_time.minute) + ":00Z"
+                        message2=str(end_time.year) + "-" + checkdate(end_time.month) + "-" \
+                            + checkdate(end_time.day) + "T" + checkdate(end_time.hour) + ":" + checkdate(end_time.minute) + ":00Z"
 
                         query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\"" + message1 + "\", \"lte\":\"" + message2 + "\"}}}}"
                         res = es.search(index='energy', body=query, size=10000)

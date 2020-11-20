@@ -28,10 +28,10 @@ $(document).ready(function() {
                     xvalues_energy.push(result.energy[j].timestamp);
                     yvalues_energy.push(sum(result.energy[j],components_number));
                     ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number));
-                   if(j>=50){
+                   /*if(j>=50){ //last ten minuts
                     sensor_data = fill_data(result.energy[j],sensor_data,components_number)
-                    }
-
+                    }*/
+                     sensor_data = fill_data(result.energy[j],sensor_data,components_number)
                 }
 
                 console.log(components_number)
@@ -76,10 +76,10 @@ $(document).ready(function() {
                     xvalues_energy.push(result.energy[j].timestamp);
                     yvalues_energy.push(sum(result.energy[j],components_number));
                     ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number));
-                   if(j>=50){
+                   /*if(j>=50){ //last ten minuts
                     sensor_data = fill_data(result.energy[j],sensor_data,components_number)
-                    }
-
+                    }*/
+                    sensor_data = fill_data(result.energy[j],sensor_data,components_number)
                 }
                 console.log(sensor_data)
                 for (var k in result.traffic) {
@@ -471,7 +471,8 @@ endDateTextBox.datetimepicker({
                 $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[yvalues_traffic.length-1]).toFixed(2) + "msg" + "</div>");
                 $("#components-number").replaceWith("<div class=\"large\" id=\"components-number\">"+components_number+"</div>");
                 var d = new Date();
-                $("#time").replaceWith("<p id=\"time\">"+date_formatter(d)+"</p>");
+                $("#time").replaceWith("<p id=\"time\">"+date_formatter(end_time)+"</p>");
+                $("#time2").replaceWith("<p id=\"time2\">"+date_formatter(start_time)+" -</p>");
                 update_bar();
                 update_energy();
                 update_traffic();
@@ -499,6 +500,7 @@ endDateTextBox.datetimepicker({
     $('#refresh-content').on('click', function(e) {
 		e.preventDefault();
 		block=false
+        $("#time2").replaceWith("<p id=\"time2\"></p>");
         ysensor_values_energy=[];
                 xvalues_traffic=[];
                 yvalues_traffic=[];

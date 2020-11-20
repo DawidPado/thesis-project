@@ -7,39 +7,13 @@ $(document).ready(function() {
     var sensors = []
     var components_number=0;
     var sensor_number =1;
-    var disabled="", element=""
 // start and update data
     start();
     setInterval(dataupdate, 30000); // refresh every 30s
 
 // start and update function
     function start() {
-         $.ajax({
-            method: 'POST',
-            url: 'http://127.0.0.1:5001/train-info',
-            contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify(
-                {
-                    "type": "check",
-                }),
-            dataType: "json",
-            success: function (result) {
-                if (result["status"] !== "free") {
-                    console.log(result)
-                    disabled = "disabled"
-                    element=result["model_name"]
-                }
-            },
-            statusCode: {
-                400: function (response) {
-                    console.log(response);
-                }
 
-            },
-            error: function (err) {
-               offline(err)
-            }
-        });
         $.ajax({
             method: 'POST',
             url: 'http://127.0.0.1:5001/',
@@ -83,11 +57,44 @@ $(document).ready(function() {
                 xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];
                 var table=define_table()
                 $("#tbody").replaceWith(table);
-                if(disabled!=""){
-                    console.log(element)
-                    $("#"+element+"-button").replaceWith("<button id='"+element+"-button' onclick=\"train("+element+")\" class=\"btnbtn - smbtn - primary\" type=\"button\" disabled>Runs</button");
-                }
                 fill_table(components_number)
+            },
+            statusCode: {
+                400: function (response) {
+                    console.log(response);
+                }
+
+            },
+            error: function (err) {
+               offline(err)
+            }
+        });
+        $.ajax({
+            method: 'POST',
+            url: 'http://127.0.0.1:5001/train-info',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(
+                {
+                    "type": "check",
+                }),
+            dataType: "json",
+            success: function (result) {
+
+                if (result["status"] !== "free") {
+                    disable_buttons()
+                    var x=result.model_name
+                    swal
+                    let i=0
+                    swal({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 5000,
+                icon: 'info',
+                title: x+' is still training'
+            });
+
+                }
             },
             statusCode: {
                 400: function (response) {
@@ -130,6 +137,7 @@ $(document).ready(function() {
                 update_energy();
                 update_traffic();
                 update_single_data()
+
                 $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy_forecast[59] / 1000 + "</div>");
                 $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + (yvalues_traffic_forecast[59]) + "</div>");
                 xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
@@ -397,7 +405,7 @@ $(document).ready(function() {
             "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Energy-5\"></td>\n" +
             "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Energy-6\"></td>\n" +
             "<td id=\"Energy-7\"></td>\n" +
-            "<td><button id='Energy-button' onclick=\"train('Energy')\" class=\"btn btn-sm btn-primary\" type=\"button\" "+disabled+">Train</button></td>\n" +
+            "<td><button id='Energy-button' onclick=\"train('Energy')\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n" +
             "\t\t\t\t\t\t\t\t\t\t</tr>\n" +
             "\t\t\t\t\t\t\t\t\t\t<tr id='Traffic'>\n" +
             "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Traffic-1\">Traffic</td>\n" +
@@ -407,22 +415,87 @@ $(document).ready(function() {
             "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Traffic-5\"></td>\n" +
             "\t\t\t\t\t\t\t\t\t\t\t<td id=\"Traffic-6\"></td>\n" +
             "<td id=\"Traffic-7\"></td>\n" +
-            "<td ><button  id='Traffic-button' onclick=\"train('Traffic')\" class=\"btn btn-sm btn-primary\" type=\"button\" "+disabled+">Train</button></td>\n" +
+            "<td ><button  id='Traffic-button' onclick=\"train('Traffic')\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n" +
             "\t\t\t\t\t\t\t\t\t\t</tr>"
         for (i=1;i<=components_number;i++){
             table+="<tr id='S"+i+"'>\n";
                 for(j=1;j<=7;j++){
                 table+="<td id=\"S"+i.toString()+"-"+j.toString()+"\"></td>\n"
                 }
-            table+="<td><button id='S"+i.toString()+"-button' onclick=\"train('S"+i.toString()+"')\" class=\"btn btn-sm btn-primary\" type=\"button\" "+disabled+">Train</button></td>\n"+
+            table+="<td><button id='S"+i.toString()+"-button' onclick=\"train('S"+i.toString()+"')\" class=\"btn btn-sm btn-primary\" type=\"button\">Train</button></td>\n"+
             "</tr>\n";
         }
         table+="</tbody>\n"
 
         return table
     }
+
+function fill_table(components_number){
+        $.ajax({
+            method: 'POST',
+            url: 'http://127.0.0.1:5001/train-info',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify(
+                {
+                    'type': "get",
+                    'sensor': components_number,
+                }),
+            dataType: "json",
+            success: function (result) {
+                console.log(result)
+
+                $("#last_build_name").replaceWith("<div class=\"text-muted\" id=\"last_build_name\">Last Model Build ("+result["last_record"]["model_type"]+")</div>");
+                $("#last_build_value").replaceWith("<div class=\"large\" id=\"last_build_value\">"+date_formatter(result["last_record"]["last_build"])+"</div>");
+
+                $("#Energy-2").replaceWith("<td id=\"Energy-2\">"+result["Energy"]["model_name"]+"</td>");
+                $("#Energy-3").replaceWith("<td id=\"Energy-3\">"+date_formatter(result["Energy"]["last_build"])+"</td>");
+                $("#Energy-4").replaceWith("<td id=\"Energy-4\">"+result["Energy"]["rmse"]+"</td>");
+                $("#Energy-5").replaceWith("<td id=\"Energy-5\">"+result["Energy"]["smape"]+"</td>");
+                $("#Energy-6").replaceWith("<td id=\"Energy-6\">"+result["Energy"]["mase"]+"</td>");
+                $("#Energy-7").replaceWith("<td id=\"Energy-7\">"+result["Energy"]["horizon"]+"min</td>");
+
+                $("#Traffic-2").replaceWith("<td id=\"Traffic-2\">"+result["Traffic"]["model_name"]+"</td>");
+                $("#Traffic-3").replaceWith("<td id=\"Traffic-3\">"+date_formatter(result["Traffic"]["last_build"])+"</td>");
+                $("#Traffic-4").replaceWith("<td id=\"Traffic-4\">"+result["Traffic"]["rmse"]+"</td>");
+                $("#Traffic-5").replaceWith("<td id=\"Traffic-5\">"+result["Traffic"]["smape"]+"</td>");
+                $("#Traffic-6").replaceWith("<td id=\"Traffic-6\">"+result["Traffic"]["mase"]+"</td>");
+                $("#Traffic-7").replaceWith("<td id=\"Traffic-7\">"+result["Traffic"]["horizon"]+"min</td>");
+
+
+
+
+                for(i=1;i<=components_number;i++){
+                    $("#S"+i.toString()+"-1").replaceWith("<td id=\"S"+i.toString()+"-1\">"+result["S"+i.toString()]["model_type"]+"</td>");
+                    $("#S"+i.toString()+"-2").replaceWith("<td id=\"S"+i.toString()+"-2\">"+result["S"+i.toString()]["model_name"]+"</td>");
+                    $("#S"+i.toString()+"-3").replaceWith("<td id=\"S"+i.toString()+"-3\">"+date_formatter(result["S"+i.toString()]["last_build"])+"</td>");
+                    $("#S"+i.toString()+"-4").replaceWith("<td id=\"S"+i.toString()+"-4\">"+result["S"+i.toString()]["rmse"]+"</td>");
+                    $("#S"+i.toString()+"-5").replaceWith("<td id=\"S"+i.toString()+"-5\">"+result["S"+i.toString()]["smape"]+"</td>");
+                    $("#S"+i.toString()+"-6").replaceWith("<td id=\"S"+i.toString()+"-6\">"+result["S"+i.toString()]["mase"]+"</td>");
+                    $("#S"+i.toString()+"-7").replaceWith("<td id=\"S"+i.toString()+"-7\">"+result["S"+i.toString()]["horizon"]+"min</td>");
+                }
+
+
+            },
+            statusCode: {
+                400: function (response) {
+                    console.log(response);
+                }
+
+            },
+            error: function (err) {
+                offline(err)
+            }
+        })
+    }
     $('#refresh-content').on('click', function(e) {
 		e.preventDefault();
 		dataupdate()
 	});
+    function disable_buttons(){
+        $("#Energy-button").replaceWith("<button  id='Energy-button' onclick=\"train('Traffic')\" class=\"btn btn-sm btn-primary\" type=\"button\" disabled>Train</button>");
+        $("#Traffic-button").replaceWith("<button  id='Traffic-button' onclick=\"train('Traffic')\" class=\"btn btn-sm btn-primary\" type=\"button\" disabled>Train</button>");
+        for(i=1;i<=components_number; i++){
+            $("#S"+i.toString()+"-button").replaceWith("<button id='S"+i.toString()+"-button' onclick=\"train('S"+i.toString()+"')\" class=\"btn btn-sm btn-primary\" type=\"button\" disabled>Train</button>");
+        }
+    }
 })

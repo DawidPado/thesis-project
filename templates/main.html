@@ -1,7 +1,14 @@
 {% extends "template.html" %}
+{% block date_picker %}
+<form role="search">
+
+			<div class="form-group">
+               <input type="text" class="form-control" id="range_example_1_start" placeholder="start date">
+                <input type="text" class="form-control" id="range_example_1_end" placeholder="end date">
+			</div>
+		</form>
+{% endblock %}
 {% block content %}
-
-
 		<div class="row">
 			<ol class="breadcrumb">
 				<li><a href="/">
@@ -101,7 +108,7 @@
 			<div class="col-md-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						Energy Distribution Last 10min
+						Energy Distribution
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body main-chart">
 						<div class="canvas-wrapper" id="new-chart3">
