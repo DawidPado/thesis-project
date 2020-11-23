@@ -9,11 +9,166 @@
 				<li class="active">Adaptation</li>
 			</ol>
 		</div>
+<div class="panel panel-container">
+			<div class="row">
+				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-blue panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-exchange color-blue"></em>
+							<div class="large" id="total-traffic">0</div>
+							<div class="text-muted">Total Adaptation</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
+					<div class="panel panel-teal panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-bolt" style="color: rgb(54,99,235)"></em>
+							<div class="large" id="total-energy">0</div>
+							<div class="text-muted">Energy Saved (Joules)</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
+					<div class="panel panel-orange panel-widget border-right">
+						<div class="row no-padding"><em class="fa fa-xl fa-line-chart color-blue"></em>
+							<div class="large" id="components-number">0</div>
+							<div class="text-muted">Traffic reduced (messages)</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
+					<div class="panel panel-red panel-widget border-right">
+						<div class="row no-padding">
+                            <em class="fa fa-xl fa-bolt" style="color: rgb(54,99,235)"></em><em class="fa fa-xl fa-unlock" style="color: rgb(54,99,235)"></em>
+							<div class="large">NaN</div>
+							<div class="text-muted">Current Pattern</div>
+						</div>
+					</div>
+				</div>
+                <div class="col-xs-6 col-md-3 col-lg-3 no-padding">
+					<div class="panel panel-red panel-widget ">
+						<div class="row no-padding">
+                            <em class="fa fa-xl fa-exchange color-blue"></em><em class="fa fa-xl fa-unlock color-blue"></em>
+							<div class="large">0 seconds </div>
+							<div class="text-muted">Time per adaptation (average)</div>
+						</div>
+					</div>
+				</div>
+			</div><!--/.row-->
+		</div>
+    <div class="row">
+        <div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+                        Real-time grid of Q-learning process
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body main-chart" style="height: 350px; overflow: auto;">
+            <table class="table table-bordered">
 
+          <thead>
+            <tr>
+           <th>Energy/Traffic</th>
+           <th>hd</th>
+           <th>md</th>
+            <th>ld</th>
+            </tr>
+            </thead>
+            <tbody  style="word-break: break-all;">
+            <tr>
+           <td id="">he</td>
+           <td id="hehd"></td>
+            <td id="hemd"></td>
+            <td id="held"></td>
+            </tr>
+            <tr >
+            <td id="">me</td>
+            <td id="mehd"></td>
+            <td id="memd"></td>
+            <td id="meld"></td>
+            </tr>
+            <tr >
+            <td id="">le</td>
+            <td id="lehd"></td>
+            <td id="lemd"></td>
+            <td id="leld"></td>
+            </tr>
+
+            </tbody>
+
+            </table>
+                    </div>
+                    </div>
+        </div>
+    <div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+                        Real-time view of Q-table matrix
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body main-chart" style="height: 350px; overflow: auto;">
+            <table class="table table-bordered">
+
+          <thead>
+            <tr>
+           <th>State/Action</th>
+           <th>SU</th>
+           <th>CO</th>
+            <th>SC</th>
+            </tr>
+            </thead>
+            <tbody id = "tbody" style="word-break: break-all;">
+            <tr>
+           <td id="energy-1">hehd</td>
+           <td id="energy-2"></td>
+            <td id="energy-3"></td>
+                <td id="energy-4"></td>
+            </tr>
+            <tr>
+           <td id="energy-1">hemd</td>
+           <td id="energy-2"></td>
+            <td id="energy-3"></td>
+                <td id="energy-4"></td>
+            </tr>
+            <tr>
+           <td id="energy-1">held</td>
+           <td id="energy-2"></td>
+            <td id="energy-3"></td>
+                <td id="energy-4"></td>
+            </tr>
+            </tbody>
+            </table>
+                    </div>
+                </div>
+        </div>
+    </div>
+     <div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+                        Number of adaptation
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body main-chart">
+						<div class="canvas-wrapper">
+							<canvas class="chart " id="number-chart" height="300" width="600" ></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						Adaptation time
+						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
+					<div class="panel-body main-chart">
+						<div class="canvas-wrapper" >
+							<canvas class="chart"  id="time-chart" height="300" width="600" ></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
 {% endblock %}
 {% block scripts %}
 	<script src="../static/login/vendor/dist/Chart.min.js"></script>
     <script src="../static/dashboard/js/utilities.js"></script>
-	<script src="../static/dashboard/js/charts/main-charts.js"></script>
+	<script src="../static/dashboard/js/adaptation.js"></script>
 {% endblock %}

@@ -180,4 +180,39 @@ for i in range(24):
         c4=c4+1
         forcast = es1.index(index='traffic-forecast', body=text)
 
-#res = es.search(index='energy')
+number_of_adaptation=[]
+for i in range(24):
+    if i < 10:
+        hh="0"+ str(i)
+    else:
+        hh=str(i)
+    for j in range(60):
+        if j < 10:
+            mm="0"+str(j)
+        else:
+            mm=str(j)
+        date=data+'T'+hh+':'+mm+':'+ss+'Z'
+        message = "{ \"timestamp\":\"" + date+"\","
+        n = int(random.randrange(10, 20))
+        message = message + " \"value\": " +str(n) + " }"
+        number_of_adaptation.append(n)
+        rex = es.index(index='adaptation_number', body=message)
+
+c5=0
+for i in range(24):
+    if i < 10:
+        hh="0"+ str(i)
+    else:
+        hh=str(i)
+    for j in range(60):
+        if j < 10:
+            mm="0"+str(j)
+        else:
+            mm=str(j)
+        date=data+'T'+hh+':'+mm+':'+ss+'Z'
+        text = "{ \"timestamp\":\"" + date + "\","
+        total=number_of_adaptation[c5]
+        total=round(random.uniform(total-1, total+1), 2)
+        text = text + " \"value\": " + str(total) + " }"
+        c5=c5+1
+        forcast = es1.index(index='adaptation_time', body=text)

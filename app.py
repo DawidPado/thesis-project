@@ -1,4 +1,5 @@
 import json
+import random
 from datetime import datetime
 
 from elasticsearch import Elasticsearch
@@ -97,13 +98,21 @@ def dashboard():
                                 agg=agg+","
                         query = "{ "+ agg+" \"query\":{\"range\":{\"timestamp\":{\"gte\":\"" + message1 + "\", \"lte\":\"" + message2 + "\"}}}}"
     #######################################################################################################################
+
                 time = 60  # how many minuts
-                status='{ \'energy\':[' # inital status
+
+                #traffic and energy violation
+                x=random.randint(1,100)
+                y=random.randint(1,100)
+
+
+                status='{\'traffic_violation\':'+str(x)+', \'energy_violation\':'+str(y)+', \'energy\':[' # inital status
                 count=0
                 if (start_time == "now"):
                     query = "{\"query\":{\"range\":{\"timestamp\":{\"gte\":\""+start_time + str(-time) + "m\"}}}}"
                     res = es.search(index='energy', body=query,size=time)
                     max=len(res['hits']['hits'])  #lenght of records
+                    if max == 0: status = status + "],"
                     for i in range(max): # fill status with energy records
                         count=count +1
                         if count < max : #check number of current record to close energy
@@ -115,6 +124,7 @@ def dashboard():
                 else:
                     res = es.search(index='energy', body=query, size=1000)
                     max = len(res['aggregations']['records']['buckets'])
+                    if max == 0: status = status + "],"
                     for i in range(max): # fill status with energy records
                         count=count +1
                         if count < max : #check number of current record to close energy
@@ -126,6 +136,7 @@ def dashboard():
 
                 if (start_time == "now"):
                     res = es.search(index='traffic', body=query,size=time)
+                    if max == 0: status = status + "]}"
                     for i in range(max):    #fill status with energy records
                         count = count + 1
                         if count < max:    #check number of current record to close traffic
@@ -136,6 +147,7 @@ def dashboard():
                     return json.loads(status.replace("'", "\""))
                 else:
                     res = es.search(index='traffic', body=query, size=1000)
+                    if max == 0: status = status + "]}"
                     for i in range(max): # fill status with energy records
                         count=count +1
                         if count < max : #check number of current record to close energy

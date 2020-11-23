@@ -41,21 +41,6 @@
                 <div class="nav navbar-brand navbar-right">
                     <p id="time2"></p>
                 </div>
-
-
-                <!--
-<ul class="nav navbar-top-links navbar-right">
-						<li class="dropdown">
-							 <input class="form-control dropdown-toggle" type="text" id="date_ex">
-						</li>
-						<li class="dropdown"><a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-							<em class="fa fa-search"></em><span class="label label-primary">5</span>
-						</a>
-
-						</li>
-					</ul>
-
--->
 			</div>
 		</div><!-- /.container-fluid -->
 	</nav>
@@ -79,7 +64,7 @@
 		<ul class="nav menu">
 			<li {% if  url_for(request.endpoint)  == "/" %} class="active" {% endif %}><a href="/"><em class="fa fa-dashboard">&nbsp;</em>Dashboard</a></li>
 			<li {% if  url_for(request.endpoint)  == "/ml-models" %} class="active" {% endif %}><a href="/ml-models"><em class="fa fa-calendar">&nbsp;</em>ML Models</a></li>
-			<li {% if  url_for(request.endpoint)  == "/analytics" %} class="active" {% endif %} ><a href="/analytics"><em class="fa fa-bar-chart">&nbsp;</em>Analytics</a></li>
+	<!--	<li {% if  url_for(request.endpoint)  == "/analytics" %} class="active" {% endif %} ><a href="/analytics"><em class="fa fa-bar-chart">&nbsp;</em>Analytics</a></li> -->
 			<li {% if  url_for(request.endpoint)  == "/simulation" %} class="active" {% endif %}><a href="/simulation"><em class="fa fa-code-fork">&nbsp;</em>Simulation</a></li>
 			<li {% if  url_for(request.endpoint)  == "/adaptation" %} class="active" {% endif %}><a href="/adaptation"><em class="fa fa-clone">&nbsp;</em>Adaptation</a></li>
             <li {% if  url_for(request.endpoint)  == "/configuration" %} class="active" {% endif %}><a href="/configuration"><em class="fa fa-cogs">&nbsp;</em>Configuration</a></li>

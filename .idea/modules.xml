@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/flaskProject.iml" filepath="$PROJECT_DIR$/.idea/flaskProject.iml" />
       <module fileurl="file://$PROJECT_DIR$/../flaskProject1/.idea/flaskProject1.iml" filepath="$PROJECT_DIR$/../flaskProject1/.idea/flaskProject1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../flaskProject2/.idea/flaskProject2.iml" filepath="$PROJECT_DIR$/../flaskProject2/.idea/flaskProject2.iml" />
     </modules>
   </component>
 </project>

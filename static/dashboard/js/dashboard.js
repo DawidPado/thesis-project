@@ -21,6 +21,7 @@ $(document).ready(function() {
             method: 'POST',
             url: 'http://127.0.0.1:5000/',
             success: function (result) {
+                console.log(result)
                 components_number = count_components(result.energy[0]); // numero componenti primo set == tutti gli altri set
                 sensors = sensor_iterate(components_number);
                 $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-success\"></span>Online</div> </div>");
@@ -47,6 +48,8 @@ $(document).ready(function() {
                 $("#option").replaceWith(section);
                 $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
                 $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
+                $("#traffic-violation").replaceWith("<div class=\"large\" id=\"traffic-violation\">"+result["traffic_violation"]+"msg</div>");
+                $("#energy-violation").replaceWith("<div class=\"large\" id=\"energy-violation\">"+result["energy_violation"]+"J</div>");
                 $("#components-number").replaceWith("<div class=\"large\" id=\"components-number\">"+components_number+"</div>");
                 var d = new Date();
                 $("#time").replaceWith("<p id=\"time\">"+date_formatter(d)+"</p>");

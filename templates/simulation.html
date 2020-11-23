@@ -1,29 +1,18 @@
-<!doctype html>
-<html>
-<head>
+{% extends "template.html" %}
+{% block content %}
 
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" href="../static/dashboard/css/timepicker.css">
-  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-  <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
- <script src="https://trentrichardson.com/examples/timepicker/jquery-ui-timepicker-addon.js"></script>
-
-  <script>
-  $(function() {
-    $( "#date_ex" ).datetimepicker({
-	    oneLine: true,
-	    timeFormat: 'H',
-});
-  });
-  </script>
-
-
-  
-</head>
-<body>
-
-<div>Selected Date: <input type="text" id="date_ex"></div>
- 
- 
-</body>
-</html>
+		<div class="row">
+			<ol class="breadcrumb">
+				<li><a href="/">
+					<em class="fa fa-home"></em>
+				</a></li>
+				<li class="active">Simulation</li>
+			</ol>
+		</div>
+<h1 style="text-align: center"> Job in progress</h1>
+{% endblock %}
+{% block scripts %}
+	<script src="../static/login/vendor/dist/Chart.min.js"></script>
+    <script src="../static/dashboard/js/charts/chart-config.js"></script>
+	<script src="../static/dashboard/js/charts/main-charts.js"></script>
+{% endblock %}

@@ -50,6 +50,8 @@ $(document).ready(function() {
                 show_single_data()
                 $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy_forecast[59] / 1000 + "</div>");
                 $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + (yvalues_traffic_forecast[59]) + "</div>");
+                $("#models_in_use").replaceWith("<div class=\"large\" id=\"models_in_use\">"+result["models_in_use"]+"</div>");
+                $("#error_rate").replaceWith("<div class=\"large\" id=\"error_rate\">"+result["error_rate"]+"</div>");
                 var d = new Date();
                 $("#time").replaceWith("<p id=\"time\">"+date_formatter(d)+"</p>");
                 xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
@@ -137,7 +139,8 @@ $(document).ready(function() {
                 update_energy();
                 update_traffic();
                 update_single_data()
-
+                $("#models_in_use").replaceWith("<div class=\"large\" id=\"models_in_use\">"+result["models_in_use"]+"</div>");
+                $("#error_rate").replaceWith("<div class=\"large\" id=\"error_rate\">"+result["error_rate"]+"</div>");
                 $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy_forecast[59] / 1000 + "</div>");
                 $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + (yvalues_traffic_forecast[59]) + "</div>");
                 xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];

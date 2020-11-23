@@ -1,4 +1,4 @@
-//energy
+//http://localhost:9200/energy
 {
   "properties": {
     "S1": {
@@ -72,7 +72,7 @@
     }
   }
 }
-,//traffic
+,//http://localhost:9200/traffic
 {
   "properties": {
     "S1": {
@@ -146,7 +146,7 @@
     }
   }
 }
-//energy-forecast
+//http://localhost:9200/energy-forecast
 {
   "properties": {
                 "actual": {
@@ -160,7 +160,7 @@
                 }
             }
 }
-//traffic-forecast
+//http://localhost:9200/traffic-forecast
 {
   "properties": {
     "actual": {
@@ -174,7 +174,7 @@
     }
   }
 }
-//sensor-data
+//http://localhost:9200/sensor-data
 {
 "properties": {
                 "S1": {
@@ -248,7 +248,7 @@
                 }
             }
 }
-//forecast-sensor-data
+//http://localhost:9200/forecast-sensor-data
 {
 "properties": {
                 "S1": {
@@ -322,7 +322,7 @@
                 }
             }
 }
-//configuration
+//http://localhost:9200/configuration
 {
             "properties": {
                 "data_pipeline": {
@@ -403,7 +403,7 @@
                 }
             }
 }
-//train-info
+//http://localhost:9200/train-info
 {
             "properties": {
                 "model_type": {"type": "text"},
@@ -414,4 +414,44 @@
                 "mase": {"type": "float"},
                 "horizon": {"type": "float"}
             }
+}
+//http://localhost:9200/system_state/_mapping
+//for _search or _doc you have to put id current
+//example : http://localhost:9200/system_state/_doc/current
+{
+   "properties": {
+      "curent": {
+        "type": "keyword"
+      }
+   }
+}
+//http://localhost:9200/adaptation_number/_mapping
+{
+            "properties": {
+                "value": {"type": "integer"},
+                "timestamp": {"type": "date"}
+            }
+}
+//http://localhost:9200/adaptation_time/_mapping
+{
+            "properties": {
+                "value": {"type": "float"},
+                "timestamp": {"type": "date"}
+            }
+}
+//http://localhost:9200/q_table/_mapping
+// for _search or _doc you have to put id that is a compinatio of ['he','me','le'] and ['hd','md','ld']
+// http://localhost:9200/q_table/_doc/mehd
+{
+   "properties": {
+      "co": {
+        "type": "float"
+      },
+      "su":{
+          "type":"float"
+      },
+       "sc":{
+          "type":"float"
+      }
+   }
 }
