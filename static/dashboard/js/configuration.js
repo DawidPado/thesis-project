@@ -87,7 +87,7 @@ $(document).ready(function() {
                     console.log(data)
                     if (data.status === "success") {
                         swal({
-                            title: "configurations saved sucessfully !",
+                            title: "configurations saved successfully !",
                             icon: "success",
                             button: "ok",
                         });
@@ -192,7 +192,7 @@ $(document).ready(function() {
                     console.log(data)
                     if (data.status === "success") {
                         swal({
-                            title: "configurations saved sucessfully !",
+                            title: "configurations saved successfully !",
                             icon: "success",
                             button: "ok",
                         });
@@ -297,7 +297,7 @@ $(document).ready(function() {
                     console.log(data)
                     if (data.status === "success") {
                        swal({
-                            title: "configurations saved sucessfully !",
+                            title: "configurations saved successfully !",
                             icon: "success",
                             button: "ok",
                         });
@@ -402,7 +402,7 @@ $(document).ready(function() {
                     console.log(data)
                     if (data.status === "success") {
                         swal({
-                            title: "configurations saved sucessfully !",
+                            title: "configurations saved successfully !",
                             icon: "success",
                             button: "ok",
                         });

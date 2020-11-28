@@ -38,7 +38,7 @@ for i in range(24):
         for k in range (23):
             if k == 0:
                 continue
-            n = random.randrange(0, 1000)
+            n = random.randrange(1, 6)
             n1= n1 + n
 
             message = message + " \"S"+str(k)+"\": " +str(n)
@@ -70,7 +70,7 @@ for i in range(24):
         for k in range (23):
             if k == 0:
                 continue
-            n = random.randrange(0, 1000)
+            n = random.randrange(5, 100)
             n1=n1+n
 
             message = message + " \"S"+str(k)+"\": " +str(n)
@@ -99,7 +99,7 @@ for i in range(24):
         for k in range (23):
             if k == 0:
                 continue
-            n = random.randrange(0, 1000)
+            n = random.randrange(0, 100)
             data_values[c1].append(n)
             message = message + " \"S"+str(k)+"\": " +str(n)
             if k==22:
@@ -127,10 +127,10 @@ for i in range(24):
             if k == 0:
                 continue
             total = data_values[c2][k-1]
-            if total > 100:
-                total = random.randint(total - 100, total + 100)
+            if total <10:
+                total = random.randint(0, total +10)
             else:
-                total = random.randint(0, total + 100)
+                total = random.randint(total-10, total + 10)
             message = message + " \"S"+str(k)+"\": " +str(total)
             if k==22:
                 message = message + " }"
@@ -156,7 +156,7 @@ for i in range(24):
         text = "{ \"timestamp\":\"" + date + "\","
         total=energy_values[c3]
         text = text + " \"actual\": " + str(total) + ", "
-        total = random.randint(total - 1000, total + 1000)
+        total = random.randint(total - 1, total + 1)
         text = text + " \"forecast\": " + str(total) + " }"
         c3 = c3 + 1
         forcast = es1.index(index='energy-forecast', body=text)
@@ -175,7 +175,10 @@ for i in range(24):
         text = "{ \"timestamp\":\"" + date + "\","
         total=traffic_values[c4]
         text = text + " \"actual\": " + str(total) + ", "
-        total = random.randint(total - 1000, total + 1000)
+        if total < 10:
+            total = random.randint(0, total + 10)
+        else:
+            total = random.randint(total-10, total + 10)
         text = text + " \"forecast\": " + str(total) + " }"
         c4=c4+1
         forcast = es1.index(index='traffic-forecast', body=text)

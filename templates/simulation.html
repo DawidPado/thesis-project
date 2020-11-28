@@ -9,10 +9,39 @@
 				<li class="active">Simulation</li>
 			</ol>
 		</div>
-<h1 style="text-align: center"> Job in progress</h1>
+
+    <div class="panel panel-default" style="width: 50%; margin-bottom: 5%; margin-top:5%;  margin-left:25%; margin-right:25% ">
+        <div class="panel-body">
+    <form id="form" enctype="multipart/form-data" method="post">
+        <div class="form-group ">
+            <label >upload cupCarbon Project</label>
+            <input type="file" class="form-control" id="file" name="file">
+        </div>
+        <div class="form-group">
+            <label >simulation time (seconds)</label>
+            <input type="text" class="form-control" id="simulation" value="180"  required>
+        </div>
+         <div class="form-group">
+            <label >number of sensors</label>
+             <input type="text" class="form-control" id="sensors" value="22" required />
+             </div>
+             <div class="form-group">
+             <label>number of patterns</label>
+            <input type="text" class="form-control" id="patterns" value="3"  required />
+        </div>
+
+
+        <button type="button" id="upload" class="btn btn-primary">Upload</button>
+        <button type="button" id="start" class="btn btn-primary">Start</button>
+        <button type="button" id="stop" class="btn btn-primary" disabled>Stop</button>
+
+    </form>
+    <p></p>
+        </div>
+    </div>
+
 {% endblock %}
 {% block scripts %}
-	<script src="../static/login/vendor/dist/Chart.min.js"></script>
-    <script src="../static/dashboard/js/charts/chart-config.js"></script>
-	<script src="../static/dashboard/js/charts/main-charts.js"></script>
+    <script src="../static/dashboard/js/validator.js"></script>
+	<script src="../static/dashboard/js/simulation.js"></script>
 {% endblock %}

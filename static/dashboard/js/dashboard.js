@@ -46,10 +46,10 @@ $(document).ready(function() {
                     section=section+"                                    <option value=\""+(i+1)+"\">"+sensors[i]+"</option>\n";
                 }
                 $("#option").replaceWith(section);
-                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
+                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] + "J" + "</div>");
                 $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
-                $("#traffic-violation").replaceWith("<div class=\"large\" id=\"traffic-violation\">"+result["traffic_violation"]+"msg</div>");
-                $("#energy-violation").replaceWith("<div class=\"large\" id=\"energy-violation\">"+result["energy_violation"]+"J</div>");
+                $("#traffic-violation").replaceWith("<div class=\"large\" id=\"traffic-violation\">"+result["traffic_violation"]+"</div>");
+                $("#energy-violation").replaceWith("<div class=\"large\" id=\"energy-violation\">"+result["energy_violation"]+"</div>");
                 $("#components-number").replaceWith("<div class=\"large\" id=\"components-number\">"+components_number+"</div>");
                 var d = new Date();
                 $("#time").replaceWith("<p id=\"time\">"+date_formatter(d)+"</p>");
@@ -90,8 +90,11 @@ $(document).ready(function() {
                     yvalues_traffic.push(sum(result.traffic[k],components_number));
 
                 }
-                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] / 1000 + "KJ" + "</div>");
+                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59]  + "J" + "</div>");
                 $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
+                $("#traffic-violation").replaceWith("<div class=\"large\" id=\"traffic-violation\">"+result["traffic_violation"]+"</div>");
+                $("#energy-violation").replaceWith("<div class=\"large\" id=\"energy-violation\">"+result["energy_violation"]+"</div>");
+
                 var d = new Date();
                 $("#time").replaceWith("<p id=\"time\">"+date_formatter(d)+"</p>");
                 update_bar();
@@ -470,8 +473,11 @@ endDateTextBox.datetimepicker({
                     section=section+"                                    <option value=\""+(i+1)+"\">"+sensors[i]+"</option>\n";
                 }
                 $("#option").replaceWith(section);
-                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + (yvalues_energy[yvalues_energy.length-1]/ 1000 ).toFixed(2)+ "KJ" + "</div>");
+                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + (yvalues_energy[yvalues_energy.length-1] ).toFixed(2)+ "J" + "</div>");
                 $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[yvalues_traffic.length-1]).toFixed(2) + "msg" + "</div>");
+                $("#traffic-violation").replaceWith("<div class=\"large\" id=\"traffic-violation\">"+result["traffic_violation"]+"</div>");
+                $("#energy-violation").replaceWith("<div class=\"large\" id=\"energy-violation\">"+result["energy_violation"]+"</div>");
+
                 $("#components-number").replaceWith("<div class=\"large\" id=\"components-number\">"+components_number+"</div>");
                 var d = new Date();
                 $("#time").replaceWith("<p id=\"time\">"+date_formatter(end_time)+"</p>");

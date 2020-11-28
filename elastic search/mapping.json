@@ -421,7 +421,10 @@
 {
    "properties": {
       "curent": {
-        "type": "keyword"
+        "type": "text"
+      },
+      "pattern":{
+        "type": "text"
       }
    }
 }
@@ -455,3 +458,19 @@
       }
    }
 }
+// http://localhost:9200/adaptation
+{
+            "properties": {
+                "adaptation_count": {
+                    "type": "long"
+                },
+                "adaptation_time": {
+                    "type": "long"
+                },
+                "energy_saved": {
+                    "type": "long"
+                },
+                "traffic_saved": {
+                    "type": "long"
+                }
+            }

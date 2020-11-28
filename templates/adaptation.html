@@ -13,8 +13,8 @@
 			<div class="row">
 				<div class="col-xs-6 col-md-3 col-lg-3 no-padding">
 					<div class="panel panel-blue panel-widget border-right">
-						<div class="row no-padding"><em class="fa fa-xl fa-exchange color-blue"></em>
-							<div class="large" id="total-traffic">0</div>
+						<div class="row no-padding"><em class="fa fa-xl fa-clone color-blue"></em>
+							<div class="large" id="adaptation_number">0</div>
 							<div class="text-muted">Total Adaptation</div>
 						</div>
 					</div>
@@ -22,15 +22,15 @@
 				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
 					<div class="panel panel-teal panel-widget border-right">
 						<div class="row no-padding"><em class="fa fa-xl fa-bolt" style="color: rgb(54,99,235)"></em>
-							<div class="large" id="total-energy">0</div>
+							<div class="large" id="energy_saved">0</div>
 							<div class="text-muted">Energy Saved (Joules)</div>
 						</div>
 					</div>
 				</div>
 				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
 					<div class="panel panel-orange panel-widget border-right">
-						<div class="row no-padding"><em class="fa fa-xl fa-line-chart color-blue"></em>
-							<div class="large" id="components-number">0</div>
+						<div class="row no-padding"><em class="fa fa-xl fa-exchange color-blue"></em>
+							<div class="large" id="traffic_saved">0</div>
 							<div class="text-muted">Traffic reduced (messages)</div>
 						</div>
 					</div>
@@ -38,8 +38,8 @@
 				<div class="col-xs-6 col-md-3 col-lg-2 no-padding">
 					<div class="panel panel-red panel-widget border-right">
 						<div class="row no-padding">
-                            <em class="fa fa-xl fa-bolt" style="color: rgb(54,99,235)"></em><em class="fa fa-xl fa-unlock" style="color: rgb(54,99,235)"></em>
-							<div class="large">NaN</div>
+                            <em class="fa fa-xl fa-th-list" style="color: rgb(54,99,235)"></em>
+							<div class="large" id="current_pattern">NaN</div>
 							<div class="text-muted">Current Pattern</div>
 						</div>
 					</div>
@@ -47,8 +47,8 @@
                 <div class="col-xs-6 col-md-3 col-lg-3 no-padding">
 					<div class="panel panel-red panel-widget ">
 						<div class="row no-padding">
-                            <em class="fa fa-xl fa-exchange color-blue"></em><em class="fa fa-xl fa-unlock color-blue"></em>
-							<div class="large">0 seconds </div>
+                            <em class="fa fa-xl fa-clock-o color-blue"></em>
+							<div class="large" id="adaptation_time">0 seconds </div>
 							<div class="text-muted">Time per adaptation (average)</div>
 						</div>
 					</div>
@@ -143,7 +143,7 @@
 			<div class="col-md-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-                        Number of adaptation
+                        Number of adaptations
 						<span class="pull-right clickable panel-toggle panel-button-tab-left"><em class="fa fa-toggle-up"></em></span></div>
 					<div class="panel-body main-chart">
 						<div class="canvas-wrapper">

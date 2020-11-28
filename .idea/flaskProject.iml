@@ -12,6 +12,7 @@
     <orderEntry type="module" module-name="flaskProject1" />
     <orderEntry type="library" name="sweetalert" level="application" />
     <orderEntry type="module" module-name="flaskProject2" />
+    <orderEntry type="module" module-name="flaskProject3" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Jinja2" />
