@@ -1,9 +1,10 @@
 import json
 import random
 from datetime import datetime
-
+import hashlib
 from elasticsearch import Elasticsearch
 from flask import Flask, render_template, request, session
+from flask_cors import CORS
 from flask_restful import Api, reqparse
 
 es = Elasticsearch()
@@ -11,6 +12,8 @@ app = Flask(__name__)
 app.secret_key = 'B;}}S5Cx@->^^"hQT{T,GJ@YI*><17'
 api = Api(app)
 parser = reqparse.RequestParser()
+CORS(app)
+
 
 @app.route('/login/', methods = ['POST', 'GET'])
 def login():
@@ -18,24 +21,56 @@ def login():
        parser.add_argument("username")
        parser.add_argument("password")
        args = parser.parse_args()
-       with open('json/file.json', 'r') as myfile:
-           data = myfile.read()
-       # parse file
-       obj = json.loads(data)
-       for i in obj:
-           if obj[i]['username'] == args["username"]:
-               if obj[i]['password'] == args["password"]:
-                   session['username'] = args["username"]
-                   session['logged_in'] = True
-                   status = {"status": "success"}
-                   return status
-               else:
-                   status = {"status": "fail"}
-                   return status
-
+       h = hashlib.md5(args["password"].encode())
+       password=h.hexdigest()
+       query="{\
+  \"query\": {\
+    \"bool\": {\
+      \"must\": [\
+        {\
+          \"match\": {\
+            \"password\": \"" + password +"\"\
+          }\
+        },\
+        {\
+          \"match\": {\
+            \"username\": \""+args["username"]+"\"\
+          }\
+        }\
+      ]\
+    }\
+  }\
+}"
+       res = es.search(index='users', body=query)
+       if res['hits']['hits'] != []:
+           if res['hits']['hits'][0]['_source']["username"]==args["username"] and res['hits']['hits'][0]['_source']["password"]==password:
+               session['username'] = args["username"]
+               session['logged_in'] = True
+               status = {"status": "success"}
+               return status
+           else:
+               status = {"status": "fail"}
+               return status
        status = {"status": "fail"}
-
        return status
+
+       #with open('json/file.json', 'r') as myfile:
+       #    data = myfile.read()
+       #obj = json.loads(data)
+       #for i in obj:
+       #    if obj[i]['username'] == args["username"]:
+       #        if obj[i]['password'] == args["password"]:
+       #            session['username'] = args["username"]
+       #            session['logged_in'] = True
+       #            status = {"status": "success"}
+       #            return status
+       #        else:
+       #            status = {"status": "fail"}
+       #            return status
+
+       #status = {"status": "fail"}
+
+       #return status
    else:
       return render_template('login.html')
 
@@ -274,7 +309,7 @@ def ml_models():
         return render_template('login.html')
 
 
-@app.route('/analytics', methods = ['POST', 'GET'])
+"""@app.route('/analytics', methods = ['POST', 'GET'])
 def analytics():
     if len(session) > 0:
         if session['logged_in'] == True:
@@ -282,11 +317,23 @@ def analytics():
         else:
             return render_template('login.html')
     else:
-        return render_template('login.html')
+        return render_template('login.html')"""
 
 
 @app.route('/simulation', methods = ['POST', 'GET'])
 def simulation():
+    if request.method == 'POST':
+        parser.add_argument("simulation")
+        args = parser.parse_args()
+        if args["simulation"]=="on":
+            session['simulation'] = "on"
+            return {'status':'success'}
+        elif args["simulation"]=="off":
+            session['simulation'] = "off"
+            return {'status':'success'}
+        else:
+            return {'status':'wrong or no action declared'}
+
     if len(session) > 0:
         if session['logged_in'] == True:
             return render_template('simulation.html')
@@ -322,6 +369,7 @@ def page_not_found(e):
 
 if __name__ == '__main__':
     app.run()
+
 
 def checkdate(x):
     if x<10:

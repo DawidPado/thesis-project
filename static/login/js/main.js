@@ -1,3 +1,8 @@
+// not used script original from the template
+
+
+
+
 
 (function ($) {
     "use strict";

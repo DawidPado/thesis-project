@@ -415,6 +415,23 @@
                 "horizon": {"type": "float"}
             }
 }
+ //http://localhost:9200/train-status/
+        {
+            "properties": {
+                "end": {
+                    "type": "date"
+                },
+                "model_name": {
+                    "type": "text"
+                },
+                "start": {
+                    "type": "date"
+                },
+                "status": {
+                    "type": "text"
+                }
+            }
+        }
 //http://localhost:9200/system_state/_mapping
 //for _search or _doc you have to put id current
 //example : http://localhost:9200/system_state/_doc/current
@@ -474,3 +491,17 @@
                     "type": "long"
                 }
             }
+//http://localhost:9200/simulation/
+{
+   "properties": {
+      "timestamp": {
+        "type": "date"
+      },
+      "number_of_sensors":{
+          "type":"integer"
+      },
+      "number_of_patterns":{
+          "type":"integer"
+      }
+}
+}

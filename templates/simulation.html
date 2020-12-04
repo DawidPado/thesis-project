@@ -32,9 +32,15 @@
 
 
         <button type="button" id="upload" class="btn btn-primary">Upload</button>
-        <button type="button" id="start" class="btn btn-primary">Start</button>
-        <button type="button" id="stop" class="btn btn-primary" disabled>Stop</button>
 
+        {% if session["simulation"]=="on" %}
+            <button type="button" id="start" class="btn btn-primary" disabled>Start</button>
+        <button type="button" id="stop" class="btn btn-primary" >Stop</button>
+        {% else %}
+            <button type="button" id="start" class="btn btn-primary">Start</button>
+         <button type="button" id="stop" class="btn btn-primary" disabled>Stop</button>
+
+        {% endif %}
     </form>
     <p></p>
         </div>

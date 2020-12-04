@@ -130,7 +130,7 @@ for i in range(24):
             if total <10:
                 total = random.randint(0, total +10)
             else:
-                total = random.randint(total-10, total + 10)
+                total = random.randint(total- 25, total + 25)
             message = message + " \"S"+str(k)+"\": " +str(total)
             if k==22:
                 message = message + " }"
@@ -156,7 +156,7 @@ for i in range(24):
         text = "{ \"timestamp\":\"" + date + "\","
         total=energy_values[c3]
         text = text + " \"actual\": " + str(total) + ", "
-        total = random.randint(total - 1, total + 1)
+        total = random.randint(total - 15, total + 15)
         text = text + " \"forecast\": " + str(total) + " }"
         c3 = c3 + 1
         forcast = es1.index(index='energy-forecast', body=text)
@@ -178,7 +178,7 @@ for i in range(24):
         if total < 10:
             total = random.randint(0, total + 10)
         else:
-            total = random.randint(total-10, total + 10)
+            total = random.randint(total-100, total + 100)
         text = text + " \"forecast\": " + str(total) + " }"
         c4=c4+1
         forcast = es1.index(index='traffic-forecast', body=text)

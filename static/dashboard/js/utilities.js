@@ -120,7 +120,7 @@ function train(x){
                 icon: 'success',
                 title: x+' trainig has started'
             });
-                 $("#"+x+"-button").replaceWith("<button id='"+x+"-button' onclick=\"train('S"+i.toString()+"')\" class=\"btn btn-sm btn-primary\" type=\"button\"  disabled>...  </em></button>");
+                 $("#"+x+"-button").replaceWith("<button id='"+x+"-button' onclick=\"train('S"+i.toString()+"')\" class=\"btn btn-sm btn-primary\" type=\"button\"  disabled>Train  </em></button>");
              $.ajax({
  method: 'POST',
             url: 'http://127.0.0.1:5001/train-info',

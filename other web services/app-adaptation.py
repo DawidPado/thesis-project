@@ -20,8 +20,12 @@ def main():
         #populate_q_table()
         response="{\"SA\":"
         res = es.search(index='system_state')
-        status = str(res['hits']['hits'][0]['_source']['type'])
-        response=response+"\""+status+"\","
+        status = str(res['hits']['hits'][0]['_source']['current'])
+        pattern = str(res['hits']['hits'][0]['_source']['pattern'])
+        res = es.search(index='adaptation')
+        values = str(res['hits']['hits'][0]['_source'])
+        response=response+"\""+status+"\", \"pattern\":\""+pattern+"\", \"values\":["+values+"],"
+
         interval=10 #time agregation in minuts
         agg = "\"aggs\": {\
                     \"records\": {\
