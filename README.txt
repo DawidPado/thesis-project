@@ -1,7 +1,7 @@
 The software development took place following the Agile methodology.
 The software was developed entirely in English and is divided into five sections, such as, Dashboard, Machine Learning Models, Simulation, Adaptation and Configuration.
 HTML pages are requested with GET methods to the main web service while data with POST methods to all four Flask web services. The first web service, in fact, takes care of sending HTML pages, and sending the data of the Dashboard and Configuration section.
-The second, third and fourth servers send data for the requests of the Machine Learning Models, Adaptation and Simulation sections respectively, see Fig. 1.
+The second, third and fourth servers send data for the requests of the Machine Learning Models, Adaptation and Simulation sections respectively, see technology stack.
 All data requests are made via AJAX requests.
 Some of those requests are sent out immediately after the page has loaded and are requested every thirty seconds to keep the page updated.
 All data requested from the server are taken from the ElasticSerach search engine through an ElasticSearch library, which are processed and sent to the applicant.
