@@ -97,13 +97,13 @@ $(document).ready(function() {
             dataType: "json",
             success: function (data) {
                 if (data.status === "success") {
-                    $("#stop").replaceWith("<button type=\"button\" id=\"stop\" class=\"btn btn-primary\" >Stop</button>");
+                    $("#stop").attr("disabled", false);
+                    $("#start").attr("disabled", true);
                     swal({
                         title: "the simulation has started",
                         icon: "success",
                         button: "ok",
                     });
-                    window.location.href = "http://127.0.0.1:5000/";
                 }
             },
             statusCode: {
@@ -129,12 +129,15 @@ $(document).ready(function() {
             dataType: "json",
             success: function (data) {
                 if (data.status === "success") {
-                    $("#stop").replaceWith("<button type=\"button\" id=\"stop\" class=\"btn btn-primary\" disabled>Stop</button>");
+                    $("#start").attr("disabled", false);
+                    $("#stop").attr("disabled", true);
                     swal({
                         title: "the simulation has stopped",
                         icon: "success",
                         button: "ok",
                     });
+
+
                 }
             },
             statusCode: {
