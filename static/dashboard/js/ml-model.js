@@ -67,8 +67,8 @@ $(document).ready(function() {
                 $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-success\"></span>Online</div> </div>");
                 for (var j in result["energy"]) {
                     xvalues_energy.push(result["energy"][j]["timestamp"]);
-                    yvalues_energy.push(result["energy"][j]["actual"]);
-                    yvalues_energy_forecast.push(result["energy"][j]["forecast"]);
+                    yvalues_energy.push(result["energy"][j]["actual"]/1000);
+                    yvalues_energy_forecast.push(result["energy"][j]["forecast"]/1000);
                 }
                 for (var k in result["traffic"]) {
                     xvalues_traffic.push(result["traffic"][k]["timestamp"]);
@@ -92,8 +92,8 @@ $(document).ready(function() {
                 show_energy();
                 show_traffic();
                 show_single_data()
-                $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy_forecast[yvalues_energy_forecast.length-1] + "</div>");
-                $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + (yvalues_traffic_forecast[yvalues_traffic_forecast.length-1]) + "</div>");
+                $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + avg(yvalues_energy_forecast).toFixed(2) + "</div>");
+                $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + avg(yvalues_traffic_forecast).toFixed(2) + "</div>");
                 $("#models_in_use").replaceWith("<div class=\"large\" id=\"models_in_use\">"+(components_number+2)+"</div>");
                 $("#error_rate").replaceWith("<div class=\"large\" id=\"error_rate\">"+result["error_rate"]+"</div>");
                 var d = new Date();
@@ -123,8 +123,8 @@ $(document).ready(function() {
             success: function (result) {
                 for (var j in result["energy"]) {
                     xvalues_energy.push(result["energy"][j]["timestamp"]);
-                    yvalues_energy.push(result["energy"][j]["actual"]);
-                    yvalues_energy_forecast.push(result["energy"][j]["forecast"]);
+                    yvalues_energy.push(result["energy"][j]["actual"]/1000);
+                    yvalues_energy_forecast.push(result["energy"][j]["forecast"]/1000);
                 }
                 for (var k in result["traffic"]) {
                     xvalues_traffic.push(result["traffic"][k]["timestamp"]);
@@ -147,8 +147,8 @@ $(document).ready(function() {
                 update_single_data()
                 $("#models_in_use").replaceWith("<div class=\"large\" id=\"models_in_use\">"+(components_number+2)+"</div>");
                 $("#error_rate").replaceWith("<div class=\"large\" id=\"error_rate\">"+result["error_rate"]+"</div>");
-                $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + yvalues_energy_forecast[yvalues_energy_forecast.length-1] + "</div>");
-                $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + yvalues_traffic_forecast[yvalues_traffic_forecast.length-1] + "</div>");
+                $("#energy-forecast").replaceWith("<div class=\"large\" id=\"energy-forecast\">" + avg(yvalues_energy_forecast).toFixed(2) + "</div>");
+                $("#traffic-forecast").replaceWith("<div class=\"large\" id=\"traffic-forecast\">" + avg(yvalues_traffic_forecast).toFixed(2) + "</div>");
                 xvalues_traffic = [], yvalues_traffic = [], xvalues_energy = [], yvalues_energy = [];
                 yvalues_traffic_forecast=[], yvalues_energy_forecast=[];
                 xvalues_data = [], yvalues_data = [], yvalues_data_forecast = [];

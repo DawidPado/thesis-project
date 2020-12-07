@@ -27,8 +27,8 @@ $(document).ready(function() {
                 $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-success\"></span>Online</div> </div>");
                 for (var j in result.energy) {
                     xvalues_energy.push(result.energy[j].timestamp);
-                    yvalues_energy.push(sum(result.energy[j],components_number));
-                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number));
+                    yvalues_energy.push(sum(result.energy[j],components_number)/1000);
+                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number)/1000);
                    /*if(j>=50){ //last ten minuts
                     sensor_data = fill_data(result.energy[j],sensor_data,components_number)
                     }*/
@@ -46,8 +46,8 @@ $(document).ready(function() {
                     section=section+"                                    <option value=\""+(i+1)+"\">"+sensors[i]+"</option>\n";
                 }
                 $("#option").replaceWith(section);
-                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59] + "J" + "</div>");
-                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
+                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + avg(yvalues_energy).toFixed(2) + "J" + "</div>");
+                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + avg(yvalues_traffic).toFixed(2) + "msg" + "</div>");
                 $("#traffic-violation").replaceWith("<div class=\"large\" id=\"traffic-violation\">"+result["traffic_violation"]+"</div>");
                 $("#energy-violation").replaceWith("<div class=\"large\" id=\"energy-violation\">"+result["energy_violation"]+"</div>");
                 $("#components-number").replaceWith("<div class=\"large\" id=\"components-number\">"+components_number+"</div>");
@@ -77,8 +77,8 @@ $(document).ready(function() {
             success: function (result) {
                 for (var j in result.energy) {
                     xvalues_energy.push(result.energy[j].timestamp);
-                    yvalues_energy.push(sum(result.energy[j],components_number));
-                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number));
+                    yvalues_energy.push(sum(result.energy[j],components_number)/1000);
+                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number)/1000);
                    /*if(j>=50){ //last ten minuts
                     sensor_data = fill_data(result.energy[j],sensor_data,components_number)
                     }*/
@@ -90,8 +90,8 @@ $(document).ready(function() {
                     yvalues_traffic.push(sum(result.traffic[k],components_number));
 
                 }
-                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + yvalues_energy[59]  + "J" + "</div>");
-                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[59]) + "msg" + "</div>");
+                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + (avg(yvalues_energy)).toFixed(2) + "J" + "</div>");
+                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (avg(yvalues_traffic)).toFixed(2) + "msg" + "</div>");
                 $("#traffic-violation").replaceWith("<div class=\"large\" id=\"traffic-violation\">"+result["traffic_violation"]+"</div>");
                 $("#energy-violation").replaceWith("<div class=\"large\" id=\"energy-violation\">"+result["energy_violation"]+"</div>");
 
@@ -158,7 +158,7 @@ $(document).ready(function() {
                 ysensor_values_energy=[], xvalues_energy = [];
                 for(var j in result.energy) {
                     xvalues_energy.push(result.energy[j]["key_as_string"]);
-                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number,true));                    //console.log(get_sensor_data(result.energy[j],sensor_number));
+                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number,true)/1000);                    //console.log(get_sensor_data(result.energy[j],sensor_number));
                 }
                 update_single_energy()
                 ysensor_values_energy=[], xvalues_energy=[];
@@ -181,7 +181,7 @@ $(document).ready(function() {
                     ysensor_values_energy = [], xvalues_energy = [];
                     for (var j in result.energy) {
                         xvalues_energy.push(result.energy[j].timestamp);
-                        ysensor_values_energy.push(get_sensor_data(result.energy[j], sensor_number));
+                        ysensor_values_energy.push(get_sensor_data(result.energy[j], sensor_number)/1000);
                         //console.log(get_sensor_data(result.energy[j],sensor_number));
                     }
                     update_single_energy()
@@ -421,7 +421,7 @@ endDateTextBox.datetimepicker({
                 return false
             }
 	        if( d<end_time || d<start_time){
-	            alert("ciao")
+	            alert("wrong time interval")
 	            block=false;
 	            dataupdate()
 	            return false
@@ -455,11 +455,10 @@ endDateTextBox.datetimepicker({
                 block=true;
                 components_number = count_components(result.energy[0]); // numero componenti primo set == tutti gli altri set
                 sensors = sensor_iterate(components_number);
-                $("#status").replaceWith("<div id=\"status\"><div class=\"profile-usertitle-status\"><span class=\"indicator label-success\"></span>Online</div> </div>");
                 for (var j in result.energy) {
                     xvalues_energy.push(result.energy[j]["key_as_string"]);
-                    yvalues_energy.push(sum(result.energy[j],components_number,true));
-                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number,true));
+                    yvalues_energy.push(sum(result.energy[j],components_number,true)/1000);
+                    ysensor_values_energy.push(get_sensor_data(result.energy[j],sensor_number,true)/1000);
                     sensor_data = fill_data(result.energy[j],sensor_data,components_number,true)
 
                 }
@@ -473,8 +472,8 @@ endDateTextBox.datetimepicker({
                     section=section+"                                    <option value=\""+(i+1)+"\">"+sensors[i]+"</option>\n";
                 }
                 $("#option").replaceWith(section);
-                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + (yvalues_energy[yvalues_energy.length-1] ).toFixed(2)+ "J" + "</div>");
-                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (yvalues_traffic[yvalues_traffic.length-1]).toFixed(2) + "msg" + "</div>");
+                $("#total-energy").replaceWith("<div class=\"large\" id=\"total-energy\">" + (avg(yvalues_energy) ).toFixed(2)+ "J" + "</div>");
+                $("#total-traffic").replaceWith("<div class=\"large\" id=\"total-traffic\">" + (avg(yvalues_traffic)).toFixed(2) + "msg" + "</div>");
                 $("#traffic-violation").replaceWith("<div class=\"large\" id=\"traffic-violation\">"+result["traffic_violation"]+"</div>");
                 $("#energy-violation").replaceWith("<div class=\"large\" id=\"energy-violation\">"+result["energy_violation"]+"</div>");
 

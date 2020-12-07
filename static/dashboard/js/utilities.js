@@ -39,13 +39,13 @@ function fill_data(result,data,components,custom){
     if(custom){
         for(i=1;i<=components;i++){
         var name='S'+i.toString();
-        data[i-1]=data[i-1]+Number(result[name]["value"].toFixed(2));
+        data[i-1]=data[i-1]+Number(result[name]["value"].toFixed(2))/1000;
     }
     }
     else{
        for(i=1;i<=components;i++){
         var name='S'+i.toString();
-        data[i-1]=data[i-1]+result[name];
+        data[i-1]=data[i-1]+result[name]/1000;
     }
     }
 
@@ -79,6 +79,13 @@ function date_formatter(date,check){
             formatter += d.getHours() + ":00";
         }
         return formatter;
+}
+function avg(array){
+    var total = 0;
+for(var i = 0; i < array.length; i++) {
+    total += array[i];
+}
+return  total / array.length;
 }
 
 function highlight(value,number){

@@ -38,7 +38,7 @@ for i in range(24):
         for k in range (23):
             if k == 0:
                 continue
-            n = random.randrange(1, 6)
+            n=random.uniform(10, 136.363636)
             n1= n1 + n
 
             message = message + " \"S"+str(k)+"\": " +str(n)
@@ -141,6 +141,7 @@ for i in range(24):
 
 
 
+
 c3=0
 for i in range(24):
     if i < 10:
@@ -156,7 +157,7 @@ for i in range(24):
         text = "{ \"timestamp\":\"" + date + "\","
         total=energy_values[c3]
         text = text + " \"actual\": " + str(total) + ", "
-        total = random.randint(total - 15, total + 15)
+        total = random.uniform(total - 10, total + 500)
         text = text + " \"forecast\": " + str(total) + " }"
         c3 = c3 + 1
         forcast = es1.index(index='energy-forecast', body=text)
